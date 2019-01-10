@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">MyBuyDeals</string>
+
+    <string name="enter_login_id_hint">Email or Mobile Number</string>
+    <string name="enter_password_hint">Password</string>
+    <string name="login">Sign In</string>
+    <string name="sign_up_text"> Dont have an account - <b><font fgcolor='#ed1c94'> Sign up...?</font></b></string>
+</resources>
