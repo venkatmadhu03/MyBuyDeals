@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 public class LoginActivity extends AppCompatActivity {
 
+    //create view objects
     MaterialButton loginBtn;
 
     @Override
