@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/lightGray"
+    android:orientation="vertical"
+    android:padding="10sp" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <ImageView
+            android:id="@+id/alertTitleImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="1dp"
+            android:layout_marginTop="1dp" />
+
+        <TextView
+            android:id="@+id/alertTitleTextView"
+            style="@style/alertTitleStyle"
+            android:textColor="@color/darkGray"
+            android:text="@string/exit" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:background="@android:color/black" />
+
+    <TextView
+        android:id="@+id/confirmAlertTextview"
+        style="@style/alertMessagesTextStyle"
+        android:textColor="@color/colorBlack"
+        android:text="@string/exit_confirm"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/alert_box_confirm_relative_layout_margin_top"
+        android:gravity="center" >
+
+        <Button
+            android:id="@+id/yesButtonTextView"
+            style="@style/alertYesButtonStyle"
+            android:background="@drawable/alert_btn_bg"
+            android:text="@string/yes" />
+
+        <Button
+            android:id="@+id/noButtonTextView"
+            style="@style/alertButtonNoStyle"
+            android:layout_toRightOf="@+id/yesButtonTextView"
+            android:background="@drawable/alert_btn_bg"
+            android:text="@string/no" />
+    </RelativeLayout>
+
+</LinearLayout>

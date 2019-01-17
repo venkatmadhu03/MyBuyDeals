@@ -7,4 +7,8 @@
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorViolet">#6d0eb1</color>
     <color name="colorPurple">#ed1c94</color>
+    <color name="lightGray">#F2F2F2</color>
+    <color name="darkGray">#666666</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorLightBlue">#D9EEFD</color>
 </resources>

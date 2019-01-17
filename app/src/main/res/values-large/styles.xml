@@ -1,0 +1,306 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="grabText" parent="@android:style/Widget.TextView">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <!-- <item name="android:textStyle">bold</item>
+        <item name="android:typeface">serif</item> -->
+    </style>
+
+    <style name="subTitleTexts" parent="@style/grabText"> <!-- sub_Title_texts -->
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
+
+    <style name="sub2TitleTexts" parent="@style/grabText"> <!-- sub_sub_title_texts -->
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
+
+    <style name="textTitle" parent="@android:style/TextAppearance.Medium"> <!-- text_Title -->
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="buttonTextStyle"> <!-- button_text -->
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">23sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:shadowColor">@color/colorBlack</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">2</item>
+    </style>
+
+    <style name="headerTitle" parent="@style/grabText">
+        <item name="android:textSize">23sp</item>
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
+
+
+    <style name="slotAvailableStyle" parent="@style/grabText"> <!-- slot_avi -->
+        <item name="android:textSize">32sp</item>
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
+
+    <style name="sportsTextStyle" parent="@style/grabText"> <!--sports_text-->
+        <item name="android:textSize">35sp</item>
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
+
+    <style name="headerTitleSmallStyle" parent="@style/grabText"> <!-- headerTitle_small-->
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
+
+    <style name="headerTitleSubStyle" parent="@style/grabText"> <!-- headerTitle_sub-->
+        <item name="android:textSize">19sp</item>
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
+
+    <style name="slotsTimesTextStyle" parent="@style/grabText"> <!-- slots_times_text-->
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
+
+    <style name="subHeaderTitleStyle" parent="@style/grabText"> <!-- sub_headerTitle-->
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
+
+    <style name="helpDialogTextTitleStyle" parent="@style/grabText"> <!-- helpDialogText_title-->
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
+
+    <style name="helpPageTextTitleStyle" parent="@style/grabText"> <!-- helpPage_Text_title-->
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="helpDialogTextStyle" parent="@style/grabText"> <!-- helpDialogText -->
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@color/colorLightBlue</item>
+    </style>
+
+    <style name="textEditboxStyle" parent="@style/textTitle"> <!-- text_editbox -->
+        <item name="android:textSize">22sp</item>
+    </style>
+
+    <style name="menuItemTextStyle" parent="@style/grabText"> <!-- menuItemText -->
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@color/colorLightBlue</item>
+    </style>
+
+    <style name="myMemberCardTextStyle" parent="@style/grabText"> <!-- myMemberCardText -->
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@color/colorBlack</item>
+    </style>
+
+    <style name="productDescriptionTextStyle" parent="@style/grabText"> <!-- productDescText -->
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="productNameTextStyle" parent="@style/grabText"> <!-- productNameText -->
+        <item name="android:textSize">19sp</item>
+
+        <!-- <item name="android:textColor">#b61121</item> -->
+
+    </style>
+
+    <style name="helpPageTextStyle" parent="@style/grabText"> <!-- helpPage_Text -->
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="standardsTextStyle" parent="@style/grabText"> <!-- standards_Text -->
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="productCouponTextMIDStyle" parent="@style/grabText"> <!-- productCouponText_MiD -->
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">#000000</item>
+    </style>
+
+    <style name="productCouponTextOfferStyle" parent="@style/grabText">
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">@color/colorBlack</item>
+    </style>
+
+    <style name="productCouponTextMIDNoMobileStyle" parent="@style/grabText"> <!-- productCouponText_MiD_no_mobile -->
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/colorBlack</item>
+    </style>
+
+    <style name="productCouponTextNoMobileStyle" parent="@style/grabText"> <!-- productCouponText_no_mobile -->
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/colorBlack</item>
+    </style>
+    <!-- <item name="android:textColor">#b61121</item> -->
+
+    <style name="productOfferTextStyle" parent="@style/grabText"> <!-- productOfferText -->
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/colorBlack</item>
+    </style>
+
+    <style name="categoryTextStyle" parent="@style/grabText"> <!-- categoryText -->
+        <item name="android:textSize">23sp</item>
+        <item name="android:textColor">@color/colorBlack</item>
+    </style>
+
+    <style name="productCouponTextStyle" parent="@style/grabText"> <!-- productCouponText-->
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/colorBlack</item>
+    </style>
+
+    <style name="GenericProgressBackgroundStyle" parent="android:Theme"> <!-- GenericProgressBackground-->
+        <item name="android:windowFrame">@null</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowTitleStyle">@null</item>
+        <item name="android:gravity">center</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="GenericProgressIndicatorStyle" parent="@android:style/Widget.ProgressBar.Large.Inverse"> <!-- GenericProgressIndicator-->
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:indeterminate">true</item>
+    </style>
+
+    <!-- ALERTS BUTTONS STYLES AND SHAPES -->
+    <!-- This style is used for all alerts ok and yes buttons -->
+    <style name="alertButtonsTextStyle"> <!-- alertButtonsText-->
+        <item name="android:layout_width">140dp</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="alertYesButtonStyle" parent="@style/alertButtonsTextStyle"> <!-- alert_ok_yes_buttons-->
+        <item name="android:shadowColor">@color/colorBlack</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">20</item>
+    </style>
+
+    <!-- This style is used for all alerts no button only -->
+    <style name="alertNoButtonTextStyle"> <!-- alertNoButtonsText-->
+        <item name="android:layout_width">140dp</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_marginLeft">@dimen/alertNoButtonTextStyle_margin_left</item>
+    </style>
+
+    <style name="alertButtonNoStyle" parent="@style/alertNoButtonTextStyle"> <!-- alert_button_no-->
+        <item name="android:shadowColor">@color/colorBlack</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">20</item>
+    </style>
+
+    <!-- This style is used for all alerts messages textviews -->
+    <style name="alertMessagesTextStyle"> <!-- alertMessagesTexts-->
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">19sp</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_margin">@dimen/alertMessagesTextStyle_margin_left</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="alertMessagesTextRedeemStyle" parent="@style/alertMessagesTextStyle"> <!-- alertMessagesTexts_redeem-->
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="alertTitleStyle"> <!-- alert_titles-->
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_centerInParent">true</item>
+    </style>
+
+    <style name="NoFavoriteTextStyle" parent="@style/grabText"> <!-- No_Fav_Text -->
+        <item name="android:textSize">30sp</item>
+    </style>
+
+    <style name="productDescription1TextStyle" parent="@style/grabText"> <!-- productDesc1Text -->
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="CofeeClubTextStyle" parent="@style/grabText"> <!-- Cofeeclub_text -->
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@color/colorBlack</item>
+    </style>
+
+    <style name="discountTextStyle" parent="@style/grabText"> <!-- discount_text -->
+        <item name="android:textSize">30sp</item>
+        <item name="android:textColor">@color/colorBlack</item>
+    </style>
+
+    <style name="productCouponTextOfferNilStyle" parent="@style/grabText"> <!-- productCouponText_offer_nl -->
+        <item name="android:textSize">19sp</item>
+        <item name="android:textColor">@color/colorBlack</item>
+    </style>
+
+    <style name="productCouponTextMobileIdNilStyle" parent="@style/grabText"> <!-- productCouponText_MiD_nl -->
+        <item name="android:textSize">19sp</item>
+        <item name="android:textColor">@color/colorBlack</item>
+    </style>
+
+    <style name="DialogAnimationStyle">
+        <item name="android:windowEnterAnimation">@android:anim/slide_in_left</item>
+        <item name="android:windowExitAnimation">@android:anim/slide_out_right</item>
+    </style>
+
+    <style name="MyCustomTabLayoutStyle">
+        <item name="tabTextAppearance">@style/MyCustomTabTextStyle</item>
+    </style>
+
+    <style name="MyCustomTabTextStyle" parent="TextAppearance.AppCompat.Widget.ActionBar.Title.Inverse">
+        <item name="android:textSize">17sp</item>
+    </style>
+
+    <style name="buttonCustomStyle" parent="@android:style/Widget.Button">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:gravity">center</item>
+        <item name="android:shadowColor">@color/colorWhite</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">0.6</item>
+        <!--<item name="android:background">@drawable/custom_btn_book</item>-->
+        <!--<item name="android:padding">6dip</item>-->
+    </style>
+
+    <style name="AppBaseTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+    </style>
+
+</resources>

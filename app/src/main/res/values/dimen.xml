@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="alertButtonsTextStyle_layout_width">120dp</dimen>
+    <dimen name="alertButtonsTextStyle_layout_height">36dp</dimen>
+    <dimen name="alertNoButtonTextStyle_margin_left">10dp</dimen>
+    <dimen name="alertMessagesTextStyle_margin_left">5dp</dimen>
+    <dimen name="alert_box_confirm_relative_layout_margin_top">13dp</dimen>
+</resources>
