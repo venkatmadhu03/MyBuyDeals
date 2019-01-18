@@ -4,6 +4,8 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
 
+    <color name="homepage_background">#E9EEF1</color>
+
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorViolet">#6d0eb1</color>
     <color name="colorPurple">#ed1c94</color>
