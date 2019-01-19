@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ProgressWheel">
+        <attr name="mbd_progressIndeterminate" format="boolean" />
+        <attr name="mbdProg_barColor" format="color" />
+        <attr name="mbdProg_barWidth" format="dimension" />
+        <attr name="mbdProg_rimColor" format="color" />
+        <attr name="mbdProg_rimWidth" format="dimension" />
+        <attr name="mbdProg_spinSpeed" format="float" />
+        <attr name="mbdProg_spinCycleTime" format="integer" />
+        <attr name="mbdProg_circleRadius" format="dimension" />
+        <attr name="mbdProg_fillRadius" format="boolean" />
+        <attr name="mbdProg_linearProgress" format="boolean" />
+    </declare-styleable>
+
+
+</resources>
