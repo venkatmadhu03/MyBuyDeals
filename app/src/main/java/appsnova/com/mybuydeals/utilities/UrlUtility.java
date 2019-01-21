@@ -3,15 +3,22 @@ package appsnova.com.mybuydeals.utilities;
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import appsnova.com.mybuydeals.R;
 
 public class UrlUtility {
+
+    public static int screenHeight;
+    public static int screenWidth;
+    public static ArrayList<String> galleriesList = new ArrayList<String>();
 
     public static String BASE_URL = "http://mybuydeal.com/app/webroot/services/";
 
@@ -83,6 +90,26 @@ public class UrlUtility {
 
     //GET USER Profile
     public static String RETRIEVE_PROFILE_URL = BASE_URL+ "retrieve_profile.php?";
+
+
+
+    @SuppressWarnings("deprecation")
+    public static void setDimensions(Context _context) {
+        try {
+            Display display = ((Activity) _context).getWindowManager().getDefaultDisplay();
+            int screenWidth = display.getWidth();
+            int screenHeight = display.getHeight();
+            UrlUtility.screenWidth = screenWidth;
+            UrlUtility.screenHeight = screenHeight;
+
+            ///custom_font = Typeface.createFromAsset(_context.getAssets(), "bebas_neue.ttf");
+        } catch (Exception e) {
+            if (e != null) {
+                e.printStackTrace();
+                Log.w("Dimenaions", e);
+            }
+        }
+    }
 
 
     /**

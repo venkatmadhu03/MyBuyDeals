@@ -43,7 +43,6 @@
         <item name="android:textColor">@color/colorWhite</item>
     </style>
 
-
     <style name="slotAvailableStyle" parent="@style/grabText"> <!-- slot_avi -->
         <item name="android:textSize">32sp</item>
         <item name="android:textColor">@color/colorWhite</item>

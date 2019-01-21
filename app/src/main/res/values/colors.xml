@@ -10,7 +10,12 @@
     <color name="colorViolet">#6d0eb1</color>
     <color name="colorPurple">#ed1c94</color>
     <color name="lightGray">#F2F2F2</color>
+    <color name="normalGray">#666666</color>
     <color name="darkGray">#666666</color>
     <color name="colorBlack">#000000</color>
     <color name="colorLightBlue">#D9EEFD</color>
+    <color name="colorDivider">#64dad8d8</color>
+    <color name="colorGreen">#009900</color>
+    <color name="colorMaron">#CC5200</color>
+    <color name="colorNormalBlue">#005D9A</color>
 </resources>
