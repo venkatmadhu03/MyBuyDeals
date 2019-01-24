@@ -9,7 +9,7 @@ public class SharedPref {
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
     int PRIVATE_MODE = 0;
-    private String PREF_NAME = "Office24by7";
+    private String PREF_NAME = "MyBuyDeals";
 
     public SharedPref(Context context){
 

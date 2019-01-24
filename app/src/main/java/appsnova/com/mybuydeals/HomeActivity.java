@@ -284,17 +284,18 @@ public class HomeActivity extends AppCompatActivity
 
                                             @Override
                                             public void onItemClick(View view, int position) {
-                                                Intent sportIntent = new Intent(HomeActivity.this, ProductDetailsActivity.class);
-                                                sportIntent.putExtra("PRODUCT_ID", homeProductsDealsList.get(position).getProductId());
-                                                sportIntent.putExtra("PRODUCT_FROM_SCREEN", "HOME_MAIN");
-                                                sportIntent.putExtra("PRODUCT_NAME", homeProductsDealsList.get(position).getProductName());
-                                                sportIntent.putExtra("PRODUCT_DESCRIPTION", homeProductsDealsList.get(position).getProductDesc());
-                                                sportIntent.putExtra("PRODUCT_PRICE", homeProductsDealsList.get(position).getPrice());
-                                                sportIntent.putExtra("PRODUCT_REGULAR_PRICE", homeProductsDealsList.get(position).getRegularPrice());
-                                                sportIntent.putExtra("PRODUCT_IMAGE_URL", homeProductsDealsList.get(position).getImageUrl());
-                                                sportIntent.putExtra("PRODUCT_VENDOR_NAME", homeProductsDealsList.get(position).getVendorName());
-                                                sportIntent.putExtra("VENDOR_DESCRIPTION", homeProductsDealsList.get(position).getVendorDescription());
-                                                startActivity(sportIntent);
+                                                Log.d(TAG, "onItemClick: "+homeProductsDealsList.get(position).getProductId());
+                                                Intent homeDealsIntent = new Intent(HomeActivity.this, ProductDetailsActivity.class);
+                                                homeDealsIntent.putExtra("PRODUCT_ID", homeProductsDealsList.get(position).getProductId());
+                                                homeDealsIntent.putExtra("PRODUCT_FROM_SCREEN", "HOME_MAIN");
+                                                homeDealsIntent.putExtra("PRODUCT_NAME", homeProductsDealsList.get(position).getProductName());
+                                                homeDealsIntent.putExtra("PRODUCT_DESCRIPTION", homeProductsDealsList.get(position).getProductDesc());
+                                                homeDealsIntent.putExtra("PRODUCT_PRICE", homeProductsDealsList.get(position).getPrice());
+                                                homeDealsIntent.putExtra("PRODUCT_REGULAR_PRICE", homeProductsDealsList.get(position).getRegularPrice());
+                                                homeDealsIntent.putExtra("PRODUCT_IMAGE_URL", homeProductsDealsList.get(position).getImageUrl());
+                                                homeDealsIntent.putExtra("PRODUCT_VENDOR_NAME", homeProductsDealsList.get(position).getVendorName());
+                                                homeDealsIntent.putExtra("VENDOR_DESCRIPTION", homeProductsDealsList.get(position).getVendorDescription());
+                                                startActivity(homeDealsIntent);
                                             }
                                         });
                                     }
