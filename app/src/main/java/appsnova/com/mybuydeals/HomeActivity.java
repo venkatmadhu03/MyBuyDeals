@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.google.android.material.navigation.NavigationView;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -240,236 +242,20 @@ public class HomeActivity extends AppCompatActivity
     }
 
     private void getProductsFromServer(){
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, UrlUtility.HOME_PRODUCTS_URL, null,
-                new Response.Listener<JSONObject>() {
+        JsonArrayRequest jsonArrayRequest= new JsonArrayRequest(Request.Method.GET, UrlUtility.HOME_PRODUCTS_URL, null,
+                new Response.Listener<JSONArray>() {
                     @Override
-                    public void onResponse(JSONObject response) {
+                    public void onResponse(JSONArray response) {
                         Log.d(TAG, "onResponse: "+response.toString());
                         try {
-                            if (response.has("deals_products")){
-                                JSONArray dealsJsonArray = response.getJSONArray("deals_products");
-                                homeProductsDealsList.clear();
-                                homeProductsDealsList = null;
-                                homeProductsDealsList = new ArrayList<HomeProductsModel>();
-                                for (int i=0; i<dealsJsonArray.length(); i++){
-                                    JSONObject jsonChildNode = dealsJsonArray.getJSONObject(i);
-
-                                    /******* Fetch node values **********/
-                                    String product_id = jsonChildNode.optString("product_id");
-                                    String product_name = jsonChildNode.optString("product_name");
-                                    String price = jsonChildNode.optString("price");
-                                    String regular_price = jsonChildNode.optString("regular_price");
-                                    String imageUrl = jsonChildNode.optString("image");
-                                    String vendor_name = jsonChildNode.optString("vendor_name");
-                                    //String vendor_description = jsonChildNode.optString("vendor_description");
-                                    String rating = jsonChildNode.optString("rating");
-                                    //String product_desc = jsonChildNode.optString("product_desc");
-                                    homeProductsDealsList.add(new HomeProductsModel(product_id, product_name, price, regular_price, imageUrl, vendor_name, "", rating, ""));
-                                }
-
+                            for (int a=0; a<response.length(); a++){
+                                JSONObject homeProductsObjects = response.getJSONObject(a);
+                                JSONArray jsonArray = homeProductsObjects.getJSONArray("")
                             }
-
-                            homeProductsHomeAll.add(new HomeAllProductsModel(homeProductsDealsList, homeProductsLatestList, homeProductsRecommendList, homeProductsMobilesList, homeProductsFoodsList));
-
-                            /************ Show Output on screen/activity **********/
-                            new Handler().postDelayed(new Runnable() {
-
-                                @Override
-                                public void run() {
-                                    if (homeProductsDealsList.size() > 0) {
-                                        HomeProductsAdapter adapter1 = new HomeProductsAdapter(HomeActivity.this, homeProductsDealsList);
-                                        dealsListRecyclerView.setAdapter(adapter1);
-                                        dealsLinearLayout.setVisibility(View.VISIBLE);
-                                        adapter1.setOnItemClickListener(new HomeProductsAdapter.OnItemClickListener() {
-
-                                            @Override
-                                            public void onItemClick(View view, int position) {
-                                                Log.d(TAG, "onItemClick: "+homeProductsDealsList.get(position).getProductId());
-                                                Intent homeDealsIntent = new Intent(HomeActivity.this, ProductDetailsActivity.class);
-                                                homeDealsIntent.putExtra("PRODUCT_ID", homeProductsDealsList.get(position).getProductId());
-                                                homeDealsIntent.putExtra("PRODUCT_FROM_SCREEN", "HOME_MAIN");
-                                                homeDealsIntent.putExtra("PRODUCT_NAME", homeProductsDealsList.get(position).getProductName());
-                                                homeDealsIntent.putExtra("PRODUCT_DESCRIPTION", homeProductsDealsList.get(position).getProductDesc());
-                                                homeDealsIntent.putExtra("PRODUCT_PRICE", homeProductsDealsList.get(position).getPrice());
-                                                homeDealsIntent.putExtra("PRODUCT_REGULAR_PRICE", homeProductsDealsList.get(position).getRegularPrice());
-                                                homeDealsIntent.putExtra("PRODUCT_IMAGE_URL", homeProductsDealsList.get(position).getImageUrl());
-                                                homeDealsIntent.putExtra("PRODUCT_VENDOR_NAME", homeProductsDealsList.get(position).getVendorName());
-                                                homeDealsIntent.putExtra("VENDOR_DESCRIPTION", homeProductsDealsList.get(position).getVendorDescription());
-                                                startActivity(homeDealsIntent);
-                                            }
-                                        });
-                                    }
-
-                                    if (homeProductsFashionList.size() > 0) {
-                                        HomeProductsAdapter adapter1 = new HomeProductsAdapter(HomeActivity.this, homeProductsFashionList);
-                                        fashionProductsRecyclerVIew.setAdapter(adapter1);
-                                        fashionLinearLayout.setVisibility(View.VISIBLE);
-                                        adapter1.setOnItemClickListener(new HomeProductsAdapter.OnItemClickListener() {
-
-                                            @Override
-                                            public void onItemClick(View view, int position) {
-                                                Intent sportIntent = new Intent(HomeActivity.this, ProductDetailsActivity.class);
-                                                sportIntent.putExtra("PRODUCT_ID", homeProductsDealsList.get(position).getProductId());
-                                                sportIntent.putExtra("PRODUCT_FROM_SCREEN", "HOME_MAIN");
-                                                sportIntent.putExtra("PRODUCT_NAME", homeProductsDealsList.get(position).getProductName());
-                                                sportIntent.putExtra("PRODUCT_DESCRIPTION", homeProductsDealsList.get(position).getProductDesc());
-                                                sportIntent.putExtra("PRODUCT_PRICE", homeProductsDealsList.get(position).getPrice());
-                                                sportIntent.putExtra("PRODUCT_REGULAR_PRICE", homeProductsDealsList.get(position).getRegularPrice());
-                                                sportIntent.putExtra("PRODUCT_IMAGE_URL", homeProductsDealsList.get(position).getImageUrl());
-                                                sportIntent.putExtra("PRODUCT_VENDOR_NAME", homeProductsDealsList.get(position).getVendorName());
-                                                sportIntent.putExtra("VENDOR_DESCRIPTION", homeProductsDealsList.get(position).getVendorDescription());
-                                                startActivity(sportIntent);
-                                            }
-                                        });
-                                    }
-
-                                    if (homeProductsBeautyList.size() > 0) {
-                                        HomeProductsAdapter adapter1 = new HomeProductsAdapter(HomeActivity.this, homeProductsBeautyList);
-                                        beautyProductsRecyclerView.setAdapter(adapter1);
-                                        beautyLinearLayout.setVisibility(View.VISIBLE);
-                                        adapter1.setOnItemClickListener(new HomeProductsAdapter.OnItemClickListener() {
-
-                                            @Override
-                                            public void onItemClick(View view, int position) {
-                                                Intent sportIntent = new Intent(HomeActivity.this, ProductDetailsActivity.class);
-                                                sportIntent.putExtra("PRODUCT_ID", homeProductsDealsList.get(position).getProductId());
-                                                sportIntent.putExtra("PRODUCT_FROM_SCREEN", "HOME_MAIN");
-                                                sportIntent.putExtra("PRODUCT_NAME", homeProductsDealsList.get(position).getProductName());
-                                                sportIntent.putExtra("PRODUCT_DESCRIPTION", homeProductsDealsList.get(position).getProductDesc());
-                                                sportIntent.putExtra("PRODUCT_PRICE", homeProductsDealsList.get(position).getPrice());
-                                                sportIntent.putExtra("PRODUCT_REGULAR_PRICE", homeProductsDealsList.get(position).getRegularPrice());
-                                                sportIntent.putExtra("PRODUCT_IMAGE_URL", homeProductsDealsList.get(position).getImageUrl());
-                                                sportIntent.putExtra("PRODUCT_VENDOR_NAME", homeProductsDealsList.get(position).getVendorName());
-                                                sportIntent.putExtra("VENDOR_DESCRIPTION", homeProductsDealsList.get(position).getVendorDescription());
-                                                startActivity(sportIntent);
-                                            }
-                                        });
-                                    }
-
-                                    if (homeProductsFurnituresList.size() > 0) {
-                                        HomeProductsAdapter adapter1 = new HomeProductsAdapter(HomeActivity.this, homeProductsFurnituresList);
-                                        furnitureProductsRecyclerView.setAdapter(adapter1);
-                                        furnitureLinearLayout.setVisibility(View.VISIBLE);
-                                        adapter1.setOnItemClickListener(new HomeProductsAdapter.OnItemClickListener() {
-
-                                            @Override
-                                            public void onItemClick(View view, int position) {
-                                                Intent sportIntent = new Intent(HomeActivity.this, ProductDetailsActivity.class);
-                                                sportIntent.putExtra("PRODUCT_ID", homeProductsDealsList.get(position).getProductId());
-                                                sportIntent.putExtra("PRODUCT_FROM_SCREEN", "HOME_MAIN");
-                                                sportIntent.putExtra("PRODUCT_NAME", homeProductsDealsList.get(position).getProductName());
-                                                sportIntent.putExtra("PRODUCT_DESCRIPTION", homeProductsDealsList.get(position).getProductDesc());
-                                                sportIntent.putExtra("PRODUCT_PRICE", homeProductsDealsList.get(position).getPrice());
-                                                sportIntent.putExtra("PRODUCT_REGULAR_PRICE", homeProductsDealsList.get(position).getRegularPrice());
-                                                sportIntent.putExtra("PRODUCT_IMAGE_URL", homeProductsDealsList.get(position).getImageUrl());
-                                                sportIntent.putExtra("PRODUCT_VENDOR_NAME", homeProductsDealsList.get(position).getVendorName());
-                                                sportIntent.putExtra("VENDOR_DESCRIPTION", homeProductsDealsList.get(position).getVendorDescription());
-                                                startActivity(sportIntent);
-                                            }
-                                        });
-                                    }
-
-                                    if (homeProductsLatestList.size() > 0) {
-                                        HomeProductsAdapter adapter2 = new HomeProductsAdapter(HomeActivity.this, homeProductsLatestList);
-                                        latestProductsRecyclerView.setAdapter(adapter2);
-                                        latestLinearLayout.setVisibility(View.VISIBLE);
-                                        adapter2.setOnItemClickListener(new HomeProductsAdapter.OnItemClickListener() {
-
-                                            @Override
-                                            public void onItemClick(View view, int position) {
-                                                Intent sportIntent = new Intent(HomeActivity.this, ProductDetailsActivity.class);
-                                                sportIntent.putExtra("PRODUCT_ID", homeProductsDealsList.get(position).getProductId());
-                                                sportIntent.putExtra("PRODUCT_FROM_SCREEN", "HOME_MAIN");
-                                                sportIntent.putExtra("PRODUCT_NAME", homeProductsDealsList.get(position).getProductName());
-                                                sportIntent.putExtra("PRODUCT_DESCRIPTION", homeProductsDealsList.get(position).getProductDesc());
-                                                sportIntent.putExtra("PRODUCT_PRICE", homeProductsDealsList.get(position).getPrice());
-                                                sportIntent.putExtra("PRODUCT_REGULAR_PRICE", homeProductsDealsList.get(position).getRegularPrice());
-                                                sportIntent.putExtra("PRODUCT_IMAGE_URL", homeProductsDealsList.get(position).getImageUrl());
-                                                sportIntent.putExtra("PRODUCT_VENDOR_NAME", homeProductsDealsList.get(position).getVendorName());
-                                                sportIntent.putExtra("VENDOR_DESCRIPTION", homeProductsDealsList.get(position).getVendorDescription());
-                                                startActivity(sportIntent);
-                                            }
-                                        });
-                                    }
-
-                                    if (homeProductsMobilesList.size() > 0) {
-                                        HomeProductsAdapter adapter3 = new HomeProductsAdapter(HomeActivity.this, homeProductsMobilesList);
-                                        mobilesProductsRecyclerView.setAdapter(adapter3);
-                                        mobilesLinearLayout.setVisibility(View.VISIBLE);
-
-                                        adapter3.setOnItemClickListener(new HomeProductsAdapter.OnItemClickListener() {
-
-                                            @Override
-                                            public void onItemClick(View view, int position) {
-                                                Intent sportIntent = new Intent(HomeActivity.this, ProductDetailsActivity.class);
-                                                sportIntent.putExtra("PRODUCT_ID", homeProductsDealsList.get(position).getProductId());
-                                                sportIntent.putExtra("PRODUCT_FROM_SCREEN", "HOME_MAIN");
-                                                sportIntent.putExtra("PRODUCT_NAME", homeProductsDealsList.get(position).getProductName());
-                                                sportIntent.putExtra("PRODUCT_DESCRIPTION", homeProductsDealsList.get(position).getProductDesc());
-                                                sportIntent.putExtra("PRODUCT_PRICE", homeProductsDealsList.get(position).getPrice());
-                                                sportIntent.putExtra("PRODUCT_REGULAR_PRICE", homeProductsDealsList.get(position).getRegularPrice());
-                                                sportIntent.putExtra("PRODUCT_IMAGE_URL", homeProductsDealsList.get(position).getImageUrl());
-                                                sportIntent.putExtra("PRODUCT_VENDOR_NAME", homeProductsDealsList.get(position).getVendorName());
-                                                sportIntent.putExtra("VENDOR_DESCRIPTION", homeProductsDealsList.get(position).getVendorDescription());
-                                                startActivity(sportIntent);
-                                            }
-                                        });
-                                    }
-
-                                    if (homeProductsRecommendList.size() > 0) {
-                                        HomeProductsAdapter adapter4 = new HomeProductsAdapter(HomeActivity.this, homeProductsRecommendList);
-                                        recommendedProductsRecyclerView.setAdapter(adapter4);
-                                        recommendedLinearLayout.setVisibility(View.VISIBLE);
-
-                                        adapter4.setOnItemClickListener(new HomeProductsAdapter.OnItemClickListener() {
-
-                                            @Override
-                                            public void onItemClick(View view, int position) {
-                                                Intent sportIntent = new Intent(HomeActivity.this, ProductDetailsActivity.class);
-                                                sportIntent.putExtra("PRODUCT_ID", homeProductsDealsList.get(position).getProductId());
-                                                sportIntent.putExtra("PRODUCT_FROM_SCREEN", "HOME_MAIN");
-                                                sportIntent.putExtra("PRODUCT_NAME", homeProductsDealsList.get(position).getProductName());
-                                                sportIntent.putExtra("PRODUCT_DESCRIPTION", homeProductsDealsList.get(position).getProductDesc());
-                                                sportIntent.putExtra("PRODUCT_PRICE", homeProductsDealsList.get(position).getPrice());
-                                                sportIntent.putExtra("PRODUCT_REGULAR_PRICE", homeProductsDealsList.get(position).getRegularPrice());
-                                                sportIntent.putExtra("PRODUCT_IMAGE_URL", homeProductsDealsList.get(position).getImageUrl());
-                                                sportIntent.putExtra("PRODUCT_VENDOR_NAME", homeProductsDealsList.get(position).getVendorName());
-                                                sportIntent.putExtra("VENDOR_DESCRIPTION", homeProductsDealsList.get(position).getVendorDescription());
-                                                startActivity(sportIntent);
-                                            }
-                                        });
-                                    }
-
-                                    if (homeProductsFoodsList.size() > 0) {
-                                        HomeProductsAdapter adapter4 = new HomeProductsAdapter(HomeActivity.this, homeProductsFoodsList);
-                                        foodProductsRecyclerView.setAdapter(adapter4);
-                                        foodLinearLayout.setVisibility(View.VISIBLE);
-
-                                        adapter4.setOnItemClickListener(new HomeProductsAdapter.OnItemClickListener() {
-
-                                            @Override
-                                            public void onItemClick(View view, int position) {
-                                                Intent sportIntent = new Intent(HomeActivity.this, ProductDetailsActivity.class);
-                                                sportIntent.putExtra("PRODUCT_ID", homeProductsDealsList.get(position).getProductId());
-                                                sportIntent.putExtra("PRODUCT_FROM_SCREEN", "HOME_MAIN");
-                                                sportIntent.putExtra("PRODUCT_NAME", homeProductsDealsList.get(position).getProductName());
-                                                sportIntent.putExtra("PRODUCT_DESCRIPTION", homeProductsDealsList.get(position).getProductDesc());
-                                                sportIntent.putExtra("PRODUCT_PRICE", homeProductsDealsList.get(position).getPrice());
-                                                sportIntent.putExtra("PRODUCT_REGULAR_PRICE", homeProductsDealsList.get(position).getRegularPrice());
-                                                sportIntent.putExtra("PRODUCT_IMAGE_URL", homeProductsDealsList.get(position).getImageUrl());
-                                                sportIntent.putExtra("PRODUCT_VENDOR_NAME", homeProductsDealsList.get(position).getVendorName());
-                                                sportIntent.putExtra("VENDOR_DESCRIPTION", homeProductsDealsList.get(position).getVendorDescription());
-                                                startActivity(sportIntent);
-                                            }
-                                        });
-                                    }
-                                    homeProgressLinearLayout.setVisibility(View.GONE);
-                                }
-                            }, 200);
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -477,11 +263,11 @@ public class HomeActivity extends AppCompatActivity
 
             }
         });
-        jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(10000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+        jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(10000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         VolleySingleton.getmApplication().getmRequestQueue().getCache().clear();
-        VolleySingleton.getmApplication().getmRequestQueue().add(jsonObjectRequest);
+        VolleySingleton.getmApplication().getmRequestQueue().add(jsonArrayRequest);
     }
 
     private void initSlider() {
