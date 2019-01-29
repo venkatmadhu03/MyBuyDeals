@@ -83,7 +83,7 @@ public class UrlUtility {
     public static String VENDOR_INQUIRY_URL = BASE_URL+ "mailsend.php?";
 
     //pin Code Check
-    public static String PIN_CODE_CHECKING_URL = BASE_URL+ "pincode_check.php?";
+    public static String PIN_CODE_CHECKING_URL = BASE_URL+ "pincode_check.php?pincode=";
 
     //Update Profile
     public static String UPDATE_PROFILE_URL = BASE_URL+ "update_profile.php?";

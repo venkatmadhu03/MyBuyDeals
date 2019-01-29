@@ -3,6 +3,8 @@ package appsnova.com.mybuydeals;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
+import appsnova.com.mybuydeals.adapters.FullScreenImageAdapter;
 import appsnova.com.mybuydeals.models.HomeProductsModel;
 import appsnova.com.mybuydeals.models.LoginDetailsModel;
 import appsnova.com.mybuydeals.utilities.DatabaseHelper;
@@ -21,6 +23,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.provider.Settings;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
@@ -71,7 +74,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
     RecyclerView relatedProductsRecyclerView;
     TextView vendorNameTextView, productNameTextView, priceTextView, regularPriceTextView,
             stockAvailabilityTextView, galleryCountTextView, buyNowTextView;
-    ImageView productDetailSlider, wishListImageView;
+    ImageView wishListImageView;
     Button pinCheckButton;
     EditText quantitiesEdittext,pinCodeCheckEdittext ;
     Spinner sizesListSpinner, colorsListSpinner;
@@ -79,9 +82,12 @@ public class ProductDetailsActivity extends AppCompatActivity {
     RelativeLayout headerRelativeLayout, backallRelativeLayout;
     TextView headerTitleTextView, titleSubTVID;
     Button backButton, cartButton;
+    ViewPager viewPager;
+
+    FullScreenImageAdapter fullScreenImageAdapter;
 
     String  productId = "", productName = "", productPrice = "", productDescription="",
-            pinCode="", productImageUrl="", productRegularPrice="", productRating = "", productStock="",
+            pinCodeStr="", productImageUrl="", productRegularPrice="", productRating = "", productStock="",
             productAvailability="",
             productVendorName = "",productVendorDescription="" , vendorEmail = "", vendorId = "", vendorNumber="";
 
@@ -166,7 +172,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
                 keyboard = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
                 //initialize productdetails views
-                productDetailSlider = findViewById(R.id.productDetailSlider);
+                viewPager = findViewById(R.id.viewPager);
                 productNameTextView=  findViewById(R.id.productNameTextView);
                 priceTextView = findViewById(R.id.priceTextView);
                 regularPriceTextView =  findViewById(R.id.regularPriceTextView);
@@ -196,21 +202,11 @@ public class ProductDetailsActivity extends AppCompatActivity {
                 dealslm.setOrientation(LinearLayoutManager.HORIZONTAL);
                 relatedProductsRecyclerView.setLayoutManager(dealslm);
 
-              //  String pinCode = MySharedPreference.getPreferences(ProductDetailsActivity.this, "PIN_CODE");
-                if (pinCode!= null && pinCode.trim().length()>2) {
-                    pinCodeCheckEdittext.setText(""+pinCode);
+              //  String pinCodeStr = MySharedPreference.getPreferences(ProductDetailsActivity.this, "PIN_CODE");
+                if (pinCodeStr!= null && pinCodeStr.trim().length()>2) {
+                    pinCodeCheckEdittext.setText(""+pinCodeStr);
                     pinCheckButton.setText("CHANGE");
                 }
-
-                productDetailSlider.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (UrlUtility.galleriesList!=null && UrlUtility.galleriesList.size()>0) {
-                            startActivity(new Intent(ProductDetailsActivity.this, FullScreenViewActivity.class));
-                        }
-                    }
-                });
-
 
                 pinCheckButton.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -220,7 +216,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
                             pinCheckButton.setText("CHECK");
                           //  MySharedPreference.setPreference(ProductDetailsActivity.this, "PIN_CODE", "");
                         } else {
-                            String pinCodeStr = pinCodeCheckEdittext.getText().toString();
+                            pinCodeStr = pinCodeCheckEdittext.getText().toString();
                             if (pinCodeStr.trim().length()>2){
                                 boolean isNetAvailable = networkUtils.checkConnection();
                                 if (isNetAvailable) {
@@ -230,11 +226,11 @@ public class ProductDetailsActivity extends AppCompatActivity {
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
-                                    //POST PARAMETERS FOR CHECK PINCODE REQUEST
-                                    HashMap<String, String> params = new HashMap<String, String>();
-                                    params.put("pincode", pinCodeStr);
-                                    JSONObject jsonObject = new JSONObject(params);
-                                    checkingPinCode(UrlUtility.PIN_CODE_CHECKING_URL, jsonObject, pinCodeStr);
+//                                    //POST PARAMETERS FOR CHECK PINCODE REQUEST
+//                                    HashMap<String, String> params = new HashMap<String, String>();
+//                                    params.put("pincode", pinCodeStr);
+//                                    JSONObject jsonObject = new JSONObject(params);
+                                    checkingPinCode(UrlUtility.PIN_CODE_CHECKING_URL+ "" +pinCodeStr, pinCodeStr);
                                 } else {
                                     UrlUtility.showCustomToast(getString(R.string.no_connection), ProductDetailsActivity.this);
                                 }
@@ -278,15 +274,15 @@ public class ProductDetailsActivity extends AppCompatActivity {
                     }
                 });
 
-                galleryCountTextView.setOnClickListener(new View.OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        if (UrlUtility.galleriesList!=null && UrlUtility.galleriesList.size()>0) {
-                            startActivity(new Intent(ProductDetailsActivity.this, FullScreenViewActivity.class));
-                        }
-                    }
-                });
+//                galleryCountTextView.setOnClickListener(new View.OnClickListener() {
+//
+//                    @Override
+//                    public void onClick(View v) {
+//                        if (UrlUtility.galleriesList!=null && UrlUtility.galleriesList.size()>0) {
+//                            startActivity(new Intent(ProductDetailsActivity.this, FullScreenViewActivity.class));
+//                        }
+//                    }
+//                });
 
                 addToCartLinearLayout.setOnClickListener(new View.OnClickListener() {
 
@@ -373,35 +369,27 @@ public class ProductDetailsActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         if (stockAvailabilityTextView.getText().toString().equalsIgnoreCase("In stock")) {
-                           // String pinCode = MySharedPreference.getPreferences(ProductDetailsActivity.this, "PIN_CODE");
-                            if (pinCode!= null && pinCode.trim().length()>2) {
+                           // String pinCodeStr = MySharedPreference.getPreferences(ProductDetailsActivity.this, "PIN_CODE");
+                            if (pinCodeStr!= null && pinCodeStr.trim().length()>2) {
                                 String quantitiesETStr = quantitiesEdittext.getText().toString();
                                 if (quantitiesETStr != null && !quantitiesETStr.isEmpty() && quantitiesETStr.trim().length()>0) {
                                     if (sizesLists.size()>0){
                                         String pickedSize = sizesListSpinner.getSelectedItem().toString();
                                         if (pickedSize!=null && !pickedSize.equalsIgnoreCase("Select")) {
-//                                            loginDetails= dbHelper.getLoginDetails();
-//                                            addToCartData(loginDetails, pickedSize);
-//                                            MySharedPreference.setPreference(ProductDetailsActivity.this, "FROM_SCREEN_USER", "CART");
-//                                            if (loginDetails != null) {
-//                                                startActivity(new Intent(ProductDetailsActivity.this, ShippingAddressScreenActivity.class));
-//                                            } else {
-//                                                Intent resultss = new Intent(ProductDetailsActivity.this, ActivityLoginPage.class);
-//                                                startActivityForResult(resultss, 1112);
-//                                            }
+
                                         } else {
                                             UrlUtility.showCustomToast("Please select size!", ProductDetailsActivity.this);
                                         }
                                     } else {
-//                                        loginDetails= dbHelper.getLoginDetails();
-//                                        addToCartData(loginDetails, "");
-//                                        MySharedPreference.setPreference(ProductDetailsActivity.this, "FROM_SCREEN_USER", "CART");
-//                                        if (loginDetails != null) {
-//                                            startActivity(new Intent(ProductDetailsActivity.this, ShippingAddressScreenActivity.class));
-//                                        } else {
-//                                            Intent resultss = new Intent(ProductDetailsActivity.this, ActivityLoginPage.class);
-//                                            startActivityForResult(resultss, 1112);
-//                                        }
+                                        loginDetails= dbHelper.getLoginDetails();
+                                      //  addToCartData(loginDetails, "");
+                                        sharedPref.setStringValue("FROM_SCREEN_USER", "CART");
+                                        if (loginDetails != null) {
+                                           // startActivity(new Intent(ProductDetailsActivity.this, ShippingAddressScreenActivity.class));
+                                        } else {
+                                            Intent resultss = new Intent(ProductDetailsActivity.this, LoginActivity.class);
+                                            startActivityForResult(resultss, 1112);
+                                        }
                                     }
                                 } else {
                                     UrlUtility.showCustomToast("Please enter quantity!", ProductDetailsActivity.this);
@@ -451,13 +439,12 @@ public class ProductDetailsActivity extends AppCompatActivity {
                             if (str_image_url!=null && !str_image_url.isEmpty() && !str_image_url.equalsIgnoreCase("null")){
                                 UrlUtility.galleriesList.add(str_image_url);
                                 Log.d("ImageUrl", "onResponse: "+str_image_url);
-                                Picasso.get()
-                                        .load(str_image_url)
-                                        .into(productDetailSlider);
                             }
                         }
 
                         if (UrlUtility.galleriesList.size()>0){
+                            fullScreenImageAdapter = new FullScreenImageAdapter(ProductDetailsActivity.this, UrlUtility.galleriesList, "productDetails");
+                            viewPager.setAdapter(fullScreenImageAdapter);
                             galleryCountTextView.setVisibility(View.VISIBLE);
                             galleryCountTextView.setText(""+UrlUtility.galleriesList.size());
                         } else {
@@ -714,8 +701,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
         cartButton.setBackgroundResource(R.drawable.search_black_icon);//shopping cart image 24X24
     }//end of setUpNavigation
 
-    private void checkingPinCode(String pinCodeCheckUrl, JSONObject jsonObject, final String pinCodeStr) {
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,pinCodeCheckUrl, jsonObject, new Response.Listener<JSONObject>() {
+    private void checkingPinCode(String pinCodeCheckUrl, final String pinCodeStr) {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,pinCodeCheckUrl, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 Log.d("checkPinCode", "onResponse: "+response.toString());
@@ -753,6 +740,53 @@ public class ProductDetailsActivity extends AppCompatActivity {
         VolleySingleton.getmApplication().getmRequestQueue().getCache().clear();
         VolleySingleton.getmApplication().getmRequestQueue().add(jsonObjectRequest);
     } //check pinCode
+    private void addToCartData(LoginDetailsModel _loginDetails, String _size) {
+        if (networkUtils.checkConnection()){
+            try {
+                progressDialog = ProgressDialog.show(ProductDetailsActivity.this, "Please wait ...", "Adding item to cart...", true);
+                progressDialog.setCancelable(false);
+                String quantitiesETStr = quantitiesEdittext.getText().toString();
+                String udid = Settings.Secure.getString(ProductDetailsActivity.this.getContentResolver(),Settings.Secure.ANDROID_ID);
+
+                JSONObject params = new JSONObject();
+                params.put("deviceid",""+udid);
+                params.put("vendor_id", ""+vendorId);
+                params.put("product_id", ""+productId);
+                params.put("product_name", ""+productName);
+                params.put("quantity", ""+quantitiesETStr);
+                params.put("price", ""+productPrice);
+                if (_size.trim().length()>0){
+                    params.put("size", ""+_size);
+                }
+                if (_loginDetails!=null){
+                    params.put("userid", ""+_loginDetails.getUserID());
+                }
+
+                addToCartServiceURL(UrlUtility.ADD_TO_CART_URL, params, "Add_To_Cart");
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void addToCartServiceURL(final String addToCartUrl, JSONObject params, final String cartStr) {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, addToCartUrl, params, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d("AddCart", "onResponse: URL "+addToCartUrl);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        VolleySingleton.getmApplication().getmRequestQueue().getCache().clear();
+        VolleySingleton.getmApplication().getmRequestQueue().add(jsonObjectRequest);
+    }
+
+
 
     @Override
     public void onBackPressed() {

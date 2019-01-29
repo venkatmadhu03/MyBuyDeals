@@ -4,99 +4,99 @@
     android:id="@+id/coordinatorLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <!--<ScrollView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent">-->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <!--<RelativeLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent">-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-            <!--<RelativeLayout-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="280dp"-->
-                <!--android:id="@+id/backgroundRelativeLayout"-->
-                <!--android:background="@drawable/login_background">-->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="280dp"
+                android:id="@+id/backgroundRelativeLayout"
+                android:background="@drawable/login_background">
 
-            <!--</RelativeLayout>-->
+            </RelativeLayout>
 
-            <!--<android.support.design.card.MaterialCardView-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_below="@+id/backgroundRelativeLayout"-->
-                <!--app:cardCornerRadius="20dp"-->
-                <!--android:layout_marginTop="-50dp"-->
-                <!--android:layout_marginLeft="30dp"-->
-                <!--android:layout_marginRight="30dp">-->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/backgroundRelativeLayout"
+                app:cardCornerRadius="20dp"
+                android:layout_marginTop="-50dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp">
 
-                <!--<RelativeLayout-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:paddingBottom="70dp">-->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="70dp">
 
-                    <!--<android.support.design.widget.TextInputLayout-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:id="@+id/mobileNumberLoginTIL"-->
-                        <!--android:layout_marginTop="40dp"-->
-                        <!--android:layout_marginLeft="10dp"-->
-                        <!--android:layout_marginRight="10dp">-->
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/mobileNumberLoginTIL"
+                        android:layout_marginTop="40dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp">
 
-                        <!--<EditText-->
-                            <!--android:layout_width="match_parent"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:id="@+id/mobileNumberLoginET"-->
-                            <!--android:hint="@string/enter_login_id_hint"/>-->
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/mobileNumberLoginET"
+                            android:hint="@string/enter_login_id_hint"/>
 
 
-                    <!--</android.support.design.widget.TextInputLayout>-->
+                    </android.support.design.widget.TextInputLayout>
 
-                    <!--<android.support.design.widget.TextInputLayout-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:id="@+id/passwordLoginTIL"-->
-                        <!--android:layout_below="@+id/mobileNumberLoginTIL"-->
-                        <!--android:layout_marginTop="40dp"-->
-                        <!--android:layout_marginLeft="10dp"-->
-                        <!--android:layout_marginRight="10dp">-->
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/passwordLoginTIL"
+                        android:layout_below="@+id/mobileNumberLoginTIL"
+                        android:layout_marginTop="40dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp">
 
-                        <!--<EditText-->
-                            <!--android:layout_width="match_parent"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:id="@+id/passwordLoginET"-->
-                            <!--android:hint="@string/enter_password_hint" />-->
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/passwordLoginET"
+                            android:hint="@string/enter_password_hint" />
 
-                    <!--</android.support.design.widget.TextInputLayout>-->
+                    </android.support.design.widget.TextInputLayout>
 
-                    <!--<android.support.design.button.MaterialButton-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:id="@+id/loginButton"-->
-                        <!--android:layout_below="@+id/passwordLoginTIL"-->
-                        <!--android:layout_centerHorizontal="true"-->
-                        <!--android:background="@drawable/button_background"-->
-                        <!--android:text="@string/login"-->
-                        <!--android:textColor="@color/colorWhite"-->
-                        <!--android:paddingLeft="100dp"-->
-                        <!--android:paddingRight="100dp"-->
-                        <!--android:paddingTop="20dp"-->
-                        <!--android:paddingBottom="20dp"-->
-                        <!--android:layout_marginTop="60dp"/>-->
+                    <android.support.design.button.MaterialButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/loginButton"
+                        android:layout_below="@+id/passwordLoginTIL"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/button_background"
+                        android:text="@string/login"
+                        android:textColor="@color/colorWhite"
+                        android:paddingLeft="100dp"
+                        android:paddingRight="100dp"
+                        android:paddingTop="20dp"
+                        android:paddingBottom="20dp"
+                        android:layout_marginTop="60dp"/>
 
-                    <!--<TextView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:id="@+id/signUpTv"-->
-                        <!--android:layout_below="@+id/loginButton"-->
-                        <!--android:text="@string/sign_up_text"-->
-                        <!--android:layout_centerHorizontal="true"-->
-                        <!--android:layout_marginTop="15dp"/>-->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/signUpTv"
+                        android:layout_below="@+id/loginButton"
+                        android:text="@string/sign_up_text"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="15dp"/>
 
-                <!--</RelativeLayout>-->
+                </RelativeLayout>
 
-            <!--</android.support.design.card.MaterialCardView>-->
+            </androidx.cardview.widget.CardView>
 
-        <!--</RelativeLayout>-->
-    <!--</ScrollView>-->
+        </RelativeLayout>
+    </ScrollView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
