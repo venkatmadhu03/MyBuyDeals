@@ -18,6 +18,11 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorControlActivated">@color/colorPrimary</item>
+        <!-- EditText line color when EditText on-focus-->
+        <item name="colorControlHighlight">@color/colorPrimary</item>
+        <!-- EditText line color when EditText  in un-focus-->
+        <item name="colorControlNormal">@color/colorPrimary</item>
         <!--<item name="navigationBarColor">@color/navigationBarColor</item>-->
         <!-- you should set typeface which you want to override with TypefaceUtil -->
         <item name="android:typeface">serif</item>

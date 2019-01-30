@@ -84,7 +84,8 @@
                     android:background="@drawable/rectangle_background"
                     android:elevation="4dp"
                     android:orientation="vertical"
-                    android:padding="10dp">
+                    android:padding="10dp"
+                    android:visibility="gone">
 
                     <TextView
                         android:id="@+id/searchIcon"
@@ -236,9 +237,9 @@
                             android:padding="8dp" />
                     </LinearLayout>
 
-                    <!-- ~~~Mobile Products~~~ -->
+                    <!-- ~~~Beverages Products~~~ -->
                     <LinearLayout
-                        android:id="@+id/mobilesLinearLayout"
+                        android:id="@+id/beveragesLinearLayout"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginTop="8dp"
@@ -262,18 +263,18 @@
                             android:padding="5dp">
 
                             <TextView
-                                android:id="@+id/mobilesTextView"
+                                android:id="@+id/beveragesTextView"
                                 style="@style/headerTitle"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_centerVertical="true"
-                                android:layout_toLeftOf="@+id/viewAllmobilesTextView"
+                                android:layout_toLeftOf="@+id/viewAllbeveragesTextView"
                                 android:paddingLeft="5dp"
-                                android:text="Mobiles"
+                                android:text="Beverages"
                                 android:textColor="#333" />
 
                             <TextView
-                                android:id="@+id/viewAllmobilesTextView"
+                                android:id="@+id/viewAllbeveragesTextView"
                                 style="@style/headerTitleSubStyle"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -297,15 +298,15 @@
                             android:background="@color/colorAccent" />
 
                         <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/mobilesProductsRecyclerView"
+                            android:id="@+id/beveragesProductsRecyclerView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:padding="8dp" />
                     </LinearLayout>
 
-                    <!-- ~~~Food Products~~~ -->
+                    <!-- ~~~kitchenDine Products~~~ -->
                     <LinearLayout
-                        android:id="@+id/foodLinearLayout"
+                        android:id="@+id/kitchenDineLinearLayout"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginTop="8dp"
@@ -329,18 +330,18 @@
                             android:padding="5dp">
 
                             <TextView
-                                android:id="@+id/foodTextView"
+                                android:id="@+id/kitchenDineTextView"
                                 style="@style/headerTitle"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_centerVertical="true"
-                                android:layout_toLeftOf="@+id/viewAllFoodTextView"
+                                android:layout_toLeftOf="@+id/viewAllKitchenDineTextView"
                                 android:paddingLeft="5dp"
-                                android:text="Food"
+                                android:text="Kitchen and Dining"
                                 android:textColor="#333" />
 
                             <TextView
-                                android:id="@+id/viewAllFoodTextView"
+                                android:id="@+id/viewAllKitchenDineTextView"
                                 style="@style/headerTitleSubStyle"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -364,15 +365,15 @@
                             android:background="@color/colorAccent" />
 
                         <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/foodProductsRecyclerView"
+                            android:id="@+id/kitchenDineProductsRecyclerView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:padding="8dp" />
                     </LinearLayout>
 
-                    <!-- ~~~Furniture Products~~~ -->
+                    <!-- ~~~kitchenStorage Products~~~ -->
                     <LinearLayout
-                        android:id="@+id/furnitureLinearLayout"
+                        android:id="@+id/kitchenStorageLinearLayout"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginTop="8dp"
@@ -396,18 +397,18 @@
                             android:padding="5dp">
 
                             <TextView
-                                android:id="@+id/furnitureTextView"
+                                android:id="@+id/kitchenStorageTextView"
                                 style="@style/headerTitle"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_centerVertical="true"
-                                android:layout_toLeftOf="@+id/viewAllFurnitureTextView"
+                                android:layout_toLeftOf="@+id/viewAllKitchenStorageTextView"
                                 android:paddingLeft="5dp"
-                                android:text="Furniture"
+                                android:text="Kitchen Storage"
                                 android:textColor="#333" />
 
                             <TextView
-                                android:id="@+id/viewAllFurnitureTextView"
+                                android:id="@+id/viewAllKitchenStorageTextView"
                                 style="@style/headerTitleSubStyle"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -431,15 +432,15 @@
                             android:background="@color/colorAccent" />
 
                         <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/furnitureProductsRecyclerView"
+                            android:id="@+id/kitchenStorageProductsRecyclerView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:padding="8dp" />
                     </LinearLayout>
 
-                    <!-- ~~~Beauty Products~~~ -->
+                    <!-- ~~~diningServing Products~~~ -->
                     <LinearLayout
-                        android:id="@+id/beautyLinearLayout"
+                        android:id="@+id/diningServingLinearLayout"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginTop="8dp"
@@ -463,18 +464,18 @@
                             android:padding="5dp">
 
                             <TextView
-                                android:id="@+id/beautyTextView"
+                                android:id="@+id/diningServingTextView"
                                 style="@style/headerTitle"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_centerVertical="true"
-                                android:layout_toLeftOf="@+id/viewAllBeautyTextView"
+                                android:layout_toLeftOf="@+id/viewAllDiningServingTextView"
                                 android:paddingLeft="5dp"
-                                android:text="Beauty"
+                                android:text="Dining Serving"
                                 android:textColor="#333" />
 
                             <TextView
-                                android:id="@+id/viewAllBeautyTextView"
+                                android:id="@+id/viewAllDiningServingTextView"
                                 style="@style/headerTitleSubStyle"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -498,7 +499,7 @@
                             android:background="@color/colorAccent" />
 
                         <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/beautyProductsRecyclerView"
+                            android:id="@+id/diningServingProductsRecyclerView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:padding="8dp" />
@@ -638,9 +639,9 @@
                             android:padding="8dp" />
                     </LinearLayout>-->
 
-                    <!-- ~~~Latest Products~~~ -->
+                    <!-- ~~~fruitVeg Products~~~ -->
                     <LinearLayout
-                        android:id="@+id/latestLinearLayout"
+                        android:id="@+id/fruitVegLinearLayout"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginTop="8dp"
@@ -664,18 +665,18 @@
                             android:padding="5dp">
 
                             <TextView
-                                android:id="@+id/latestTextView"
+                                android:id="@+id/fruitVegTextView"
                                 style="@style/headerTitle"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_centerVertical="true"
-                                android:layout_toLeftOf="@+id/viewAllLatestsTextView"
+                                android:layout_toLeftOf="@+id/viewAllfruitVegsTextView"
                                 android:paddingLeft="5dp"
-                                android:text="Latest"
+                                android:text="fruits-vegetables"
                                 android:textColor="#333" />
 
                             <TextView
-                                android:id="@+id/viewAllLatestsTextView"
+                                android:id="@+id/viewAllfruitVegsTextView"
                                 style="@style/headerTitleSubStyle"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -699,7 +700,7 @@
                             android:background="@color/colorAccent" />
 
                         <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/latestProductsRecyclerView"
+                            android:id="@+id/fruitVegProductsRecyclerView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:padding="8dp" />

@@ -63,12 +63,12 @@ public class HomeActivity extends AppCompatActivity
 
     //create and Initialize ArrayList Objects
     ArrayList<HomeProductsModel> homeProductsDealsList = new ArrayList<HomeProductsModel>();
-    ArrayList<HomeProductsModel> homeProductsMobilesList = new ArrayList<HomeProductsModel>();
-    ArrayList<HomeProductsModel> homeProductsFoodsList = new ArrayList<HomeProductsModel>();
-    ArrayList<HomeProductsModel> homeProductsFurnituresList = new ArrayList<HomeProductsModel>();
-    ArrayList<HomeProductsModel> homeProductsBeautyList = new ArrayList<HomeProductsModel>();
+    ArrayList<HomeProductsModel> homeProductsBeveragesList = new ArrayList<HomeProductsModel>();
+    ArrayList<HomeProductsModel> homeProductsKitchenDinesList = new ArrayList<HomeProductsModel>();
+    ArrayList<HomeProductsModel> homeProductsKitchenStoragesList = new ArrayList<HomeProductsModel>();
+    ArrayList<HomeProductsModel> homeProductsDiningServingList = new ArrayList<HomeProductsModel>();
     ArrayList<HomeProductsModel> homeProductsFashionList = new ArrayList<HomeProductsModel>();
-    ArrayList<HomeProductsModel> homeProductsLatestList = new ArrayList<HomeProductsModel>();
+    ArrayList<HomeProductsModel> homeProductsfruitVegList = new ArrayList<HomeProductsModel>();
     ArrayList<HomeProductsModel> homeProductsRecommendList = new ArrayList<HomeProductsModel>();
     //ArrayList<HomeProductsModel> homeProductsHomesList = new ArrayList<HomeProductsModel>();
     ArrayList<HomeAllProductsModel> homeProductsHomeAll = new ArrayList<HomeAllProductsModel>();
@@ -84,19 +84,19 @@ public class HomeActivity extends AppCompatActivity
             R.drawable.banner3,R.drawable.banner4};
 
     //create View Objects
-    RecyclerView dealsListRecyclerView, mobilesProductsRecyclerView, foodProductsRecyclerView,
-            furnitureProductsRecyclerView, beautyProductsRecyclerView, fashionProductsRecyclerVIew,
-            latestProductsRecyclerView, recommendedProductsRecyclerView; // homeNeedsRV
+    RecyclerView dealsListRecyclerView, beveragesProductsRecyclerView, kitchenDineProductsRecyclerView,
+            kitchenStorageProductsRecyclerView, diningServingProductsRecyclerView, fashionProductsRecyclerVIew,
+            fruitVegProductsRecyclerView, recommendedProductsRecyclerView; // homeNeedsRV
 
     LinearLayout homeProgressLinearLayout, homeProductsMainLinearLayout, dealsLinearLayout,
-            mobilesLinearLayout, foodLinearLayout, furnitureLinearLayout, beautyLinearLayout, fashionLinearLayout, latestLinearLayout,
-            recommendedLinearLayout; //homeNeedsLL
+            beveragesLinearLayout, kitchenDineLinearLayout, kitchenStorageLinearLayout, diningServingLinearLayout,
+            fashionLinearLayout, fruitVegLinearLayout, recommendedLinearLayout; //homeNeedsLL
 
     ScrollView homeMainScrollView;
-    TextView homeSearch, loadingTextView, dealsTextView, viewAllDealsTextView, mobilesTextView,
-            viewAllmobilesTextView,foodTextView, viewAllFoodTextView,furnitureTextView,
-            viewAllFurnitureTextView, beautyTextView, viewAllBeautyTextView,fashionTextView, viewAllFashionTextView,
-            latestTextView, viewAllLatestsTextView, recommendedTextView, viewAllrecommendedTextView;
+    TextView homeSearch, loadingTextView, dealsTextView, viewAllDealsTextView, beveragesTextView,
+            viewAllbeveragesTextView,kitchenDineTextView, viewAllKitchenDineTextView,kitchenStorageTextView,
+            viewAllKitchenStorageTextView, diningServingTextView, viewAlldiningServingTextView,fashionTextView, viewAllFashionTextView,
+            fruitVegTextView, viewAllfruitVegsTextView, recommendedTextView, viewAllrecommendedTextView;
 
     MaterialProgressWheel progressVIew;
 
@@ -145,17 +145,17 @@ public class HomeActivity extends AppCompatActivity
         dealsLinearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         dealsListRecyclerView.setLayoutManager(dealsLinearLayoutManager);
 
-        latestProductsRecyclerView = (RecyclerView) findViewById(R.id.latestProductsRecyclerView);
-        latestProductsRecyclerView.setHasFixedSize(true);
-        LinearLayoutManager latestLinearLayoutManager = new LinearLayoutManager(HomeActivity.this);
-        latestLinearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        latestProductsRecyclerView.setLayoutManager(latestLinearLayoutManager);
+        fruitVegProductsRecyclerView = (RecyclerView) findViewById(R.id.fruitVegProductsRecyclerView);
+        fruitVegProductsRecyclerView.setHasFixedSize(true);
+        LinearLayoutManager fruitVegLinearLayoutManager = new LinearLayoutManager(HomeActivity.this);
+        fruitVegLinearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        fruitVegProductsRecyclerView.setLayoutManager(fruitVegLinearLayoutManager);
 
-        mobilesProductsRecyclerView = (RecyclerView) findViewById(R.id.mobilesProductsRecyclerView);
-        mobilesProductsRecyclerView.setHasFixedSize(true);
-        LinearLayoutManager mobilesLinearLayoutManager = new LinearLayoutManager(HomeActivity.this);
-        mobilesLinearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        mobilesProductsRecyclerView.setLayoutManager(mobilesLinearLayoutManager);
+        beveragesProductsRecyclerView = (RecyclerView) findViewById(R.id.beveragesProductsRecyclerView);
+        beveragesProductsRecyclerView.setHasFixedSize(true);
+        LinearLayoutManager beveragesLinearLayoutManager = new LinearLayoutManager(HomeActivity.this);
+        beveragesLinearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        beveragesProductsRecyclerView.setLayoutManager(beveragesLinearLayoutManager);
 
         recommendedProductsRecyclerView = (RecyclerView) findViewById(R.id.recommendedProductsRecyclerView);
         recommendedProductsRecyclerView.setHasFixedSize(true);
@@ -163,11 +163,11 @@ public class HomeActivity extends AppCompatActivity
         recommendedLinearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         recommendedProductsRecyclerView.setLayoutManager(recommendedLinearLayoutManager);
 
-        foodProductsRecyclerView = (RecyclerView) findViewById(R.id.foodProductsRecyclerView);
-        foodProductsRecyclerView.setHasFixedSize(true);
-        LinearLayoutManager foodProductsLinearLayoutManager = new LinearLayoutManager(HomeActivity.this);
-        foodProductsLinearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        foodProductsRecyclerView.setLayoutManager(foodProductsLinearLayoutManager);
+        kitchenDineProductsRecyclerView = (RecyclerView) findViewById(R.id.kitchenDineProductsRecyclerView);
+        kitchenDineProductsRecyclerView.setHasFixedSize(true);
+        LinearLayoutManager kitchenDineProductsLinearLayoutManager = new LinearLayoutManager(HomeActivity.this);
+        kitchenDineProductsLinearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        kitchenDineProductsRecyclerView.setLayoutManager(kitchenDineProductsLinearLayoutManager);
 
         fashionProductsRecyclerVIew = (RecyclerView) findViewById(R.id.fashionProductsRecyclerVIew);
         fashionProductsRecyclerVIew.setHasFixedSize(true);
@@ -175,29 +175,37 @@ public class HomeActivity extends AppCompatActivity
         fashionProductsLinearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         fashionProductsRecyclerVIew.setLayoutManager(fashionProductsLinearLayoutManager);
 
-        beautyProductsRecyclerView = (RecyclerView) findViewById(R.id.beautyProductsRecyclerView);
-        beautyProductsRecyclerView.setHasFixedSize(true);
-        LinearLayoutManager beautyProductsLinearLayoutManager = new LinearLayoutManager(HomeActivity.this);
-        beautyProductsLinearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        beautyProductsRecyclerView.setLayoutManager(beautyProductsLinearLayoutManager);
+        diningServingProductsRecyclerView = (RecyclerView) findViewById(R.id.diningServingProductsRecyclerView);
+        diningServingProductsRecyclerView.setHasFixedSize(true);
+        LinearLayoutManager diningServingProductsLinearLayoutManager = new LinearLayoutManager(HomeActivity.this);
+        diningServingProductsLinearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        diningServingProductsRecyclerView.setLayoutManager(diningServingProductsLinearLayoutManager);
 
-        furnitureProductsRecyclerView = (RecyclerView) findViewById(R.id.furnitureProductsRecyclerView);
-        furnitureProductsRecyclerView.setHasFixedSize(true);
-        LinearLayoutManager furnitureProductsLinearLayoutManager = new LinearLayoutManager(HomeActivity.this);
-        furnitureProductsLinearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        furnitureProductsRecyclerView.setLayoutManager(furnitureProductsLinearLayoutManager);
+        kitchenStorageProductsRecyclerView = (RecyclerView) findViewById(R.id.kitchenStorageProductsRecyclerView);
+        kitchenStorageProductsRecyclerView.setHasFixedSize(true);
+        LinearLayoutManager kitchenStorageProductsLinearLayoutManager = new LinearLayoutManager(HomeActivity.this);
+        kitchenStorageProductsLinearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        kitchenStorageProductsRecyclerView.setLayoutManager(kitchenStorageProductsLinearLayoutManager);
 
         homeProgressLinearLayout = (LinearLayout) findViewById(R.id.homeProgressLinearLayout);
         dealsLinearLayout = (LinearLayout) findViewById(R.id.dealsLinearLayout);
-        latestLinearLayout = (LinearLayout) findViewById(R.id.latestLinearLayout);
-        mobilesLinearLayout = (LinearLayout) findViewById(R.id.mobilesLinearLayout);
+        fruitVegLinearLayout = (LinearLayout) findViewById(R.id.fruitVegLinearLayout);
+        beveragesLinearLayout = (LinearLayout) findViewById(R.id.beveragesLinearLayout);
 
         //homeNeedsLL = (LinearLayout)findViewById(R.id.homeNeedsLLID);
         recommendedLinearLayout = (LinearLayout) findViewById(R.id.recommendedLinearLayout);
-        foodLinearLayout = (LinearLayout) findViewById(R.id.foodLinearLayout);
-        furnitureLinearLayout = (LinearLayout) findViewById(R.id.furnitureLinearLayout);
+        kitchenDineLinearLayout = (LinearLayout) findViewById(R.id.kitchenDineLinearLayout);
+        kitchenStorageLinearLayout = (LinearLayout) findViewById(R.id.kitchenStorageLinearLayout);
         fashionLinearLayout = (LinearLayout) findViewById(R.id.fashionLinearLayout);
-        beautyLinearLayout = (LinearLayout) findViewById(R.id.beautyLinearLayout);
+        diningServingLinearLayout = (LinearLayout) findViewById(R.id.diningServingLinearLayout);
+
+        viewAllfruitVegsTextView = findViewById(R.id.viewAllfruitVegsTextView);
+        viewAllbeveragesTextView = findViewById(R.id.viewAllbeveragesTextView);
+        viewAllDealsTextView = findViewById(R.id.viewAllDealsTextView);
+        viewAlldiningServingTextView = findViewById(R.id.viewAllDiningServingTextView);
+        viewAllKitchenDineTextView = findViewById(R.id.viewAllKitchenDineTextView);
+        viewAllKitchenStorageTextView = findViewById(R.id.viewAllKitchenStorageTextView);
+
 
         homeSearch = (TextView) findViewById(R.id.homeSearch);
 
@@ -224,6 +232,79 @@ public class HomeActivity extends AppCompatActivity
             public void onClick(View v) {
                 Intent i = new Intent(HomeActivity.this, SearchActivity.class);
                 startActivity(i);
+            }
+        });
+
+        viewAllDealsTextView.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent sportIntent = new Intent(HomeActivity.this, ProductListActivity.class);
+                sportIntent.putExtra("HOME_KEY", "deals_products");
+                sportIntent.putExtra("CAT_NAME", "ALL DEALS");
+                sportIntent.putExtra("FROM_HOME", "HOME");
+                startActivity(sportIntent);
+            }
+        });
+
+        viewAllKitchenStorageTextView.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent sportIntent = new Intent(HomeActivity.this, ProductListActivity.class);
+                sportIntent.putExtra("HOME_KEY", "kitchen_storage_products");
+                sportIntent.putExtra("FROM_HOME", "HOME");
+                sportIntent.putExtra("CAT_NAME", "ALL KITCHEN STORAGE");
+                startActivity(sportIntent);
+            }
+        });
+
+        viewAllKitchenDineTextView.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent sportIntent = new Intent(HomeActivity.this, ProductListActivity.class);
+                sportIntent.putExtra("HOME_KEY", "kitchen_dine_products");
+                sportIntent.putExtra("CAT_NAME", "ALL KITCHEN DINE");
+                sportIntent.putExtra("FROM_HOME", "HOME");
+                startActivity(sportIntent);
+            }
+        });
+
+        viewAlldiningServingTextView.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent sportIntent = new Intent(HomeActivity.this, ProductListActivity.class);
+                sportIntent.putExtra("HOME_KEY", "dining_serving_products");
+                sportIntent.putExtra("CAT_NAME", "ALL DINE SERVING");
+                sportIntent.putExtra("FROM_HOME", "HOME");
+                startActivity(sportIntent);
+            }
+        });
+
+
+        viewAllbeveragesTextView.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent sportIntent = new Intent(HomeActivity.this, ProductListActivity.class);
+                sportIntent.putExtra("HOME_KEY", "beverages_products");
+                sportIntent.putExtra("CAT_NAME", "ALL BEVERAGES");
+                sportIntent.putExtra("FROM_HOME", "HOME");
+                startActivity(sportIntent);
+            }
+        });
+
+        viewAllfruitVegsTextView.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent sportIntent = new Intent(HomeActivity.this, ProductListActivity.class);
+                sportIntent.putExtra("HOME_KEY", "fruits_veg_products");
+                sportIntent.putExtra("CAT_NAME", "ALL FRUITS & VEGETABLES");
+                sportIntent.putExtra("FROM_HOME", "HOME");
+                startActivity(sportIntent);
             }
         });
     }
@@ -257,50 +338,24 @@ public class HomeActivity extends AppCompatActivity
                                 /***** Returns the value mapped by name if it exists and is a JSONArray. ***/
                                 /*******  Returns null otherwise.  *******/
                                 JSONArray deals_productsJson = response.getJSONArray("deals_products");
-                                  JSONArray latest_productsJson = response.getJSONArray("fruits-vegetables");
-                                  JSONArray recommend_productsJson = response.getJSONArray("Beverages");
-                                  JSONArray mobiles_productsJson = response.getJSONArray("Kitchen_&_Dining");
-                                  JSONArray food_productsJson = response.getJSONArray("Kitchen_Storage");
-                                  JSONArray beauty_productsJson = response.getJSONArray("Dining_&_Serving");
+                                  JSONArray fruitsVeg_productsJson = response.getJSONArray("fruits-vegetables");
+                                  JSONArray beverages_productsJson = response.getJSONArray("Beverages");
+                                  JSONArray kitchenDine_productsJson = response.getJSONArray("Kitchen_&_Dining");
+                                  JSONArray kitchenStorage_productsJson = response.getJSONArray("Kitchen_Storage");
+                                  JSONArray diningServing_productsJson = response.getJSONArray("Dining_&_Serving");
                                   //JSONArray fashion_productsJson = jsonResponse.getJSONArray("fashion_products");
                                 //    JSONArray furniture_productsJson = jsonResponse.getJSONArray("furniture_products");
 
-                                /****** FASHION PRODUCTS ******* Process each JSON node ************/
-//                            if (fashion_productsJson.length() > 0) {
-//                                homeProductsFashionList.clear();
-//                                homeProductsFashionList = null;
-//                                homeProductsFashionList = new ArrayList<HomeProductsModel>();
-//
-//                                for (int i = 0; i < fashion_productsJson.length(); i++) {
-//                                    /****** Get Object for each JSON node.***********/
-//                                    JSONObject jsonChildNode = fashion_productsJson.getJSONObject(i);
-//
-//                                    /******* Fetch node values **********/
-//                                    String product_id = jsonChildNode.optString("product_id");
-//                                    String product_name = jsonChildNode.optString("product_name");
-//                                    String price = jsonChildNode.optString("price");
-//                                    String regular_price = jsonChildNode.optString("regular_price");
-//                                    String imageUrl = jsonChildNode.optString("image");
-//                                    String vendor_name = jsonChildNode.optString("vendor_name");
-//                                    //String vendor_description = jsonChildNode.optString("vendor_description");
-//                                    String rating = jsonChildNode.optString("rating");
-//                                    //String product_desc = jsonChildNode.optString("product_desc");
-//                                    homeProductsFashionList.add(new HomeProductsModel(product_id, product_name, price, regular_price, imageUrl, vendor_name, "", rating, ""));
-//                                }
-//
-//                                OutputData = "" + homeProductsFashionList.size();
-//                                Log.i("JSON parse Item Count", OutputData);
-//                            }
-//
-                            /****** BEAUTY PRODUCTS ******* Process each JSON node ************/
-                            if (beauty_productsJson.length() > 0) {
-                                homeProductsBeautyList.clear();
-                                homeProductsBeautyList = null;
-                                homeProductsBeautyList = new ArrayList<HomeProductsModel>();
 
-                                for (int i = 0; i < beauty_productsJson.length(); i++) {
+                                /****** diningServing PRODUCTS ******* Process each JSON node ************/
+                            if (diningServing_productsJson.length() > 0) {
+                                homeProductsDiningServingList.clear();
+                                homeProductsDiningServingList = null;
+                                homeProductsDiningServingList = new ArrayList<HomeProductsModel>();
+
+                                for (int i = 0; i < diningServing_productsJson.length(); i++) {
                                     /****** Get Object for each JSON node.***********/
-                                    JSONObject jsonChildNode = beauty_productsJson.getJSONObject(i);
+                                    JSONObject jsonChildNode = diningServing_productsJson.getJSONObject(i);
 
                                     /******* Fetch node values **********/
                                     String product_id = jsonChildNode.optString("product_id");
@@ -312,256 +367,146 @@ public class HomeActivity extends AppCompatActivity
                                     //String vendor_description = jsonChildNode.optString("vendor_description");
                                     String rating = jsonChildNode.optString("rating");
                                     //String product_desc = jsonChildNode.optString("product_desc");
-                                    homeProductsBeautyList.add(new HomeProductsModel(product_id, product_name, price, regular_price, imageUrl, vendor_name, "", rating, ""));
+                                    homeProductsDiningServingList.add(new HomeProductsModel(product_id, product_name, price, regular_price, imageUrl, vendor_name, "", rating, ""));
                                 }
 
-                                OutputData = "" + homeProductsBeautyList.size();
+                                OutputData = "" + homeProductsDiningServingList.size();
                                 Log.i("JSON parse Item Count", OutputData);
                             }
-//
-//                            /****** FURNITURE PRODUCTS ******* Process each JSON node ************/
-//                            if (furniture_productsJson.length() > 0) {
-//                                homeProductsFurnituresList.clear();
-//                                homeProductsFurnituresList = null;
-//                                homeProductsFurnituresList = new ArrayList<HomeProductsModel>();
-//
-//                                for (int i = 0; i < furniture_productsJson.length(); i++) {
-//                                    /****** Get Object for each JSON node.***********/
-//                                    JSONObject jsonChildNode = furniture_productsJson.getJSONObject(i);
-//
-//                                    /******* Fetch node values **********/
-//                                    String product_id = jsonChildNode.optString("product_id");
-//                                    String product_name = jsonChildNode.optString("product_name");
-//                                    String price = jsonChildNode.optString("price");
-//                                    String regular_price = jsonChildNode.optString("regular_price");
-//                                    String imageUrl = jsonChildNode.optString("image");
-//                                    String vendor_name = jsonChildNode.optString("vendor_name");
-//                                    //String vendor_description = jsonChildNode.optString("vendor_description");
-//                                    String rating = jsonChildNode.optString("rating");
-//                                    //String product_desc = jsonChildNode.optString("product_desc");
-//                                    homeProductsFurnituresList.add(new HomeProductsModel(product_id, product_name, price, regular_price, imageUrl, vendor_name, "", rating, ""));
-//                                }
-//
-//                                OutputData = "" + homeProductsFurnituresList.size();
-//                                Log.i("JSON parse Item Count", OutputData);
-//                            }
+
+                            /****** KitchenStorage PRODUCTS ******* Process each JSON node ************/
+                            if (kitchenStorage_productsJson.length() > 0) {
+                                homeProductsKitchenStoragesList.clear();
+                                homeProductsKitchenStoragesList = null;
+                                homeProductsKitchenStoragesList = new ArrayList<HomeProductsModel>();
+
+                                for (int i = 0; i < kitchenStorage_productsJson.length(); i++) {
+                                    /****** Get Object for each JSON node.***********/
+                                    JSONObject jsonChildNode = kitchenStorage_productsJson.getJSONObject(i);
+
+                                    /******* Fetch node values **********/
+                                    String product_id = jsonChildNode.optString("product_id");
+                                    String product_name = jsonChildNode.optString("product_name");
+                                    String price = jsonChildNode.optString("price");
+                                    String regular_price = jsonChildNode.optString("regular_price");
+                                    String imageUrl = jsonChildNode.optString("image");
+                                    String vendor_name = jsonChildNode.optString("vendor_name");
+                                    //String vendor_description = jsonChildNode.optString("vendor_description");
+                                    String rating = jsonChildNode.optString("rating");
+                                    //String product_desc = jsonChildNode.optString("product_desc");
+                                    homeProductsKitchenStoragesList.add(new HomeProductsModel(product_id, product_name, price, regular_price, imageUrl, vendor_name, "", rating, ""));
+                                }
+
+                                OutputData = "" + homeProductsKitchenStoragesList.size();
+                                Log.i("JSON parse Item Count", OutputData);
+                            }
 
                                 /****** DEALS PRODUCTS ******* Process each JSON node ************/
-                                if (deals_productsJson.length() > 0) {
-                                    homeProductsDealsList.clear();
-                                    homeProductsDealsList = null;
-                                    homeProductsDealsList = new ArrayList<HomeProductsModel>();
+                            if (deals_productsJson.length() > 0) {
+                                homeProductsDealsList.clear();
+                                homeProductsDealsList = null;
+                                homeProductsDealsList = new ArrayList<HomeProductsModel>();
 
-                                    for (int i = 0; i < deals_productsJson.length(); i++) {
-                                        /****** Get Object for each JSON node.***********/
-                                        JSONObject jsonChildNode = deals_productsJson.getJSONObject(i);
+                                for (int i = 0; i < deals_productsJson.length(); i++) {
+                                    /****** Get Object for each JSON node.***********/
+                                    JSONObject jsonChildNode = deals_productsJson.getJSONObject(i);
 
-                                        /******* Fetch node values **********/
-                                        String product_id = jsonChildNode.optString("product_id");
-                                        String product_name = jsonChildNode.optString("product_name");
-                                        String price = jsonChildNode.optString("price");
-                                        String regular_price = jsonChildNode.optString("regular_price");
-                                        String imageUrl = jsonChildNode.optString("image");
-                                        String vendor_name = jsonChildNode.optString("vendor_name");
-                                        //String vendor_description = jsonChildNode.optString("vendor_description");
-                                        String rating = jsonChildNode.optString("rating");
-                                        //String product_desc = jsonChildNode.optString("product_desc");
-                                        homeProductsDealsList.add(new HomeProductsModel(product_id, product_name, price, regular_price, imageUrl, vendor_name, "", rating, ""));
-                                    }
-
-                                    OutputData = "" + homeProductsDealsList.size();
-                                    Log.i("JSON parse Item Count", OutputData);
+                                    /******* Fetch node values **********/
+                                    String product_id = jsonChildNode.optString("product_id");
+                                    String product_name = jsonChildNode.optString("product_name");
+                                    String price = jsonChildNode.optString("price");
+                                    String regular_price = jsonChildNode.optString("regular_price");
+                                    String imageUrl = jsonChildNode.optString("image");
+                                    String vendor_name = jsonChildNode.optString("vendor_name");
+                                    //String vendor_description = jsonChildNode.optString("vendor_description");
+                                    String rating = jsonChildNode.optString("rating");
+                                    //String product_desc = jsonChildNode.optString("product_desc");
+                                    homeProductsDealsList.add(new HomeProductsModel(product_id, product_name, price, regular_price, imageUrl, vendor_name, "", rating, ""));
                                 }
 
-                                if (latest_productsJson.length() > 0) {
-                                    homeProductsLatestList.clear();
-                                    homeProductsLatestList = null;
-                                    homeProductsLatestList = new ArrayList<HomeProductsModel>();
+                                OutputData = "" + homeProductsDealsList.size();
+                                Log.i("JSON parse Item Count", OutputData);
+                            }
 
-                                    for (int i = 0; i < latest_productsJson.length(); i++) {
-                                        /****** Get Object for each JSON node.***********/
-                                        JSONObject jsonChildNode = latest_productsJson.getJSONObject(i);
+                            if (fruitsVeg_productsJson.length() > 0) {
+                                homeProductsfruitVegList.clear();
+                                homeProductsfruitVegList = null;
+                                homeProductsfruitVegList = new ArrayList<HomeProductsModel>();
 
-                                        /******* Fetch node values **********/
-                                        String product_id = jsonChildNode.optString("product_id");
-                                        String product_name = jsonChildNode.optString("product_name");
-                                        String price = jsonChildNode.optString("price");
-                                        String regular_price = jsonChildNode.optString("regular_price");
-                                        String imageUrl = jsonChildNode.optString("image");
-                                        String vendor_name = jsonChildNode.optString("vendor_name");
-                                        //String vendor_description = jsonChildNode.optString("vendor_description");
-                                        String rating = jsonChildNode.optString("rating");
-                                        //String product_desc = jsonChildNode.optString("product_desc");
-                                        homeProductsLatestList.add(new HomeProductsModel(product_id, product_name, price, regular_price, imageUrl, vendor_name, "", rating, ""));
-                                    }
+                                for (int i = 0; i < fruitsVeg_productsJson.length(); i++) {
+                                    /****** Get Object for each JSON node.***********/
+                                    JSONObject jsonChildNode = fruitsVeg_productsJson.getJSONObject(i);
 
-                                    OutputData = "" + homeProductsLatestList.size();
-                                    Log.i("JSON parse Item Count", OutputData);
+                                    /******* Fetch node values **********/
+                                    String product_id = jsonChildNode.optString("product_id");
+                                    String product_name = jsonChildNode.optString("product_name");
+                                    String price = jsonChildNode.optString("price");
+                                    String regular_price = jsonChildNode.optString("regular_price");
+                                    String imageUrl = jsonChildNode.optString("image");
+                                    String vendor_name = jsonChildNode.optString("vendor_name");
+                                    //String vendor_description = jsonChildNode.optString("vendor_description");
+                                    String rating = jsonChildNode.optString("rating");
+                                    //String product_desc = jsonChildNode.optString("product_desc");
+                                    homeProductsfruitVegList.add(new HomeProductsModel(product_id, product_name, price, regular_price, imageUrl, vendor_name, "", rating, ""));
                                 }
 
-                                if (recommend_productsJson.length() > 0) {
-                                    homeProductsRecommendList.clear();
-                                    homeProductsRecommendList = null;
-                                    homeProductsRecommendList = new ArrayList<HomeProductsModel>();
+                                OutputData = "" + homeProductsfruitVegList.size();
+                                Log.i("JSON parse Item Count", OutputData);
+                            }
 
-                                    for (int i = 0; i < recommend_productsJson.length(); i++) {
-                                        /****** Get Object for each JSON node.***********/
-                                        JSONObject jsonChildNode = recommend_productsJson.getJSONObject(i);
+                            if (beverages_productsJson.length() > 0) {
+                                homeProductsBeveragesList.clear();
+                                homeProductsBeveragesList = null;
+                                homeProductsBeveragesList = new ArrayList<HomeProductsModel>();
 
-                                        /******* Fetch node values **********/
-                                        String product_id = jsonChildNode.optString("product_id");
-                                        String product_name = jsonChildNode.optString("product_name");
-                                        String price = jsonChildNode.optString("price");
-                                        String regular_price = jsonChildNode.optString("regular_price");
-                                        String imageUrl = jsonChildNode.optString("image");
-                                        String vendor_name = jsonChildNode.optString("vendor_name");
-                                        //String vendor_description = jsonChildNode.optString("vendor_description");
-                                        String rating = jsonChildNode.optString("rating");
-                                        //String product_desc = jsonChildNode.optString("product_desc");
-                                        homeProductsRecommendList.add(new HomeProductsModel(product_id, product_name, price, regular_price, imageUrl, vendor_name, "", rating, ""));
-                                    }
+                                for (int i = 0; i < beverages_productsJson.length(); i++) {
+                                    /****** Get Object for each JSON node.***********/
+                                    JSONObject jsonChildNode = beverages_productsJson.getJSONObject(i);
 
-                                    OutputData = "" + homeProductsRecommendList.size();
-                                    Log.i("JSON parse Item Count", OutputData);
-                                }
-                                if (mobiles_productsJson.length() > 0) {
-                                    homeProductsMobilesList.clear();
-                                    homeProductsMobilesList = null;
-                                    homeProductsMobilesList = new ArrayList<HomeProductsModel>();
-
-                                    for (int i = 0; i < mobiles_productsJson.length(); i++) {
-                                        /****** Get Object for each JSON node.***********/
-                                        JSONObject jsonChildNode = mobiles_productsJson.getJSONObject(i);
-
-                                        /******* Fetch node values **********/
-                                        String product_id = jsonChildNode.optString("product_id");
-                                        String product_name = jsonChildNode.optString("product_name");
-                                        String price = jsonChildNode.optString("price");
-                                        String regular_price = jsonChildNode.optString("regular_price");
-                                        String imageUrl = jsonChildNode.optString("image");
-                                        String vendor_name = jsonChildNode.optString("vendor_name");
-                                        //String vendor_description = jsonChildNode.optString("vendor_description");
-                                        String rating = jsonChildNode.optString("rating");
-                                        //String product_desc = jsonChildNode.optString("product_desc");
-                                        homeProductsMobilesList.add(new HomeProductsModel(product_id, product_name, price, regular_price, imageUrl, vendor_name, "", rating, ""));
-                                    }
-
-                                    OutputData = "" + homeProductsMobilesList.size();
-                                    Log.i("JSON parse Item Count", OutputData);
+                                    /******* Fetch node values **********/
+                                    String product_id = jsonChildNode.optString("product_id");
+                                    String product_name = jsonChildNode.optString("product_name");
+                                    String price = jsonChildNode.optString("price");
+                                    String regular_price = jsonChildNode.optString("regular_price");
+                                    String imageUrl = jsonChildNode.optString("image");
+                                    String vendor_name = jsonChildNode.optString("vendor_name");
+                                    //String vendor_description = jsonChildNode.optString("vendor_description");
+                                    String rating = jsonChildNode.optString("rating");
+                                    //String product_desc = jsonChildNode.optString("product_desc");
+                                    homeProductsBeveragesList.add(new HomeProductsModel(product_id, product_name, price, regular_price, imageUrl, vendor_name, "", rating, ""));
                                 }
 
-                                if (food_productsJson.length() > 0) {
-                                    homeProductsFoodsList.clear();
-                                    homeProductsFoodsList = null;
-                                    homeProductsFoodsList = new ArrayList<HomeProductsModel>();
+                                OutputData = "" + homeProductsBeveragesList.size();
+                                Log.i("JSON parse Item Count", OutputData);
+                            }
 
-                                    for (int i = 0; i < food_productsJson.length(); i++) {
-                                        /****** Get Object for each JSON node.***********/
-                                        JSONObject jsonChildNode = food_productsJson.getJSONObject(i);
+                            if (kitchenDine_productsJson.length() > 0) {
+                                homeProductsKitchenDinesList.clear();
+                                homeProductsKitchenDinesList = null;
+                                homeProductsKitchenDinesList = new ArrayList<HomeProductsModel>();
 
-                                        /******* Fetch node values **********/
-                                        String product_id = jsonChildNode.optString("product_id");
-                                        String product_name = jsonChildNode.optString("product_name");
-                                        String price = jsonChildNode.optString("price");
-                                        String regular_price = jsonChildNode.optString("regular_price");
-                                        String imageUrl = jsonChildNode.optString("image");
-                                        String vendor_name = jsonChildNode.optString("vendor_name");
-                                        //String vendor_description = jsonChildNode.optString("vendor_description");
-                                        String rating = jsonChildNode.optString("rating");
-                                        //String product_desc = jsonChildNode.optString("product_desc");
-                                        homeProductsFoodsList.add(new HomeProductsModel(product_id, product_name, price, regular_price, imageUrl, vendor_name, "", rating, ""));
-                                    }
+                                for (int i = 0; i < kitchenDine_productsJson.length(); i++) {
+                                    /****** Get Object for each JSON node.***********/
+                                    JSONObject jsonChildNode = kitchenDine_productsJson.getJSONObject(i);
 
-                                    OutputData = "" + homeProductsFoodsList.size();
-                                    Log.i("JSON parse Item Count", OutputData);
+                                    /******* Fetch node values **********/
+                                    String product_id = jsonChildNode.optString("product_id");
+                                    String product_name = jsonChildNode.optString("product_name");
+                                    String price = jsonChildNode.optString("price");
+                                    String regular_price = jsonChildNode.optString("regular_price");
+                                    String imageUrl = jsonChildNode.optString("image");
+                                    String vendor_name = jsonChildNode.optString("vendor_name");
+                                    //String vendor_description = jsonChildNode.optString("vendor_description");
+                                    String rating = jsonChildNode.optString("rating");
+                                    //String product_desc = jsonChildNode.optString("product_desc");
+                                    homeProductsKitchenDinesList.add(new HomeProductsModel(product_id, product_name, price, regular_price, imageUrl, vendor_name, "", rating, ""));
                                 }
 
+                                OutputData = "" + homeProductsKitchenDinesList.size();
+                                Log.i("JSON parse Item Count", OutputData);
+                            }
 
-                                /****** LATEST PRODUCTS ******* Process each JSON node ************/
-//                            for (int i = 0; i < latest_productsJson.length(); i++) {
-//                                /****** Get Object for each JSON node.***********/
-//                                JSONObject jsonChildNode = latest_productsJson.getJSONObject(i);
-//
-//                                /******* Fetch node values **********/
-//                                String product_id = jsonChildNode.optString("product_id");
-//                                String product_name = jsonChildNode.optString("product_name");
-//                                String price = jsonChildNode.optString("price");
-//                                String regular_price = jsonChildNode.optString("regular_price");
-//                                String imageUrl = jsonChildNode.optString("image");
-//                                String vendor_name = jsonChildNode.optString("vendor_name");
-//                                //String vendor_description = jsonChildNode.optString("vendor_description");
-//                                String rating = jsonChildNode.optString("rating");
-//                                //String product_desc = jsonChildNode.optString("product_desc");
-//                                homeProductsLatestList.add(new HomeProductsModel(product_id, product_name, price, regular_price, imageUrl, vendor_name, "", rating, ""));
-//                            }
-//
-//                            OutputData = "" + homeProductsLatestList.size();
-//                            Log.i("JSON parse Item Count", OutputData);
-//
-//                            /****** RECOMMENDED PRODUCTS ******* Process each JSON node ************/
-//                            for (int i = 0; i < recommend_productsJson.length(); i++) {
-//                                /****** Get Object for each JSON node.***********/
-//                                JSONObject jsonChildNode = recommend_productsJson.getJSONObject(i);
-//
-//                                /******* Fetch node values **********/
-//                                String product_id = jsonChildNode.optString("product_id");
-//                                String product_name = jsonChildNode.optString("product_name");
-//                                String price = jsonChildNode.optString("price");
-//                                String regular_price = jsonChildNode.optString("regular_price");
-//                                String imageUrl = jsonChildNode.optString("image");
-//                                String vendor_name = jsonChildNode.optString("vendor_name");
-//                                //String vendor_description = jsonChildNode.optString("vendor_description");
-//                                String rating = jsonChildNode.optString("rating");
-//                                //String product_desc = jsonChildNode.optString("product_desc");
-//                                homeProductsRecommendList.add(new HomeProductsModel(product_id, product_name, price, regular_price, imageUrl, vendor_name, "", rating, ""));
-//                            }
-//
-//                            OutputData = "" + homeProductsRecommendList.size();
-//                            Log.i("JSON parse Item Count", OutputData);
-//
-//                            /****** MOBILES PRODUCTS ******* Process each JSON node ************/
-//                            for (int i = 0; i < mobiles_productsJson.length(); i++) {
-//                                /****** Get Object for each JSON node.***********/
-//                                JSONObject jsonChildNode = mobiles_productsJson.getJSONObject(i);
-//
-//                                /******* Fetch node values **********/
-//                                String product_id = jsonChildNode.optString("product_id");
-//                                String product_name = jsonChildNode.optString("product_name");
-//                                String price = jsonChildNode.optString("price");
-//                                String regular_price = jsonChildNode.optString("regular_price");
-//                                String imageUrl = jsonChildNode.optString("image");
-//                                String vendor_name = jsonChildNode.optString("vendor_name");
-//                                //String vendor_description = jsonChildNode.optString("vendor_description");
-//                                String rating = jsonChildNode.optString("rating");
-//                                //String product_desc = jsonChildNode.optString("product_desc");
-//                                homeProductsMobilesList.add(new HomeProductsModel(product_id, product_name, price, regular_price, imageUrl, vendor_name, "", rating, ""));
-//                            }
-//
-//                            OutputData = "" + homeProductsMobilesList.size();
-//                            Log.i("JSON parse Item Count", OutputData);
-//
-//                            /****** FOOD PRODUCTS ******* Process each JSON node ************/
-//                            for (int i = 0; i < food_productsJson.length(); i++) {
-//                                //****** Get Object for each JSON node.***********//*
-//                                JSONObject jsonChildNode = food_productsJson.getJSONObject(i);
-//
-//                                //******* Fetch node values **********//*
-//                                String product_id = jsonChildNode.optString("product_id");
-//                                String product_name = jsonChildNode.optString("product_name");
-//                                String price = jsonChildNode.optString("price");
-//                                String regular_price = jsonChildNode.optString("regular_price");
-//                                String imageUrl = jsonChildNode.optString("image");
-//                                String vendor_name = jsonChildNode.optString("vendor_name");
-//                                //String vendor_description = jsonChildNode.optString("vendor_description");
-//                                String rating = jsonChildNode.optString("rating");
-//                                //String product_desc = jsonChildNode.optString("product_desc");
-//                                homeProductsFoodsList.add(new HomeProductsModel(product_id, product_name, price, regular_price, imageUrl, vendor_name, "", rating, ""));
-//                            }
-//
-//                            OutputData = "" + homeProductsFoodsList.size();
-//                            Log.i("JSON parse Item Count", OutputData);
-
-                                homeProductsHomeAll.add(new HomeAllProductsModel(homeProductsDealsList, homeProductsLatestList, homeProductsRecommendList, homeProductsMobilesList, homeProductsFoodsList));
+                                homeProductsHomeAll.add(new HomeAllProductsModel(homeProductsDealsList, homeProductsfruitVegList, homeProductsRecommendList, homeProductsBeveragesList, homeProductsKitchenDinesList));
 
                                 /************ Show Output on screen/activity **********/
                                 new Handler().postDelayed(new Runnable() {
@@ -591,56 +536,56 @@ public class HomeActivity extends AppCompatActivity
                                             });
                                         }
 
-                                        if (homeProductsMobilesList.size() > 0) {
-                                            HomeProductsAdapter adapter1 = new HomeProductsAdapter(HomeActivity.this, homeProductsMobilesList);
-                                            mobilesProductsRecyclerView.setAdapter(adapter1);
-                                            mobilesLinearLayout.setVisibility(View.VISIBLE);
+                                        if (homeProductsBeveragesList.size() > 0) {
+                                            HomeProductsAdapter adapter1 = new HomeProductsAdapter(HomeActivity.this, homeProductsBeveragesList);
+                                            beveragesProductsRecyclerView.setAdapter(adapter1);
+                                            beveragesLinearLayout.setVisibility(View.VISIBLE);
                                             adapter1.setOnItemClickListener(new HomeProductsAdapter.OnItemClickListener() {
 
                                                 @Override
                                                 public void onItemClick(View view, int position) {
                                                     Intent sportIntent = new Intent(HomeActivity.this, ProductDetailsActivity.class);
-                                                    sportIntent.putExtra("PRODUCT_ID", homeProductsMobilesList.get(position).getProductId());
+                                                    sportIntent.putExtra("PRODUCT_ID", homeProductsBeveragesList.get(position).getProductId());
                                                     sportIntent.putExtra("PRODUCT_FROM_SCREEN", "HOME_MAIN");
-                                                    sportIntent.putExtra("PRODUCT_NAME", homeProductsMobilesList.get(position).getProductName());
-                                                    sportIntent.putExtra("PRODUCT_PRICE", homeProductsMobilesList.get(position).getPrice());
-                                                    sportIntent.putExtra("PRODUCT_REGULAR_PRICE", homeProductsMobilesList.get(position).getRegularPrice());
-                                                    sportIntent.putExtra("PRODUCT_IMAGE_URL", homeProductsMobilesList.get(position).getImageUrl());
-                                                    sportIntent.putExtra("PRODUCT_VENDOR_NAME", homeProductsMobilesList.get(position).getVendorName());
-                                                    sportIntent.putExtra("PRODUCT_DESCRIPTION", homeProductsMobilesList.get(position).getProductDesc());
-                                                    sportIntent.putExtra("VENDOR_DESCRIPTION", homeProductsMobilesList.get(position).getVendorDescription());
+                                                    sportIntent.putExtra("PRODUCT_NAME", homeProductsBeveragesList.get(position).getProductName());
+                                                    sportIntent.putExtra("PRODUCT_PRICE", homeProductsBeveragesList.get(position).getPrice());
+                                                    sportIntent.putExtra("PRODUCT_REGULAR_PRICE", homeProductsBeveragesList.get(position).getRegularPrice());
+                                                    sportIntent.putExtra("PRODUCT_IMAGE_URL", homeProductsBeveragesList.get(position).getImageUrl());
+                                                    sportIntent.putExtra("PRODUCT_VENDOR_NAME", homeProductsBeveragesList.get(position).getVendorName());
+                                                    sportIntent.putExtra("PRODUCT_DESCRIPTION", homeProductsBeveragesList.get(position).getProductDesc());
+                                                    sportIntent.putExtra("VENDOR_DESCRIPTION", homeProductsBeveragesList.get(position).getVendorDescription());
                                                     startActivity(sportIntent);
                                                 }
                                             });
                                         }
 
-                                        if (homeProductsBeautyList.size() > 0) {
-                                            HomeProductsAdapter adapter1 = new HomeProductsAdapter(HomeActivity.this, homeProductsBeautyList);
-                                            beautyProductsRecyclerView.setAdapter(adapter1);
-                                            beautyLinearLayout.setVisibility(View.VISIBLE);
+                                        if (homeProductsDiningServingList.size() > 0) {
+                                            HomeProductsAdapter adapter1 = new HomeProductsAdapter(HomeActivity.this, homeProductsDiningServingList);
+                                            diningServingProductsRecyclerView.setAdapter(adapter1);
+                                            diningServingLinearLayout.setVisibility(View.VISIBLE);
                                             adapter1.setOnItemClickListener(new HomeProductsAdapter.OnItemClickListener() {
 
                                                 @Override
                                                 public void onItemClick(View view, int position) {
                                                     Intent sportIntent = new Intent(HomeActivity.this, ProductDetailsActivity.class);
-                                                    sportIntent.putExtra("PRODUCT_ID", homeProductsBeautyList.get(position).getProductId());
+                                                    sportIntent.putExtra("PRODUCT_ID", homeProductsDiningServingList.get(position).getProductId());
                                                     sportIntent.putExtra("PRODUCT_FROM_SCREEN", "HOME_MAIN");
-                                                    sportIntent.putExtra("PRODUCT_NAME", homeProductsBeautyList.get(position).getProductName());
-                                                    sportIntent.putExtra("PRODUCT_PRICE", homeProductsBeautyList.get(position).getPrice());
-                                                    sportIntent.putExtra("PRODUCT_REGULAR_PRICE", homeProductsBeautyList.get(position).getRegularPrice());
-                                                    sportIntent.putExtra("PRODUCT_IMAGE_URL", homeProductsBeautyList.get(position).getImageUrl());
-                                                    sportIntent.putExtra("PRODUCT_VENDOR_NAME", homeProductsBeautyList.get(position).getVendorName());
-                                                    sportIntent.putExtra("PRODUCT_DESCRIPTION", homeProductsBeautyList.get(position).getProductDesc());
-                                                    sportIntent.putExtra("VENDOR_DESCRIPTION", homeProductsBeautyList.get(position).getVendorDescription());
+                                                    sportIntent.putExtra("PRODUCT_NAME", homeProductsDiningServingList.get(position).getProductName());
+                                                    sportIntent.putExtra("PRODUCT_PRICE", homeProductsDiningServingList.get(position).getPrice());
+                                                    sportIntent.putExtra("PRODUCT_REGULAR_PRICE", homeProductsDiningServingList.get(position).getRegularPrice());
+                                                    sportIntent.putExtra("PRODUCT_IMAGE_URL", homeProductsDiningServingList.get(position).getImageUrl());
+                                                    sportIntent.putExtra("PRODUCT_VENDOR_NAME", homeProductsDiningServingList.get(position).getVendorName());
+                                                    sportIntent.putExtra("PRODUCT_DESCRIPTION", homeProductsDiningServingList.get(position).getProductDesc());
+                                                    sportIntent.putExtra("VENDOR_DESCRIPTION", homeProductsDiningServingList.get(position).getVendorDescription());
                                                     startActivity(sportIntent);
                                                 }
                                             });
                                         }
 
-                                        if (homeProductsLatestList.size() > 0) {
-                                            HomeProductsAdapter adapter2 = new HomeProductsAdapter(HomeActivity.this, homeProductsLatestList);
-                                            latestProductsRecyclerView.setAdapter(adapter2);
-                                            latestLinearLayout.setVisibility(View.VISIBLE);
+                                        if (homeProductsfruitVegList.size() > 0) {
+                                            HomeProductsAdapter adapter2 = new HomeProductsAdapter(HomeActivity.this, homeProductsfruitVegList);
+                                            fruitVegProductsRecyclerView.setAdapter(adapter2);
+                                            fruitVegLinearLayout.setVisibility(View.VISIBLE);
                                             adapter2.setOnItemClickListener(new HomeProductsAdapter.OnItemClickListener() {
 
                                                 @Override
@@ -684,10 +629,10 @@ public class HomeActivity extends AppCompatActivity
                                             });
                                         }
 
-                                        if (homeProductsFoodsList.size() > 0) {
-                                            HomeProductsAdapter adapter4 = new HomeProductsAdapter(HomeActivity.this, homeProductsFoodsList);
-                                            foodProductsRecyclerView.setAdapter(adapter4);
-                                            foodLinearLayout.setVisibility(View.VISIBLE);
+                                        if (homeProductsKitchenDinesList.size() > 0) {
+                                            HomeProductsAdapter adapter4 = new HomeProductsAdapter(HomeActivity.this, homeProductsKitchenDinesList);
+                                            kitchenDineProductsRecyclerView.setAdapter(adapter4);
+                                            kitchenDineLinearLayout.setVisibility(View.VISIBLE);
 
                                             adapter4.setOnItemClickListener(new HomeProductsAdapter.OnItemClickListener() {
 

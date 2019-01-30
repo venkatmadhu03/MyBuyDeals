@@ -1,6 +1,7 @@
 package appsnova.com.mybuydeals.utilities;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.util.Log;
 import android.view.Display;
@@ -91,6 +92,18 @@ public class UrlUtility {
     //GET USER Profile
     public static String RETRIEVE_PROFILE_URL = BASE_URL+ "retrieve_profile.php?";
 
+
+    public static ProgressDialog showProgressDialog(Context mContext) {
+
+        ProgressDialog progressDialog = new ProgressDialog(mContext);
+        progressDialog.setMessage("Please wait... \n while we connect");
+        progressDialog.setCancelable(false);
+        progressDialog.setProgress(0);
+        progressDialog.setMax(100);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setCanceledOnTouchOutside(false);
+        return progressDialog;
+    }// end of Progress dialog
 
 
     @SuppressWarnings("deprecation")
