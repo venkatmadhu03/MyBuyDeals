@@ -1,9 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:wheel="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/scrollview"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ProductListActivity">
+    android:orientation="vertical">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <include
+        android:id="@+id/headerInclude"
+        layout="@layout/header" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/headerInclude"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#EEEEEE"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/gridViewRelativeLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/loadingMoreRelativeLayout">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/productListRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:cacheColorHint="#00000000"
+                    android:divider="@color/lightGray"
+                    android:dividerHeight="1dp"
+                    android:listSelector="@drawable/list_selector"
+                    android:visibility="gone" />
+
+                <GridView
+                    android:id="@+id/productListGridView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clickable="true"
+                    android:drawSelectorOnTop="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:numColumns="2"
+                    android:stretchMode="columnWidth"/>
+
+                <!-- android:layout_margin="5dp"
+                android:verticalSpacing="5dp"
+                android:horizontalSpacing="5dp"-->
+
+                <appsnova.com.mybuydeals.ownlibraries.MaterialProgressWheel
+                    android:id="@+id/progressWheel1"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:gravity="center_horizontal|center_vertical"
+                    wheel:matProg_barColor="@color/colorPrimary"
+                    wheel:matProg_progressIndeterminate="true" />
+
+                <TextView
+                    android:id="@+id/noDataFoundTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:text="No Products Available!"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_horizontal"
+                    android:drawablePadding="15dp"
+                    android:visibility="gone"
+                    android:drawableTop="@drawable/ic_menu_share"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="#333"
+                    android:textStyle="bold"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/loadingMoreRelativeLayout"
+                android:layout_width="match_parent"
+                android:layout_height="74dp"
+                android:visibility="gone"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="bottom|center_horizontal"
+                android:padding="4dp">
+
+                <appsnova.com.mybuydeals.ownlibraries.MaterialProgressWheel
+                    android:id="@+id/progressWheel"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:layout_above="@+id/loadingMoreProductsTextView"
+                    android:layout_centerHorizontal="true"
+                    wheel:matProg_barColor="@color/colorPrimary"
+                    wheel:matProg_progressIndeterminate="true" />
+
+                <TextView
+                    android:id="@+id/loadingMoreProductsTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="4dp"
+                    android:text="Loading more products...."
+                    android:textColor="@color/colorPrimary"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+        </RelativeLayout>
+    </LinearLayout>
+</RelativeLayout>
