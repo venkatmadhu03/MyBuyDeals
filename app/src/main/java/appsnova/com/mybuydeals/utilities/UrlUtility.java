@@ -19,6 +19,8 @@ public class UrlUtility {
 
     public static int screenHeight;
     public static int screenWidth;
+    public static final String FETCH_DIRECTION_UP = "up";
+
     public static ArrayList<String> galleriesList = new ArrayList<String>();
 
     public static String BASE_URL = "http://mybuydeal.com/app/webroot/services/";

@@ -1,0 +1,99 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/listItemClickRelativeLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorWhite">
+
+    <!--android:layout_margin="1dp"
+    android:elevation="1dp"-->
+
+    <RelativeLayout
+        android:id="@+id/viewAllRelativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="7dp">
+        <!--
+        android:background="@drawable/border_item"-->
+
+        <ImageView
+            android:id="@+id/viewAllThumbnail"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_centerHorizontal="true"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_menu_share" />
+
+        <TextView
+            style="@style/headerTitleSubStyle"
+            android:id="@+id/viewAllTitleTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/viewAllThumbnail"
+            android:layout_marginTop="5dp"
+            android:singleLine="true"
+            android:gravity="center_horizontal"
+            android:layout_centerHorizontal="true"
+            android:textColor="#333"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/viewAllSoldbyTextView"
+            style="@style/headerTitleSmallStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_centerHorizontal="true"
+            android:singleLine="true"
+            android:layout_below="@+id/viewAllTitleTextView"
+            android:layout_marginTop="1dp"
+            android:textColor="#009900" />
+
+        <TextView
+            android:id="@+id/viewAllVendorDescTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/viewAllTitleTextView"
+            android:layout_marginLeft="6dp"
+            android:text=""
+            android:textColor="#222"
+            android:textSize="12sp"
+            android:visibility="gone" />
+
+        <RatingBar
+            android:id="@+id/viewAllRatingBar"
+            style="?android:attr/ratingBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/viewAllSoldbyTextView"
+            android:layout_marginTop="1dp"
+            android:layout_centerHorizontal="true"
+            android:isIndicator="true"
+            android:visibility="gone"
+            android:numStars="5"
+            android:stepSize="0.1" />
+
+        <TextView
+            style="@style/alertTitleStyle"
+            android:id="@+id/viewAllAvailableTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/viewAllRatingBar"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="1dp"
+            android:singleLine="true"
+            android:text=""
+            android:textColor="#666" />
+
+        <TextView
+            android:id="@+id/viewAllKeyid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/viewAllRatingBar"
+            android:layout_marginLeft="6dp"
+            android:text=""
+            android:textColor="#666"
+            android:textSize="14dp"
+            android:visibility="gone" />
+    </RelativeLayout>
+</RelativeLayout>
