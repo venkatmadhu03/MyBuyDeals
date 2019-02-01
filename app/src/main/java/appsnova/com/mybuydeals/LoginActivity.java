@@ -1,9 +1,11 @@
  package appsnova.com.mybuydeals;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.google.android.material.button.MaterialButton;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -39,6 +41,8 @@ import org.json.JSONObject;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Pattern;
 
  public class LoginActivity extends AppCompatActivity {
@@ -103,15 +107,12 @@ import java.util.regex.Pattern;
                 if (!mobileNumberStr.isEmpty() && Patterns.PHONE.matcher(mobileNumberStr).matches()){
                     if (networkUtils.checkConnection()){
                         progressDialog.show();
-                        JSONObject params = new JSONObject();
-                        try {
-                            params.put("email", mobileNumberStr);
-                            params.put("password", passwordStr);
-                            params.put("deviceid", "" +deviceId);
-                            sendRequestForLogin(params);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                        HashMap<String, String> params = new HashMap<>();
+                        params.put("Content-Type", "application/json");
+                        params.put("email", mobileNumberStr);
+                        params.put("password", passwordStr);
+                     //   params.put("deviceid", deviceId);
+                        sendRequestForLogin(params);
 
                     }
                 }
@@ -120,29 +121,30 @@ import java.util.regex.Pattern;
         });
 
     } // end of onCreate
-    private void sendRequestForLogin(final JSONObject params){
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, UrlUtility.LOGIN_URL, params, new Response.Listener<JSONObject>() {
+    private void sendRequestForLogin(final HashMap<String, String> params){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, UrlUtility.LOGIN_URL, new Response.Listener<String>() {
             @Override
-            public void onResponse(JSONObject response) {
-                Log.d("LoginActivity", "onResponse: "+response.toString()+","+params.toString());
-                try {
-                    /****** Creates a new JSONObject with name/value mappings from the JSON string. ********/
-                    JSONArray jsonArray = new JSONArray(response);
-                    if (jsonArray.length()>0) {
-                        JSONObject jsonResponse = jsonArray.getJSONObject(0);
-                        String status = jsonResponse.optString("response");
-                        if (status != null && status.equalsIgnoreCase("no user found")) {
-                            UrlUtility.showCustomToast("Mobile and password incorrect!", LoginActivity.this);
-                        } else {
-                            String user_id = jsonResponse.optString("ID");
-                            String emailStr = jsonResponse.optString("user_email");
-                            String username = jsonResponse.optString("user_login");
-                            String mobileStr = jsonResponse.optString("mobile");
+            public void onResponse(String response) {
+                Log.d("Login", "onResponse: "+response);
+                if (response !=null){
+                    try {
+                        /****** Creates a new JSONObject with name/value mappings from the JSON string. ********/
+                        JSONArray jsonArray = new JSONArray(response);
+                        if (jsonArray.length()>0) {
+                            JSONObject jsonResponse = jsonArray.getJSONObject(0);
+                            String status = jsonResponse.optString("response");
+                            if (status != null && status.equalsIgnoreCase("no user found")) {
+                                UrlUtility.showCustomToast("Mobile and password incorrect!", LoginActivity.this);
+                            } else {
+                                String user_id = jsonResponse.optString("ID");
+                                String emailStr = jsonResponse.optString("user_email");
+                                String username = jsonResponse.optString("user_login");
+                                String mobileStr = jsonResponse.optString("mobile");
 
-                            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-                            Calendar cal = Calendar.getInstance();
+                                DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+                                Calendar cal = Calendar.getInstance();
 
-                            databaseHelper.addLoginDetails(new LoginDetailsModel(user_id, username, mobileStr, emailStr, dateFormat.format(cal.getTime())));
+                                databaseHelper.addLoginDetails(new LoginDetailsModel(user_id, username, mobileStr, emailStr, dateFormat.format(cal.getTime())));
                                 /*String str = MySharedPreference.getPreferences(ActivityLoginPage.this, "FROM_SCREEN_USER");
                                 if (str != null && str.equalsIgnoreCase("MY_WISHLIST")){
                                     //Wish list here
@@ -150,29 +152,43 @@ import java.util.regex.Pattern;
                                     startActivity(new Intent(ActivityLoginPage.this, ShippingAddressScreenActivity.class));
                                 }
                                 finish();*/
-                            onBackPressedAnimationByCHK();
+                                onBackPressedAnimationByCHK();
+                            }
+                        } else {
+                            UrlUtility.showCustomToast("User does'nt exit!", LoginActivity.this);
                         }
-                    } else {
-                        UrlUtility.showCustomToast("User does'nt exit!", LoginActivity.this);
+                    } catch (JSONException e) {
+                        UrlUtility.showCustomToast("Sorry failed. Please try again!", LoginActivity.this);
+                        e.printStackTrace();
+                    } catch (Exception e) {
+                        UrlUtility.showCustomToast("Sorry failed. Please try again!", LoginActivity.this);
+                        e.printStackTrace();
                     }
-                } catch (JSONException e) {
-                    UrlUtility.showCustomToast("Sorry failed. Please try again!", LoginActivity.this);
-                    e.printStackTrace();
-                } catch (Exception e) {
-                    UrlUtility.showCustomToast("Sorry failed. Please try again!", LoginActivity.this);
-                    e.printStackTrace();
+                    progressDialog.dismiss();
                 }
-                progressDialog.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                progressDialog.dismiss();
-                Toast.makeText(LoginActivity.this, "OOPS!! Something went wrong", Toast.LENGTH_SHORT).show();
+
             }
-        });
+        })
+        {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String, String> params = new HashMap<>();
+              //  params.put("Content-Type", "application/json");
+                params.put("email", mobileNumberStr);
+                params.put("password", passwordStr);
+                params.put("deviceid", deviceId);
+
+                return params;
+            }
+        };
+
         VolleySingleton.getmApplication().getmRequestQueue().getCache().clear();
-        VolleySingleton.getmApplication().getmRequestQueue().add(jsonObjectRequest);
+        VolleySingleton.getmApplication().getmRequestQueue().add(stringRequest);
+
     }//end of sendRequestForLogin
 
      private void onBackPressedAnimationByCHK() {
@@ -183,7 +199,7 @@ import java.util.regex.Pattern;
              finish();//finishing activity
          } else {
              Intent intent = new Intent();
-             intent.putExtra("USER_EMAIL", "Not_Login");
+             intent.putExtra("USER_MOBILE", "Not_Login");
              setResult(RESULT_OK, intent);
              finish();//finishing activity
          }

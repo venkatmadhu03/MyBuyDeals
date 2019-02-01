@@ -26,7 +26,7 @@ public class UrlUtility {
     public static String BASE_URL = "http://mybuydeal.com/app/webroot/services/";
 
     //User login url
-    public static String LOGIN_URL = BASE_URL+ "login.php?";
+    public static String LOGIN_URL = BASE_URL+ "login.php"; //login.php?
 
     //User Registration url
     public static String REGISTER_URL = BASE_URL+ "register.php?";
