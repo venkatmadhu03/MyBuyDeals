@@ -4,13 +4,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
-import androidx.viewpager.widget.ViewPager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.os.Parcelable;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.google.android.material.navigation.NavigationView;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -19,8 +22,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -43,7 +48,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import appsnova.com.mybuydeals.adapters.HomeProductsAdapter;
-import appsnova.com.mybuydeals.adapters.SliderPageImageAdapter;
 import appsnova.com.mybuydeals.models.HomeAllProductsModel;
 import appsnova.com.mybuydeals.models.HomeProductsModel;
 import appsnova.com.mybuydeals.models.SliderImageModel;
@@ -53,8 +57,7 @@ import appsnova.com.mybuydeals.utilities.SharedPref;
 import appsnova.com.mybuydeals.utilities.UrlUtility;
 import appsnova.com.mybuydeals.utilities.VolleySingleton;
 
-public class HomeActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = HomeActivity.class.getName();
 
@@ -333,179 +336,208 @@ public class HomeActivity extends AppCompatActivity
                             String OutputData = "";
                             Log.d("HomeProducts", "onSuccess: "+response);
                             JSONObject jsonResponse;
+                            JSONArray deals_productsJson, diningServing_productsJson=null,
+                                    kitchenStorage_productsJson=null, fruitsVeg_productsJson=null,
+                                    beverages_productsJson=null, kitchenDine_productsJson=null,
+                                    fashion_productsJson=null, furniture_productsJson=null;
 
                             try {
 
                                 /***** Returns the value mapped by name if it exists and is a JSONArray. ***/
                                 /*******  Returns null otherwise.  *******/
-                                JSONArray deals_productsJson = response.getJSONArray("deals_products");
-                                  JSONArray fruitsVeg_productsJson = response.getJSONArray("fruits-vegetables");
-                                  JSONArray beverages_productsJson = response.getJSONArray("Beverages");
-                                  JSONArray kitchenDine_productsJson = response.getJSONArray("Kitchen_&_Dining");
-                                  JSONArray kitchenStorage_productsJson = response.getJSONArray("Kitchen_Storage");
-                                  JSONArray diningServing_productsJson = response.getJSONArray("Dining_&_Serving");
-                                  //JSONArray fashion_productsJson = jsonResponse.getJSONArray("fashion_products");
-                                //    JSONArray furniture_productsJson = jsonResponse.getJSONArray("furniture_products");
+                                if (response.has("deals_products")){
+                                   deals_productsJson = response.getJSONArray("deals_products");
+                                    if (deals_productsJson.length() > 0) {
+                                        homeProductsDealsList.clear();
+                                        homeProductsDealsList = null;
+                                        homeProductsDealsList = new ArrayList<HomeProductsModel>();
 
+                                        for (int i = 0; i < deals_productsJson.length(); i++) {
+                                            /****** Get Object for each JSON node.***********/
+                                            JSONObject jsonChildNode = deals_productsJson.getJSONObject(i);
 
-                                /****** diningServing PRODUCTS ******* Process each JSON node ************/
-                            if (diningServing_productsJson.length() > 0) {
-                                homeProductsDiningServingList.clear();
-                                homeProductsDiningServingList = null;
-                                homeProductsDiningServingList = new ArrayList<HomeProductsModel>();
+                                            /******* Fetch node values **********/
+                                            String product_id = jsonChildNode.optString("product_id");
+                                            String product_name = jsonChildNode.optString("product_name");
+                                            String price = jsonChildNode.optString("price");
+                                            String regular_price = jsonChildNode.optString("regular_price");
+                                            String imageUrl = jsonChildNode.optString("image");
+                                            String vendor_name = jsonChildNode.optString("vendor_name");
+                                            //String vendor_description = jsonChildNode.optString("vendor_description");
+                                            String rating = jsonChildNode.optString("rating");
+                                            //String product_desc = jsonChildNode.optString("product_desc");
+                                            homeProductsDealsList.add(new HomeProductsModel(product_id, product_name, price, regular_price, imageUrl, vendor_name, "", rating, ""));
+                                        }
 
-                                for (int i = 0; i < diningServing_productsJson.length(); i++) {
-                                    /****** Get Object for each JSON node.***********/
-                                    JSONObject jsonChildNode = diningServing_productsJson.getJSONObject(i);
+                                        OutputData = "" + homeProductsDealsList.size();
+                                        Log.i("JSON parse Item Count", OutputData);
+                                    }
+                                } //end of dealProducts
 
-                                    /******* Fetch node values **********/
-                                    String product_id = jsonChildNode.optString("product_id");
-                                    String product_name = jsonChildNode.optString("product_name");
-                                    String price = jsonChildNode.optString("price");
-                                    String regular_price = jsonChildNode.optString("regular_price");
-                                    String imageUrl = jsonChildNode.optString("image");
-                                    String vendor_name = jsonChildNode.optString("vendor_name");
-                                    //String vendor_description = jsonChildNode.optString("vendor_description");
-                                    String rating = jsonChildNode.optString("rating");
-                                    //String product_desc = jsonChildNode.optString("product_desc");
-                                    homeProductsDiningServingList.add(new HomeProductsModel(product_id, product_name, price, regular_price, imageUrl, vendor_name, "", rating, ""));
-                                }
+                                //fruit-vegetables
+                                if (response.has("fruits-vegetables")){
+                                    fruitsVeg_productsJson = response.getJSONArray("fruits-vegetables");
+                                    if (fruitsVeg_productsJson.length() > 0) {
+                                        homeProductsfruitVegList.clear();
+                                        homeProductsfruitVegList = null;
+                                        homeProductsfruitVegList = new ArrayList<HomeProductsModel>();
 
-                                OutputData = "" + homeProductsDiningServingList.size();
-                                Log.i("JSON parse Item Count", OutputData);
-                            }
+                                        for (int i = 0; i < fruitsVeg_productsJson.length(); i++) {
+                                            /****** Get Object for each JSON node.***********/
+                                            JSONObject jsonChildNode = fruitsVeg_productsJson.getJSONObject(i);
 
-                            /****** KitchenStorage PRODUCTS ******* Process each JSON node ************/
-                            if (kitchenStorage_productsJson.length() > 0) {
-                                homeProductsKitchenStoragesList.clear();
-                                homeProductsKitchenStoragesList = null;
-                                homeProductsKitchenStoragesList = new ArrayList<HomeProductsModel>();
+                                            /******* Fetch node values **********/
+                                            String product_id = jsonChildNode.optString("product_id");
+                                            String product_name = jsonChildNode.optString("product_name");
+                                            String price = jsonChildNode.optString("price");
+                                            String regular_price = jsonChildNode.optString("regular_price");
+                                            String imageUrl = jsonChildNode.optString("image");
+                                            String vendor_name = jsonChildNode.optString("vendor_name");
+                                            //String vendor_description = jsonChildNode.optString("vendor_description");
+                                            String rating = jsonChildNode.optString("rating");
+                                            //String product_desc = jsonChildNode.optString("product_desc");
+                                            homeProductsfruitVegList.add(new HomeProductsModel(product_id, product_name, price, regular_price, imageUrl, vendor_name, "", rating, ""));
+                                        }
 
-                                for (int i = 0; i < kitchenStorage_productsJson.length(); i++) {
-                                    /****** Get Object for each JSON node.***********/
-                                    JSONObject jsonChildNode = kitchenStorage_productsJson.getJSONObject(i);
+                                        OutputData = "" + homeProductsfruitVegList.size();
+                                        Log.i("JSON parse Item Count", OutputData);
+                                    }
+                                }//end of fruit-vegetables
 
-                                    /******* Fetch node values **********/
-                                    String product_id = jsonChildNode.optString("product_id");
-                                    String product_name = jsonChildNode.optString("product_name");
-                                    String price = jsonChildNode.optString("price");
-                                    String regular_price = jsonChildNode.optString("regular_price");
-                                    String imageUrl = jsonChildNode.optString("image");
-                                    String vendor_name = jsonChildNode.optString("vendor_name");
-                                    //String vendor_description = jsonChildNode.optString("vendor_description");
-                                    String rating = jsonChildNode.optString("rating");
-                                    //String product_desc = jsonChildNode.optString("product_desc");
-                                    homeProductsKitchenStoragesList.add(new HomeProductsModel(product_id, product_name, price, regular_price, imageUrl, vendor_name, "", rating, ""));
-                                }
+                                //Beverages
+                                if (response.has("Beverages")){
+                                    beverages_productsJson = response.getJSONArray("Beverages");
+                                    if (beverages_productsJson.length() > 0) {
+                                        homeProductsBeveragesList.clear();
+                                        homeProductsBeveragesList = null;
+                                        homeProductsBeveragesList = new ArrayList<HomeProductsModel>();
 
-                                OutputData = "" + homeProductsKitchenStoragesList.size();
-                                Log.i("JSON parse Item Count", OutputData);
-                            }
+                                        for (int i = 0; i < beverages_productsJson.length(); i++) {
+                                            /****** Get Object for each JSON node.***********/
+                                            JSONObject jsonChildNode = beverages_productsJson.getJSONObject(i);
 
-                                /****** DEALS PRODUCTS ******* Process each JSON node ************/
-                            if (deals_productsJson.length() > 0) {
-                                homeProductsDealsList.clear();
-                                homeProductsDealsList = null;
-                                homeProductsDealsList = new ArrayList<HomeProductsModel>();
+                                            /******* Fetch node values **********/
+                                            String product_id = jsonChildNode.optString("product_id");
+                                            String product_name = jsonChildNode.optString("product_name");
+                                            String price = jsonChildNode.optString("price");
+                                            String regular_price = jsonChildNode.optString("regular_price");
+                                            String imageUrl = jsonChildNode.optString("image");
+                                            String vendor_name = jsonChildNode.optString("vendor_name");
+                                            //String vendor_description = jsonChildNode.optString("vendor_description");
+                                            String rating = jsonChildNode.optString("rating");
+                                            //String product_desc = jsonChildNode.optString("product_desc");
+                                            homeProductsBeveragesList.add(new HomeProductsModel(product_id, product_name, price, regular_price, imageUrl, vendor_name, "", rating, ""));
+                                        }
 
-                                for (int i = 0; i < deals_productsJson.length(); i++) {
-                                    /****** Get Object for each JSON node.***********/
-                                    JSONObject jsonChildNode = deals_productsJson.getJSONObject(i);
+                                        OutputData = "" + homeProductsBeveragesList.size();
+                                        Log.i("JSON parse Item Count", OutputData);
+                                    }
+                                }//end of Beverages
 
-                                    /******* Fetch node values **********/
-                                    String product_id = jsonChildNode.optString("product_id");
-                                    String product_name = jsonChildNode.optString("product_name");
-                                    String price = jsonChildNode.optString("price");
-                                    String regular_price = jsonChildNode.optString("regular_price");
-                                    String imageUrl = jsonChildNode.optString("image");
-                                    String vendor_name = jsonChildNode.optString("vendor_name");
-                                    //String vendor_description = jsonChildNode.optString("vendor_description");
-                                    String rating = jsonChildNode.optString("rating");
-                                    //String product_desc = jsonChildNode.optString("product_desc");
-                                    homeProductsDealsList.add(new HomeProductsModel(product_id, product_name, price, regular_price, imageUrl, vendor_name, "", rating, ""));
-                                }
+                                //Kitchen & Dining
+                                if (response.has("Kitchen_&_Dining")){
+                                    kitchenDine_productsJson = response.getJSONArray("Kitchen_&_Dining");
+                                    if (kitchenDine_productsJson.length() > 0) {
+                                        homeProductsKitchenDinesList.clear();
+                                        homeProductsKitchenDinesList = null;
+                                        homeProductsKitchenDinesList = new ArrayList<HomeProductsModel>();
 
-                                OutputData = "" + homeProductsDealsList.size();
-                                Log.i("JSON parse Item Count", OutputData);
-                            }
+                                        for (int i = 0; i < kitchenDine_productsJson.length(); i++) {
+                                            /****** Get Object for each JSON node.***********/
+                                            JSONObject jsonChildNode = kitchenDine_productsJson.getJSONObject(i);
 
-                            if (fruitsVeg_productsJson.length() > 0) {
-                                homeProductsfruitVegList.clear();
-                                homeProductsfruitVegList = null;
-                                homeProductsfruitVegList = new ArrayList<HomeProductsModel>();
+                                            /******* Fetch node values **********/
+                                            String product_id = jsonChildNode.optString("product_id");
+                                            String product_name = jsonChildNode.optString("product_name");
+                                            String price = jsonChildNode.optString("price");
+                                            String regular_price = jsonChildNode.optString("regular_price");
+                                            String imageUrl = jsonChildNode.optString("image");
+                                            String vendor_name = jsonChildNode.optString("vendor_name");
+                                            //String vendor_description = jsonChildNode.optString("vendor_description");
+                                            String rating = jsonChildNode.optString("rating");
+                                            //String product_desc = jsonChildNode.optString("product_desc");
+                                            homeProductsKitchenDinesList.add(new HomeProductsModel(product_id, product_name, price, regular_price, imageUrl, vendor_name, "", rating, ""));
+                                        }
 
-                                for (int i = 0; i < fruitsVeg_productsJson.length(); i++) {
-                                    /****** Get Object for each JSON node.***********/
-                                    JSONObject jsonChildNode = fruitsVeg_productsJson.getJSONObject(i);
+                                        OutputData = "" + homeProductsKitchenDinesList.size();
+                                        Log.i("JSON parse Item Count", OutputData);
+                                    }
 
-                                    /******* Fetch node values **********/
-                                    String product_id = jsonChildNode.optString("product_id");
-                                    String product_name = jsonChildNode.optString("product_name");
-                                    String price = jsonChildNode.optString("price");
-                                    String regular_price = jsonChildNode.optString("regular_price");
-                                    String imageUrl = jsonChildNode.optString("image");
-                                    String vendor_name = jsonChildNode.optString("vendor_name");
-                                    //String vendor_description = jsonChildNode.optString("vendor_description");
-                                    String rating = jsonChildNode.optString("rating");
-                                    //String product_desc = jsonChildNode.optString("product_desc");
-                                    homeProductsfruitVegList.add(new HomeProductsModel(product_id, product_name, price, regular_price, imageUrl, vendor_name, "", rating, ""));
-                                }
+                                }//end of Kitchen & Dining
 
-                                OutputData = "" + homeProductsfruitVegList.size();
-                                Log.i("JSON parse Item Count", OutputData);
-                            }
+                                //kitchenStorage
+                                if (response.has("Kitchen_Storage")){
+                                    kitchenStorage_productsJson = response.getJSONArray("Kitchen_Storage");
 
-                            if (beverages_productsJson.length() > 0) {
-                                homeProductsBeveragesList.clear();
-                                homeProductsBeveragesList = null;
-                                homeProductsBeveragesList = new ArrayList<HomeProductsModel>();
+                                    /****** KitchenStorage PRODUCTS ******* Process each JSON node ************/
+                                    if (kitchenStorage_productsJson.length() > 0) {
+                                        homeProductsKitchenStoragesList.clear();
+                                        homeProductsKitchenStoragesList = null;
+                                        homeProductsKitchenStoragesList = new ArrayList<HomeProductsModel>();
 
-                                for (int i = 0; i < beverages_productsJson.length(); i++) {
-                                    /****** Get Object for each JSON node.***********/
-                                    JSONObject jsonChildNode = beverages_productsJson.getJSONObject(i);
+                                        for (int i = 0; i < kitchenStorage_productsJson.length(); i++) {
+                                            /****** Get Object for each JSON node.***********/
+                                            JSONObject jsonChildNode = kitchenStorage_productsJson.getJSONObject(i);
 
-                                    /******* Fetch node values **********/
-                                    String product_id = jsonChildNode.optString("product_id");
-                                    String product_name = jsonChildNode.optString("product_name");
-                                    String price = jsonChildNode.optString("price");
-                                    String regular_price = jsonChildNode.optString("regular_price");
-                                    String imageUrl = jsonChildNode.optString("image");
-                                    String vendor_name = jsonChildNode.optString("vendor_name");
-                                    //String vendor_description = jsonChildNode.optString("vendor_description");
-                                    String rating = jsonChildNode.optString("rating");
-                                    //String product_desc = jsonChildNode.optString("product_desc");
-                                    homeProductsBeveragesList.add(new HomeProductsModel(product_id, product_name, price, regular_price, imageUrl, vendor_name, "", rating, ""));
-                                }
+                                            /******* Fetch node values **********/
+                                            String product_id = jsonChildNode.optString("product_id");
+                                            String product_name = jsonChildNode.optString("product_name");
+                                            String price = jsonChildNode.optString("price");
+                                            String regular_price = jsonChildNode.optString("regular_price");
+                                            String imageUrl = jsonChildNode.optString("image");
+                                            String vendor_name = jsonChildNode.optString("vendor_name");
+                                            //String vendor_description = jsonChildNode.optString("vendor_description");
+                                            String rating = jsonChildNode.optString("rating");
+                                            //String product_desc = jsonChildNode.optString("product_desc");
+                                            homeProductsKitchenStoragesList.add(new HomeProductsModel(product_id, product_name, price, regular_price, imageUrl, vendor_name, "", rating, ""));
+                                        }
 
-                                OutputData = "" + homeProductsBeveragesList.size();
-                                Log.i("JSON parse Item Count", OutputData);
-                            }
+                                        OutputData = "" + homeProductsKitchenStoragesList.size();
+                                        Log.i("JSON parse Item Count", OutputData);
+                                    }
+                                } // end of Kitchen_Storage
 
-                            if (kitchenDine_productsJson.length() > 0) {
-                                homeProductsKitchenDinesList.clear();
-                                homeProductsKitchenDinesList = null;
-                                homeProductsKitchenDinesList = new ArrayList<HomeProductsModel>();
+                                //Dining & Serving
+                                if (response.has("Dining_&_Serving")){
+                                    diningServing_productsJson = response.getJSONArray("Dining_&_Serving");
 
-                                for (int i = 0; i < kitchenDine_productsJson.length(); i++) {
-                                    /****** Get Object for each JSON node.***********/
-                                    JSONObject jsonChildNode = kitchenDine_productsJson.getJSONObject(i);
+                                    /****** diningServing PRODUCTS ******* Process each JSON node ************/
+                                    if (diningServing_productsJson.length() > 0) {
+                                        homeProductsDiningServingList.clear();
+                                        homeProductsDiningServingList = null;
+                                        homeProductsDiningServingList = new ArrayList<HomeProductsModel>();
 
-                                    /******* Fetch node values **********/
-                                    String product_id = jsonChildNode.optString("product_id");
-                                    String product_name = jsonChildNode.optString("product_name");
-                                    String price = jsonChildNode.optString("price");
-                                    String regular_price = jsonChildNode.optString("regular_price");
-                                    String imageUrl = jsonChildNode.optString("image");
-                                    String vendor_name = jsonChildNode.optString("vendor_name");
-                                    //String vendor_description = jsonChildNode.optString("vendor_description");
-                                    String rating = jsonChildNode.optString("rating");
-                                    //String product_desc = jsonChildNode.optString("product_desc");
-                                    homeProductsKitchenDinesList.add(new HomeProductsModel(product_id, product_name, price, regular_price, imageUrl, vendor_name, "", rating, ""));
-                                }
+                                        for (int i = 0; i < diningServing_productsJson.length(); i++) {
+                                            /****** Get Object for each JSON node.***********/
+                                            JSONObject jsonChildNode = diningServing_productsJson.getJSONObject(i);
 
-                                OutputData = "" + homeProductsKitchenDinesList.size();
-                                Log.i("JSON parse Item Count", OutputData);
-                            }
+                                            /******* Fetch node values **********/
+                                            String product_id = jsonChildNode.optString("product_id");
+                                            String product_name = jsonChildNode.optString("product_name");
+                                            String price = jsonChildNode.optString("price");
+                                            String regular_price = jsonChildNode.optString("regular_price");
+                                            String imageUrl = jsonChildNode.optString("image");
+                                            String vendor_name = jsonChildNode.optString("vendor_name");
+                                            //String vendor_description = jsonChildNode.optString("vendor_description");
+                                            String rating = jsonChildNode.optString("rating");
+                                            //String product_desc = jsonChildNode.optString("product_desc");
+                                            homeProductsDiningServingList.add(new HomeProductsModel(product_id, product_name, price, regular_price, imageUrl, vendor_name, "", rating, ""));
+                                        }
+
+                                        OutputData = "" + homeProductsDiningServingList.size();
+                                        Log.i("JSON parse Item Count", OutputData);
+                                    }
+                                }//has response(Dining_&_Serving)
+
+                                //fashion Products
+                                if (response.has("fashion_products")){
+                                    fashion_productsJson = response.getJSONArray("fashion_products");
+                                }// end of fashion Products
+
+                                //furniture Products
+                                if (response.has("furniture_products")){
+                                    furniture_productsJson = response.getJSONArray("furniture_products");
+                                }//end of furniture Products
 
                                 homeProductsHomeAll.add(new HomeAllProductsModel(homeProductsDealsList, homeProductsfruitVegList, homeProductsRecommendList, homeProductsBeveragesList, homeProductsKitchenDinesList));
 
@@ -674,12 +706,47 @@ public class HomeActivity extends AppCompatActivity
 
         VolleySingleton.getmApplication().getmRequestQueue().getCache().clear();
         VolleySingleton.getmApplication().getmRequestQueue().add(jsonObjectRequest);
-    }
+    } //end of getProductsFromServer
 
     private void initSlider() {
 
-        homeViewPager = (ViewPager) findViewById(R.id.homeViewPager);
-        homeViewPager.setAdapter(new SliderPageImageAdapter(sliderImageModelArrayList, HomeActivity.this));
+        homeViewPager = findViewById(R.id.homeViewPager);
+        homeViewPager.setAdapter(new PagerAdapter() {
+            @Override
+            public int getCount() {
+                return sliderImageModelArrayList.size();
+            }
+
+            @Override
+            public boolean isViewFromObject(View view, Object object) {
+                return view.equals(object);
+            }
+            @Override
+            public void destroyItem(ViewGroup container, int position, Object object) {
+                container.removeView((View) object);
+            }
+
+            @Override
+            public Object instantiateItem(ViewGroup view, int position) {
+                LayoutInflater layoutInflater = LayoutInflater.from(HomeActivity.this);
+                View imageLayout = layoutInflater.inflate(R.layout.sliding_images_layout, view, false);
+
+                assert imageLayout != null;
+                final ImageView imageView = imageLayout.findViewById(R.id.sliding_imageview);
+                imageView.setImageResource(sliderImageModelArrayList.get(position).getImage_drawable());
+                view.addView(imageLayout, 0);
+                return imageLayout;
+            }
+
+            @Override
+            public void restoreState(Parcelable state, ClassLoader loader) {
+            }
+
+            @Override
+            public Parcelable saveState() {
+                return null;
+            }
+        });
 
         CirclePageIndicator indicator = (CirclePageIndicator)
                 findViewById(R.id.slider);
@@ -731,7 +798,7 @@ public class HomeActivity extends AppCompatActivity
             }
         });
 
-    }
+    } //end of initSlider
 
     @Override
     public void onBackPressed() {

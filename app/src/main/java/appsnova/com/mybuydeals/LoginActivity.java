@@ -1,9 +1,11 @@
  package appsnova.com.mybuydeals;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.google.android.material.button.MaterialButton;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -39,6 +41,8 @@ import org.json.JSONObject;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Pattern;
 
  public class LoginActivity extends AppCompatActivity {
@@ -101,30 +105,33 @@ import java.util.regex.Pattern;
                 mobileNumberStr = mobileNumberLoginET.getText().toString();
                 passwordStr = passwordLoginET.getText().toString();
                 if (!mobileNumberStr.isEmpty() && Patterns.PHONE.matcher(mobileNumberStr).matches()){
-                    if (networkUtils.checkConnection()){
-                        progressDialog.show();
-                        JSONObject params = new JSONObject();
-                        try {
+                    if (!passwordStr.isEmpty()){
+                        if (networkUtils.checkConnection()){
+                            progressDialog.show();
+                            HashMap<String, String> params = new HashMap<>();
                             params.put("email", mobileNumberStr);
                             params.put("password", passwordStr);
                             params.put("deviceid", "" +deviceId);
                             sendRequestForLogin(params);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                        }else {
+                            UrlUtility.showCustomToast(getString(R.string.no_connection), LoginActivity.this);
                         }
-
+                    }else{
+                        UrlUtility.showCustomToast("Enter valid passowrd", LoginActivity.this);
                     }
+
+                }else{
+                   UrlUtility.showCustomToast("Enter valid Mobile Number", LoginActivity.this);
                 }
 
             }
         });
 
     } // end of onCreate
-    private void sendRequestForLogin(final JSONObject params){
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, UrlUtility.LOGIN_URL, params, new Response.Listener<JSONObject>() {
+    private void sendRequestForLogin(final HashMap<String, String> params){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, UrlUtility.LOGIN_URL, new Response.Listener<String>() {
             @Override
-            public void onResponse(JSONObject response) {
-                Log.d("LoginActivity", "onResponse: "+response.toString()+","+params.toString());
+            public void onResponse(String response) {
                 try {
                     /****** Creates a new JSONObject with name/value mappings from the JSON string. ********/
                     JSONArray jsonArray = new JSONArray(response);
@@ -170,9 +177,15 @@ import java.util.regex.Pattern;
                 progressDialog.dismiss();
                 Toast.makeText(LoginActivity.this, "OOPS!! Something went wrong", Toast.LENGTH_SHORT).show();
             }
-        });
+        })
+        {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                return params;
+            }
+        };
         VolleySingleton.getmApplication().getmRequestQueue().getCache().clear();
-        VolleySingleton.getmApplication().getmRequestQueue().add(jsonObjectRequest);
+        VolleySingleton.getmApplication().getmRequestQueue().add(stringRequest);
     }//end of sendRequestForLogin
 
      private void onBackPressedAnimationByCHK() {
