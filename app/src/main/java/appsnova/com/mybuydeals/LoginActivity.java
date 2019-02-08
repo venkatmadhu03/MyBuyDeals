@@ -171,21 +171,20 @@ import java.util.regex.Pattern;
                     }
                     progressDialog.dismiss();
                 }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
+             }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
 
-            }
-        })
-        {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                return params;
-            }
-        };
-        VolleySingleton.getmApplication().getmRequestQueue().getCache().clear();
-        VolleySingleton.getmApplication().getmRequestQueue().add(stringRequest);
+                }
+            })
+            {
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    return params;
+                }
+            };
+            VolleySingleton.getmApplication().getmRequestQueue().getCache().clear();
+            VolleySingleton.getmApplication().getmRequestQueue().add(stringRequest);
 
     }//end of sendRequestForLogin
 
