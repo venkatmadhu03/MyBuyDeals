@@ -137,7 +137,7 @@ public class HomeActivity extends AppCompatActivity
         //get Slider Images list
         sliderImageModelArrayList = populateImagesSliding();
         initSlider();
-    }
+    } //end of onCreate
 
     private void initialization(){
         dealsListRecyclerView = (RecyclerView) findViewById(R.id.dealsListRecyclerView);

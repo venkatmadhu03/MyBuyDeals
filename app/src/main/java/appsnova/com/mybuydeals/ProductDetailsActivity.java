@@ -78,6 +78,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
     Button pinCheckButton;
     EditText quantitiesEdittext,pinCodeCheckEdittext ;
     Spinner sizesListSpinner, colorsListSpinner;
+
     //header Views
     RelativeLayout headerRelativeLayout, backallRelativeLayout;
     TextView headerTitleTextView, titleSubTVID;

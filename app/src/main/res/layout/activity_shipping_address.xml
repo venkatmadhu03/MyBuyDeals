@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
@@ -101,7 +102,7 @@
                         android:orientation="vertical">
 
                         <EditText
-                            android:id="@+id/lastNameETID"
+                            android:id="@+id/lastNameEdittext"
                             android:layout_width="match_parent"
                             android:layout_height="45dp"
                             android:background="@drawable/rounded_background"
@@ -123,7 +124,7 @@
                     android:padding="7dp">
 
                     <appsnova.com.mybuydeals.ownlibraries.CustomTextView
-                        android:id="@+id/emailMYTV"
+                        android:id="@+id/emailIdTextView"
                         style="@style/headerTitleSmallStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -139,7 +140,7 @@
                         android:orientation="vertical">
 
                         <EditText
-                            android:id="@+id/emailETID"
+                            android:id="@+id/emailIdEdittext"
                             android:layout_width="match_parent"
                             android:layout_height="45dp"
                             android:layout_marginBottom="1dp"
@@ -162,15 +163,15 @@
                     android:orientation="horizontal"
                     android:padding="7dp">
 
-                    <com.ourcitydeals.ctrl.ownLibs.MyTextView
-                        android:id="@+id/phoneno1"
-                        style="@style/headerTitle_small"
+                    <appsnova.com.mybuydeals.ownlibraries.CustomTextView
+                        android:id="@+id/phoneno1TextView"
+                        style="@style/headerTitleSmallStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_weight="1"
                         android:text="Phone No :"
-                        android:textColor="@color/color" />
+                        android:textColor="@color/normalGray" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -179,7 +180,7 @@
                         android:orientation="vertical">
 
                         <EditText
-                            android:id="@+id/mobileETID"
+                            android:id="@+id/mobileEdittext"
                             android:layout_width="match_parent"
                             android:layout_height="45dp"
                             android:layout_marginBottom="1dp"
@@ -203,15 +204,15 @@
                     android:orientation="horizontal"
                     android:padding="8dp">
 
-                    <com.ourcitydeals.ctrl.ownLibs.MyTextView
-                        android:id="@+id/address1"
-                        style="@style/headerTitle_small"
+                    <appsnova.com.mybuydeals.ownlibraries.CustomTextView
+                        android:id="@+id/address1TextView"
+                        style="@style/headerTitleSmallStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_weight="1"
                         android:text="Address Line1 :"
-                        android:textColor="@color/color" />
+                        android:textColor="@color/normalGray" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -220,7 +221,7 @@
                         android:orientation="vertical">
 
                         <EditText
-                            android:id="@+id/addressLine1ETID"
+                            android:id="@+id/addressLine1Edittext"
                             android:layout_width="match_parent"
                             android:layout_height="45dp"
                             android:layout_marginBottom="1dp"
@@ -242,15 +243,15 @@
                     android:orientation="horizontal"
                     android:padding="8dp">
 
-                    <com.ourcitydeals.ctrl.ownLibs.MyTextView
-                        android:id="@+id/address2"
-                        style="@style/headerTitle_small"
+                    <appsnova.com.mybuydeals.ownlibraries.CustomTextView
+                        android:id="@+id/address2TextView"
+                        style="@style/headerTitleSmallStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_weight="1"
                         android:text="Address Line2 :"
-                        android:textColor="@color/color" />
+                        android:textColor="@color/normalGray" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -259,7 +260,7 @@
                         android:orientation="vertical">
 
                         <EditText
-                            android:id="@+id/addressLine2ETID"
+                            android:id="@+id/addressLine2Edittext"
                             android:layout_width="match_parent"
                             android:layout_height="45dp"
                             android:layout_marginBottom="1dp"
@@ -281,15 +282,15 @@
                     android:orientation="horizontal"
                     android:padding="7dp">
 
-                    <com.ourcitydeals.ctrl.ownLibs.MyTextView
-                        android:id="@+id/zip1"
-                        style="@style/headerTitle_small"
+                    <appsnova.com.mybuydeals.ownlibraries.CustomTextView
+                        android:id="@+id/zip1TextView"
+                        style="@style/headerTitleSmallStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_weight="1"
                         android:text="ZIP Code :"
-                        android:textColor="@color/color" />
+                        android:textColor="@color/normalGray" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -298,7 +299,7 @@
                         android:orientation="vertical">
 
                         <EditText
-                            android:id="@+id/pinCodeCheckETID"
+                            android:id="@+id/pinCodeCheckEdittext"
                             android:layout_width="match_parent"
                             android:layout_height="45dp"
                             android:layout_marginBottom="1dp"
@@ -321,15 +322,15 @@
                     android:orientation="horizontal"
                     android:padding="7dp">
 
-                    <com.ourcitydeals.ctrl.ownLibs.MyTextView
-                        android:id="@+id/city1"
-                        style="@style/headerTitle_small"
+                    <appsnova.com.mybuydeals.ownlibraries.CustomTextView
+                        android:id="@+id/city1TextView"
+                        style="@style/headerTitleSmallStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_weight="1"
                         android:text="City :"
-                        android:textColor="@color/color" />
+                        android:textColor="@color/normalGray" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -338,7 +339,7 @@
                         android:orientation="vertical">
 
                         <EditText
-                            android:id="@+id/cityETID"
+                            android:id="@+id/cityEdittext"
                             android:layout_width="match_parent"
                             android:layout_height="45dp"
                             android:layout_marginBottom="1dp"
@@ -360,15 +361,15 @@
                     android:orientation="horizontal"
                     android:padding="7dp">
 
-                    <com.ourcitydeals.ctrl.ownLibs.MyTextView
+                    <appsnova.com.mybuydeals.ownlibraries.CustomTextView
                         android:id="@+id/state"
-                        style="@style/headerTitle_small"
+                        style="@style/headerTitleSmallStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_weight="1"
                         android:text="State :"
-                        android:textColor="@color/color" />
+                        android:textColor="@color/normalGray" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -377,7 +378,7 @@
                         android:orientation="vertical">
 
                         <EditText
-                            android:id="@+id/stateETID"
+                            android:id="@+id/stateEdittext"
                             android:layout_width="match_parent"
                             android:layout_height="45dp"
                             android:layout_marginBottom="1dp"
@@ -387,7 +388,7 @@
                             android:inputType="text"
                             android:padding="5dp"
                             android:singleLine="true"
-                            android:text="Andhra Pradesh"
+                            android:text="Telangana"
                             android:textColor="#333333" />
 
                     </LinearLayout>
@@ -400,15 +401,15 @@
                     android:orientation="horizontal"
                     android:padding="7dp">
 
-                    <com.ourcitydeals.ctrl.ownLibs.MyTextView
-                        android:id="@+id/country"
-                        style="@style/headerTitle_small"
+                    <appsnova.com.mybuydeals.ownlibraries.CustomTextView
+                        android:id="@+id/countryTextView"
+                        style="@style/headerTitleSmallStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_weight="1"
                         android:text="Country :"
-                        android:textColor="@color/color" />
+                        android:textColor="@color/normalGray" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -417,7 +418,7 @@
                         android:orientation="vertical">
 
                         <EditText
-                            android:id="@+id/countryETID"
+                            android:id="@+id/countryEdittext"
                             android:layout_width="match_parent"
                             android:layout_height="45dp"
                             android:layout_marginBottom="1dp"
@@ -435,18 +436,19 @@
             </LinearLayout>
         </ScrollView>
 
-        <com.ourcitydeals.ctrl.ownLibs.MyTextView
-            android:id="@+id/continueOrderTVID"
-            style="@style/button_text"
+        <appsnova.com.mybuydeals.ownlibraries.CustomTextView
+            android:id="@+id/continueOrderTextView"
+            style="@style/buttonTextStyle"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_alignParentBottom="true"
-            android:background="@color/checkout_color"
-            android:drawableRight="@drawable/next"
+            android:background="@color/colorPrimary"
+            android:drawableRight="@drawable/ic_menu_gallery"
             android:gravity="center"
             android:padding="8dp"
             android:text="CONTINUE TO ORDER"
             android:textColor="#fff"
             android:textStyle="bold" />
     </RelativeLayout>
+
 </RelativeLayout>
