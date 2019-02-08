@@ -146,10 +146,10 @@ import java.util.regex.Pattern;
                             String username = jsonResponse.optString("user_login");
                             String mobileStr = jsonResponse.optString("mobile");
 
-                            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-                            Calendar cal = Calendar.getInstance();
+                                DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+                                Calendar cal = Calendar.getInstance();
 
-                            databaseHelper.addLoginDetails(new LoginDetailsModel(user_id, username, mobileStr, emailStr, dateFormat.format(cal.getTime())));
+                                databaseHelper.addLoginDetails(new LoginDetailsModel(user_id, username, mobileStr, emailStr, dateFormat.format(cal.getTime())));
                                 /*String str = MySharedPreference.getPreferences(ActivityLoginPage.this, "FROM_SCREEN_USER");
                                 if (str != null && str.equalsIgnoreCase("MY_WISHLIST")){
                                     //Wish list here
@@ -157,25 +157,25 @@ import java.util.regex.Pattern;
                                     startActivity(new Intent(ActivityLoginPage.this, ShippingAddressScreenActivity.class));
                                 }
                                 finish();*/
-                            onBackPressedAnimationByCHK();
+                                onBackPressedAnimationByCHK();
+                            }
+                        } else {
+                            UrlUtility.showCustomToast("User does'nt exit!", LoginActivity.this);
                         }
-                    } else {
-                        UrlUtility.showCustomToast("User does'nt exit!", LoginActivity.this);
+                    } catch (JSONException e) {
+                        UrlUtility.showCustomToast("Sorry failed. Please try again!", LoginActivity.this);
+                        e.printStackTrace();
+                    } catch (Exception e) {
+                        UrlUtility.showCustomToast("Sorry failed. Please try again!", LoginActivity.this);
+                        e.printStackTrace();
                     }
-                } catch (JSONException e) {
-                    UrlUtility.showCustomToast("Sorry failed. Please try again!", LoginActivity.this);
-                    e.printStackTrace();
-                } catch (Exception e) {
-                    UrlUtility.showCustomToast("Sorry failed. Please try again!", LoginActivity.this);
-                    e.printStackTrace();
+                    progressDialog.dismiss();
                 }
-                progressDialog.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                progressDialog.dismiss();
-                Toast.makeText(LoginActivity.this, "OOPS!! Something went wrong", Toast.LENGTH_SHORT).show();
+
             }
         })
         {
@@ -186,6 +186,7 @@ import java.util.regex.Pattern;
         };
         VolleySingleton.getmApplication().getmRequestQueue().getCache().clear();
         VolleySingleton.getmApplication().getmRequestQueue().add(stringRequest);
+
     }//end of sendRequestForLogin
 
      private void onBackPressedAnimationByCHK() {
@@ -196,7 +197,7 @@ import java.util.regex.Pattern;
              finish();//finishing activity
          } else {
              Intent intent = new Intent();
-             intent.putExtra("USER_EMAIL", "Not_Login");
+             intent.putExtra("USER_MOBILE", "Not_Login");
              setResult(RESULT_OK, intent);
              finish();//finishing activity
          }

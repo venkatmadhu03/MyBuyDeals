@@ -78,6 +78,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
     Button pinCheckButton;
     EditText quantitiesEdittext,pinCodeCheckEdittext ;
     Spinner sizesListSpinner, colorsListSpinner;
+
     //header Views
     RelativeLayout headerRelativeLayout, backallRelativeLayout;
     TextView headerTitleTextView, titleSubTVID;
@@ -385,7 +386,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
                                       //  addToCartData(loginDetails, "");
                                         sharedPref.setStringValue("FROM_SCREEN_USER", "CART");
                                         if (loginDetails != null) {
-                                           // startActivity(new Intent(ProductDetailsActivity.this, ShippingAddressScreenActivity.class));
+                                            startActivity(new Intent(ProductDetailsActivity.this, ShippingAddressActivity.class));
                                         } else {
                                             Intent resultss = new Intent(ProductDetailsActivity.this, LoginActivity.class);
                                             startActivityForResult(resultss, 1112);
