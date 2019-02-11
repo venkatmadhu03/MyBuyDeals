@@ -54,6 +54,7 @@ public class ShippingAddressActivity extends AppCompatActivity {
 
     LoginDetailsModel loginDetails;
     DatabaseHelper databaseHelper = new DatabaseHelper(this);
+    boolean proceed;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -139,65 +140,84 @@ public class ShippingAddressActivity extends AppCompatActivity {
                     String countryETStr = countryEdittext.getText().toString();
                     String stateETStr = stateEdittext.getText().toString();
 
-                    boolean proceed = false;
-                    if (firstNameETStr!=null && firstNameETStr.equals("")) {
+                    if (firstNameETStr ==null && firstNameETStr.equals("")) {
                         Toast.makeText(ShippingAddressActivity.this, "Please enter your first name", Toast.LENGTH_LONG).show();
-                        proceed = true;
+                        proceed = false;
                         return;
+                    }else{
+                        proceed = true;
                     }
 
-                    if (lastNameETStr!=null && lastNameETStr.equals("")) {
+                    if (lastNameETStr ==null && lastNameETStr.equals("")) {
                         Toast.makeText(ShippingAddressActivity.this, "Please enter your last name", Toast.LENGTH_LONG).show();
-                        proceed = true;
+                        proceed = false;
                         return;
+                    }else{
+                        proceed = true;
                     }
 
-                    if (emailETStr!=null && emailETStr.equals("")) {
+                    if (emailETStr ==null && emailETStr.equals("")) {
                         Toast.makeText(ShippingAddressActivity.this, "Please enter your email", Toast.LENGTH_LONG).show();
-                        proceed = true;
+                        proceed = false;
                         return;
+                    }else{
+                        proceed = true;
                     }
 
-                    if (mobileETStr!=null && mobileETStr.equals("")) {
+                    if (mobileETStr ==null && mobileETStr.equals("")) {
                         Toast.makeText(ShippingAddressActivity.this, "Please enter your mobile", Toast.LENGTH_LONG).show();
-                        proceed = true;
+                        proceed = false;
                         return;
+                    }else{
+                        proceed = true;
                     }
 
-                    if (addressLineOneETStr!=null && addressLineOneETStr.equals("")) {
+                    if (addressLineOneETStr ==null && addressLineOneETStr.equals("")) {
                         Toast.makeText(ShippingAddressActivity.this, "Please enter delivery address line 1", Toast.LENGTH_LONG).show();
-                        proceed = true;
+                        proceed = false;
                         return;
+                    }else{
+                        proceed = true;
                     }
 
-                    if (addressLineTwoETStr!=null && addressLineTwoETStr.equals("")) {
+                    if (addressLineTwoETStr ==null && addressLineTwoETStr.equals("")) {
                         Toast.makeText(ShippingAddressActivity.this, "Please enter delivery address line 2", Toast.LENGTH_LONG).show();
-                        proceed = true;
+                        proceed = false;
                         return;
+                    }else{
+                        proceed = true;
                     }
 
-                    if (pinCodeCheckETStr!=null && pinCodeCheckETStr.equals("")) {
+                    if (pinCodeCheckETStr ==null && pinCodeCheckETStr.equals("")) {
                         Toast.makeText(ShippingAddressActivity.this, "Please enter your postal code", Toast.LENGTH_LONG).show();
-                        proceed = true;
+                        proceed = false;
                         return;
+                    }else{
+                        proceed = true;
                     }
 
-                    if (cityETStr!=null && cityETStr.equals("")) {
+                    if (cityETStr == null && cityETStr.equals("")) {
                         Toast.makeText(ShippingAddressActivity.this, "Please enter your city", Toast.LENGTH_LONG).show();
-                        proceed = true;
+                        proceed = false;
                         return;
+                    }else{
+                        proceed = true;
                     }
 
-                    if (stateETStr!=null && stateETStr.equals("")) {
+                    if (stateETStr ==null && stateETStr.equals("")) {
                         Toast.makeText(ShippingAddressActivity.this, "Please enter your state", Toast.LENGTH_LONG).show();
-                        proceed = true;
+                        proceed = false;
                         return;
+                    }else{
+                        proceed = true;
                     }
 
-                    if (countryETStr!=null && countryETStr.equals("")) {
+                    if (countryETStr ==null && countryETStr.equals("")) {
                         Toast.makeText(ShippingAddressActivity.this, "Please enter your country", Toast.LENGTH_LONG).show();
-                        proceed = true;
+                        proceed = false;
                         return;
+                    }else{
+                        proceed = true;
                     }
                     if (proceed){
                         sharedPref.setStringValue("EMAIL_ID", emailETStr);
@@ -248,6 +268,7 @@ public class ShippingAddressActivity extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 if (response != null) {
+                    Log.d("ShippingAddress", "onResponse: "+response);
                     System.out.println(response);
                     if (response.contains("success")){
                         if (continueOrderTextView.getText().toString().equalsIgnoreCase("Update Profile")) {
