@@ -1,7 +1,6 @@
 package appsnova.com.mybuydeals;
 
 import androidx.appcompat.app.AppCompatActivity;
-import appsnova.com.mybuydeals.adapters.CartListAdapter;
 import appsnova.com.mybuydeals.models.CartDataModel;
 import appsnova.com.mybuydeals.models.LoginDetailsModel;
 import appsnova.com.mybuydeals.ownlibraries.MaterialProgressWheel;
@@ -9,12 +8,14 @@ import appsnova.com.mybuydeals.utilities.DatabaseHelper;
 import appsnova.com.mybuydeals.utilities.NetworkUtils;
 import appsnova.com.mybuydeals.utilities.SharedPref;
 import appsnova.com.mybuydeals.utilities.UrlUtility;
+import appsnova.com.mybuydeals.utilities.VolleySingleton;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -35,6 +36,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -48,7 +50,7 @@ public class CreateOrderActivity extends AppCompatActivity {
     NetworkUtils networkUtils;
     SharedPref sharedPref;
     ArrayList<CartDataModel> cartListDataList = new ArrayList<CartDataModel>();
-    DatabaseHelper dataBaseHelper = new DatabaseHelper(CreateOrderActivity.this);
+    DatabaseHelper databaseHelper = new DatabaseHelper(CreateOrderActivity.this);
 
 
     public CartListAdapter cartListAdapter;
@@ -64,10 +66,8 @@ public class CreateOrderActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        networkUtils = new NetworkUtils(context);
-        sharedPref = new SharedPref(context);
-
-
+        networkUtils = new NetworkUtils(this);
+        sharedPref = new SharedPref(this);
         setContentView(R.layout.activity_create_order);
     }
 
@@ -79,9 +79,9 @@ public class CreateOrderActivity extends AppCompatActivity {
         Context context;
 
 
-        public CartListAdapter(ArrayList<CartDataModel> cartDataModelArrayList, LayoutInflater layoutInflater, Context context) {
+        public CartListAdapter(ArrayList<CartDataModel> cartDataModelArrayList, Context context) {
             this.cartDataModelArrayList = cartDataModelArrayList;
-            this.layoutInflater = layoutInflater;
+            layoutInflater = LayoutInflater.from(context);
             this.context = context;
 
         }
@@ -217,7 +217,7 @@ public class CreateOrderActivity extends AppCompatActivity {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-
+                    UrlUtility.showCustomToast("OOPS!! Something went wrong", CreateOrderActivity.this);
                 }
             })
             {
@@ -226,6 +226,8 @@ public class CreateOrderActivity extends AppCompatActivity {
                     return params;
                 }
             };
+            VolleySingleton.getmApplication().getmRequestQueue().getCache().clear();
+            VolleySingleton.getmApplication().getmRequestQueue().add(stringRequest);
         }
 
         class CartViewHolder{
@@ -237,6 +239,110 @@ public class CreateOrderActivity extends AppCompatActivity {
             Button deleteCartItemBtn;
         }
 
+    } //end of CartListAdapter
+
+    private void loadCartList() {
+
+        if (networkUtils.checkConnection()) {
+            HashMap<String, String> params = new HashMap<>();
+            LoginDetailsModel loginDetails = databaseHelper.getLoginDetails();
+            String udid = Settings.Secure.getString(CreateOrderActivity.this.getContentResolver(), Settings.Secure.ANDROID_ID);
+
+            params.put("deviceid", "" + udid);
+            if (loginDetails != null) {
+                params.put("userid", "" + loginDetails.getUserID());
+            }
+
+            getCartList(UrlUtility.SHOW_CART_LIST_URL, params);
+        } else {
+            UrlUtility.showCustomToast(getResources().getString(R.string.no_connection), CreateOrderActivity.this);
+            finish();
+        }
+    } //end of loadCartList
+
+    private void getCartList(String cartListUrl, final HashMap<String, String> params){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, cartListUrl, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if (response != null) {
+                    System.out.println(response);
+                    if (response.contains("no data found")) {
+                        cartListviewLV.setVisibility(View.GONE);
+                        cartIsEmptyRL.setVisibility(View.VISIBLE);
+                    } else {
+                        try {
+                            /***** Returns the value mapped by name if it exists and is a JSONArray. ***/
+                            /*******  Returns null otherwise.  *******/
+                            JSONObject jsonMainNode1 = new JSONObject(response);
+                            String cartTotalAmount = jsonMainNode1.getString("cart_total");
+                            String cartCount = jsonMainNode1.getString("count");
+                            sharedPref.setStringValue("CART_TOTAL_AMOUNT", "" + cartTotalAmount);
+                            sharedPref.setStringValue("CART_ITEMS_COUNT", "" + cartCount);
+                            totalAmountTV.setText(CreateOrderActivity.this.getResources().getString(R.string.rupees) + "" +cartTotalAmount);
+
+                            JSONArray jsonMainNode = jsonMainNode1.getJSONArray("cart");
+
+                            /*********** Process each JSON Node ************/
+                            cartListDataList.clear();
+                            cartListDataList = null;
+                            cartListDataList = new ArrayList<CartDataModel>();
+                            for (int i = 0; i < jsonMainNode.length(); i++) {
+                                /****** Get Object for each JSON node.***********/
+                                JSONObject jsonChildNode = jsonMainNode.getJSONObject(i);
+
+                                /******* Fetch node values **********/
+                                String product_name = jsonChildNode.optString("product_name");
+                                String product_id = jsonChildNode.optString("product_id");
+                                String price = jsonChildNode.optString("price");
+                                String quantity = jsonChildNode.optString("quantity");
+                                String vendor_id = jsonChildNode.optString("vendor_id");
+                                String image = jsonChildNode.optString("image");
+                                String vendor_name = jsonChildNode.optString("vendor_name");
+                                //String total = jsonChildNode.optString("total");
+
+                                cartListDataList.add(new CartDataModel(product_id, product_name, price, image, vendor_id, quantity, vendor_name, ""));
+                            }
+
+                            new Handler().postDelayed(new Runnable() {
+
+                                @Override
+                                public void run() {
+                                    if (cartListDataList.size() > 0) {
+                                        cartListAdapter = null;
+                                        cartListAdapter = new CartListAdapter(cartListDataList,CreateOrderActivity.this );
+                                        cartListviewLV.setAdapter(cartListAdapter);
+                                        cartListviewLV.setVisibility(View.VISIBLE);
+                                        cartIsEmptyRL.setVisibility(View.GONE);
+                                    } else {
+                                        cartListviewLV.setVisibility(View.GONE);
+                                        cartIsEmptyRL.setVisibility(View.VISIBLE);
+                                    }
+
+                                }
+                            }, 500);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            cartListviewLV.setVisibility(View.GONE);
+                            cartIsEmptyRL.setVisibility(View.VISIBLE);
+                        }
+                    }
+                }
+                progressWheel.setVisibility(View.GONE);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                UrlUtility.showCustomToast("OOPS!! Something went wrong", CreateOrderActivity.this);
+            }
+        })
+        {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                return params;
+            }
+        };
+        VolleySingleton.getmApplication().getmRequestQueue().getCache().clear();
+        VolleySingleton.getmApplication().getmRequestQueue().add(stringRequest);
     }
 }
 
