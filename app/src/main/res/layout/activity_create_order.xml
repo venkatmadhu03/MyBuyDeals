@@ -126,7 +126,7 @@
                     android:visibility="gone">
 
                     <TextView
-                        android:id="@+id/artEmptyTextView"
+                        android:id="@+id/cartEmptyTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
@@ -140,7 +140,7 @@
                         android:id="@+id/addItemsToCartTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/artEmptyTextView"
+                        android:layout_below="@+id/cartEmptyTextView"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="1dp"
                         android:text="Add items to it now?"

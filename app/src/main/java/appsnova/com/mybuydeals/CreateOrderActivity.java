@@ -14,19 +14,26 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.StrictMode;
 import android.provider.Settings;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -54,10 +61,18 @@ public class CreateOrderActivity extends AppCompatActivity {
 
 
     public CartListAdapter cartListAdapter;
-    RelativeLayout cartIsEmptyRL;
-    ListView cartListviewLV;
+
+    //create Viewobjects
+    RelativeLayout cartIsEmptyRealtiveLayout;
+    ListView cartListView;
     private MaterialProgressWheel progressWheel;
-    TextView totalAmountTV;
+    TextView totalAmountTextView, nameTextView, addressTextView, paymentTypeTextView, editTextView, shippingTextView;
+    Button confirmationOrderButton, shopNowButton;
+
+    //header Views
+    RelativeLayout headerRelativeLayout, backallRelativeLayout;
+    TextView headerTitleTextView, titleSubTVID;
+    Button backButton, cartButton;
 
     LoginDetailsModel loginDetailsModel;
     ProgressDialog ringProgressDialog;
@@ -66,10 +81,191 @@ public class CreateOrderActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            getWindow().setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
+        }
+        //Initialie  utils
         networkUtils = new NetworkUtils(this);
         sharedPref = new SharedPref(this);
+
+        //inflate view
         setContentView(R.layout.activity_create_order);
+
+        if (getIntent()!= null && getIntent().getBooleanExtra("EXIT", false)) {
+            Intent bookingDoneIntent = new Intent(CreateOrderActivity.this,
+                    ShippingAddressActivity.class);
+            bookingDoneIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            bookingDoneIntent.putExtra("EXIT", true);
+            startActivity(bookingDoneIntent);
+            onBackPressedAnimationByCHK();
+        } else {
+            StrictMode.ThreadPolicy old = StrictMode.getThreadPolicy();
+            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder(old)
+                    .permitDiskWrites()
+                    .detectAll()
+                    .detectDiskReads()
+                    .detectDiskWrites()
+                    .detectNetwork()
+                    .penaltyLog()
+                    .penaltyDeath()
+                    .build());
+            StrictMode.setThreadPolicy(old);
+
+            loginDetailsModel= databaseHelper.getLoginDetails();
+
+            UrlUtility.setDimensions(this);
+            setupNavigation();
+
+            //Initialise Views
+            nameTextView= (TextView)findViewById(R.id.nameTextView);
+            addressTextView=findViewById(R.id.addressTextView);
+            editTextView = (TextView)findViewById(R.id.editTextView);
+            progressWheel =findViewById(R.id.progress_wheel1);
+            confirmationOrderButton= findViewById(R.id.confirmationOrderButton);
+            shopNowButton = (Button)findViewById(R.id.shopNowButton);
+            cartIsEmptyRealtiveLayout = findViewById(R.id.cartIsEmptyRealtiveLayout);
+            cartListView = findViewById(R.id.cartListView);
+            totalAmountTextView = (TextView) findViewById(R.id.totalAmountTextView);
+
+            nameTextView.setText(""+ sharedPref.getStringValue("FIRST_NAME"));
+            addressTextView.setText(""+sharedPref.getStringValue("DELIVERY_ADDRESS_LINE1")+"\n"
+                    +sharedPref.getStringValue( "DELIVERY_ADDRESS_LINE2"));
+
+            editTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    sharedPref.setStringValue( "FROM_SCREEN_USER", "CART");
+                    startActivity(new Intent(CreateOrderActivity.this, ShippingAddressActivity.class));
+                }
+            });
+
+            progressWheel.setBarColor(getResources().getColor(R.color.colorPrimary));
+            progressWheel.setRimColor(Color.LTGRAY);
+
+            confirmationOrderButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (networkUtils.checkConnection()){
+                        try {
+                            ringProgressDialog = ProgressDialog.show(CreateOrderActivity.this, "Please wait ...", "Creating order...", true);
+                            ringProgressDialog.setCancelable(false);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                        HashMap<String, String> params = new HashMap<>();
+                        params.put("order_total",""+sharedPref.getStringValue("CART_TOTAL_AMOUNT"));
+                        params.put("payment_method","COD");
+                        if (loginDetailsModel!=null){
+                            params.put("username", ""+loginDetailsModel.getUserEmail());
+                            params.put("userid", ""+loginDetailsModel.getUserID());
+                        }
+
+                        try {
+                            String cartList = createOrdersGroupInServer(cartListDataList).toString();
+                            params.put("cart",""+cartList);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        } catch (Exception eee){
+                            eee.printStackTrace();
+                        }
+
+                        params.put("billing_phone", ""+sharedPref.getStringValue( "MOBILE"));
+                        params.put("billing_email", ""+sharedPref.getStringValue( "EMAIL_ID"));
+                        params.put("billing_postcode", ""+sharedPref.getStringValue( "ZIP_CODE"));
+                        params.put("billing_state", ""+sharedPref.getStringValue( "STATE"));
+                        params.put("billing_city", ""+sharedPref.getStringValue( "CITY_NAME"));
+                        params.put("billing_address_1", ""+sharedPref.getStringValue( "DELIVERY_ADDRESS_LINE1"));
+                        params.put("billing_address_2", ""+""+sharedPref.getStringValue( "DELIVERY_ADDRESS_LINE2"));
+                        params.put("billing_company", "");
+                        params.put("billing_last_name", ""+sharedPref.getStringValue( "LAST_NAME"));
+                        params.put("billing_first_name", ""+sharedPref.getStringValue( "FIRST_NAME"));
+                        params.put("billing_country", "IND");
+
+
+                        createOrderUrl(UrlUtility.ORDER_CREATE_URL, params);
+                    }
+                }
+            });
+
+            shopNowButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(CreateOrderActivity.this, HomeActivity.class));
+                    finish();
+                }
+            });
+
+            loadCartList();
+        }
+    } //end of onCreate
+
+    private JSONObject createOrdersGroupInServer(ArrayList<CartDataModel> cartList) throws JSONException {
+        JSONObject jsonObjectResult = new JSONObject();
+        JSONArray jsonArray = new JSONArray();
+
+        for (int i = 0; i < cartList.size(); i++) {
+
+            JSONObject jsonObjectGroup = new JSONObject();
+            jsonObjectGroup.put("product_id", cartList.get(i).getProduct_id());
+            jsonObjectGroup.put("product_name", cartList.get(i).getProduct_name());
+            jsonObjectGroup.put("quantity", cartList.get(i).getQuantity());
+            jsonObjectGroup.put("price", cartList.get(i).getPrice());
+            jsonObjectGroup.put("vendor_id", cartList.get(i).getVendor_id());
+
+            jsonArray.put(jsonObjectGroup);
+        }
+
+        jsonObjectResult.put("cart", jsonArray);
+        return jsonObjectResult;
     }
+
+
+    private void createOrderUrl(String orderCreateUrl, final HashMap<String, String> params) {
+       StringRequest stringRequest = new StringRequest(Request.Method.POST, orderCreateUrl, new Response.Listener<String>() {
+           @Override
+           public void onResponse(String response) {
+               if (response != null) {
+                   System.out.println(response);
+                   try {
+                       JSONObject jsonObject = new JSONObject(response);
+                       String ress = jsonObject.getString("response");
+                       if (ress!= null && ress.contains("success")){
+                           String order_id = jsonObject.getString("order_id");
+//                           Intent success = new Intent(CreateOrderActivity.this, OrderConfirmedActivity.class);
+//                           success.putExtra("ORDER_ID", ""+order_id);
+//                           success.putExtra("TOTAL_AMOUNT", ""+sharedPref.getStringValue("CART_TOTAL_AMOUNT"));
+//                           startActivity(success);
+                           Toast.makeText(CreateOrderActivity.this, "Order Success", Toast.LENGTH_SHORT).show();
+                       }
+                   } catch (JSONException e) {
+                       e.printStackTrace();
+                   }
+               }
+               if (ringProgressDialog != null) {
+                   ringProgressDialog.dismiss();
+               }
+           }
+       }, new Response.ErrorListener() {
+           @Override
+           public void onErrorResponse(VolleyError error) {
+                UrlUtility.showCustomToast("OOPS!!! Something went wrong", CreateOrderActivity.this);
+               if (ringProgressDialog != null) {
+                   ringProgressDialog.dismiss();
+               }
+           }
+       })
+       {
+           @Override
+           protected Map<String, String> getParams() throws AuthFailureError {
+               return params;
+           }
+       };
+
+        VolleySingleton.getmApplication().getmRequestQueue().getCache().clear();
+        VolleySingleton.getmApplication().getmRequestQueue().add(stringRequest);
+    } //end of createOrderUrl
 
 
     public class CartListAdapter extends BaseAdapter {
@@ -204,7 +400,7 @@ public class CreateOrderActivity extends AppCompatActivity {
                             String cartCount = jsonObject.getString("count");
                             sharedPref.setStringValue("CART_TOTAL_AMOUNT", "" + cartTotalAmount);
                             sharedPref.setStringValue("CART_ITEMS_COUNT", "" + cartCount);
-                            totalAmountTV.setText(context.getResources().getString(R.string.rupees) + "" +cartTotalAmount);
+                            totalAmountTextView.setText(context.getResources().getString(R.string.rupees) + "" +cartTotalAmount);
                             if (resp != null && resp.contains("success")){
                                 loadCartList();
                             }
@@ -267,8 +463,8 @@ public class CreateOrderActivity extends AppCompatActivity {
                 if (response != null) {
                     System.out.println(response);
                     if (response.contains("no data found")) {
-                        cartListviewLV.setVisibility(View.GONE);
-                        cartIsEmptyRL.setVisibility(View.VISIBLE);
+                        cartListView.setVisibility(View.GONE);
+                        cartIsEmptyRealtiveLayout.setVisibility(View.VISIBLE);
                     } else {
                         try {
                             /***** Returns the value mapped by name if it exists and is a JSONArray. ***/
@@ -278,7 +474,7 @@ public class CreateOrderActivity extends AppCompatActivity {
                             String cartCount = jsonMainNode1.getString("count");
                             sharedPref.setStringValue("CART_TOTAL_AMOUNT", "" + cartTotalAmount);
                             sharedPref.setStringValue("CART_ITEMS_COUNT", "" + cartCount);
-                            totalAmountTV.setText(CreateOrderActivity.this.getResources().getString(R.string.rupees) + "" +cartTotalAmount);
+                            totalAmountTextView.setText(CreateOrderActivity.this.getResources().getString(R.string.rupees) + "" +cartTotalAmount);
 
                             JSONArray jsonMainNode = jsonMainNode1.getJSONArray("cart");
 
@@ -310,20 +506,20 @@ public class CreateOrderActivity extends AppCompatActivity {
                                     if (cartListDataList.size() > 0) {
                                         cartListAdapter = null;
                                         cartListAdapter = new CartListAdapter(cartListDataList,CreateOrderActivity.this );
-                                        cartListviewLV.setAdapter(cartListAdapter);
-                                        cartListviewLV.setVisibility(View.VISIBLE);
-                                        cartIsEmptyRL.setVisibility(View.GONE);
+                                        cartListView.setAdapter(cartListAdapter);
+                                        cartListView.setVisibility(View.VISIBLE);
+                                        cartIsEmptyRealtiveLayout.setVisibility(View.GONE);
                                     } else {
-                                        cartListviewLV.setVisibility(View.GONE);
-                                        cartIsEmptyRL.setVisibility(View.VISIBLE);
+                                        cartListView.setVisibility(View.GONE);
+                                        cartIsEmptyRealtiveLayout.setVisibility(View.VISIBLE);
                                     }
 
                                 }
                             }, 500);
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            cartListviewLV.setVisibility(View.GONE);
-                            cartIsEmptyRL.setVisibility(View.VISIBLE);
+                            cartListView.setVisibility(View.GONE);
+                            cartIsEmptyRealtiveLayout.setVisibility(View.VISIBLE);
                         }
                     }
                 }
@@ -343,7 +539,60 @@ public class CreateOrderActivity extends AppCompatActivity {
         };
         VolleySingleton.getmApplication().getmRequestQueue().getCache().clear();
         VolleySingleton.getmApplication().getmRequestQueue().add(stringRequest);
+    } //end of getCartList
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        onBackPressedAnimationByCHK();
     }
+
+    private void onBackPressedAnimationByCHK() {
+        finish();
+        overridePendingTransition(R.anim.left_pull_in, R.anim.right_push_out);
+    }
+
+    public void setupNavigation() {
+        headerRelativeLayout.getLayoutParams().height = (int) (UrlUtility.screenHeight / 10.2);
+        backallRelativeLayout.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                onBackPressedAnimationByCHK();
+            }
+        });
+
+
+        // titleTV.setTypeface(Utility.font_bold);
+        headerTitleTextView.setText("Details");
+        titleSubTVID.setVisibility(View.GONE);
+        // if (sub_cat_name != null && !sub_cat_name.isEmpty() && sub_cat_name.trim().length() > 2) {
+        //    subTitleTV.setVisibility(View.VISIBLE);
+        //    subTitleTV.setText("" + Html.fromHtml(sub_cat_name));
+        // }
+
+        backButton.getLayoutParams().width = (int) (UrlUtility.screenHeight / 28.0);
+        backButton.getLayoutParams().height = (int) (UrlUtility.screenHeight / 28.0);
+        backButton.setVisibility(View.VISIBLE);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressedAnimationByCHK();
+            }
+        });
+
+        cartButton.getLayoutParams().width = (int) (UrlUtility.screenHeight / 24.0);
+        cartButton.getLayoutParams().height = (int) (UrlUtility.screenHeight / 24.0);
+        cartButton.setVisibility(View.VISIBLE);
+        cartButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(CreateOrderActivity.this, CartActivity.class));
+            }
+        });
+        cartButton.setBackgroundResource(R.drawable.search_black_icon);//shopping cart image 24X24
+    }//end of setUpNavigation
 }
 
 
