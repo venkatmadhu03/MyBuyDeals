@@ -233,10 +233,10 @@ public class CreateOrderActivity extends AppCompatActivity {
                        String ress = jsonObject.getString("response");
                        if (ress!= null && ress.contains("success")){
                            String order_id = jsonObject.getString("order_id");
-//                           Intent success = new Intent(CreateOrderActivity.this, OrderConfirmedActivity.class);
-//                           success.putExtra("ORDER_ID", ""+order_id);
-//                           success.putExtra("TOTAL_AMOUNT", ""+sharedPref.getStringValue("CART_TOTAL_AMOUNT"));
-//                           startActivity(success);
+                           Intent success = new Intent(CreateOrderActivity.this, OrderConfirmationActivity.class);
+                           success.putExtra("ORDER_ID", ""+order_id);
+                           success.putExtra("TOTAL_AMOUNT", ""+sharedPref.getStringValue("CART_TOTAL_AMOUNT"));
+                           startActivity(success);
                            Toast.makeText(CreateOrderActivity.this, "Order Success", Toast.LENGTH_SHORT).show();
                        }
                    } catch (JSONException e) {
