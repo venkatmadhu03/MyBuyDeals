@@ -212,6 +212,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
 
         homeSearch = (TextView) findViewById(R.id.homeSearch);
+        progressVIew = findViewById(R.id.progressVIew);
 
         homeMainScrollView = (ScrollView) findViewById(R.id.homeMainScrollView);
         homeMainScrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
@@ -357,7 +358,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                                             JSONObject jsonChildNode = deals_productsJson.getJSONObject(i);
 
                                             /******* Fetch node values **********/
-                                            String product_id = jsonChildNode.optString("product_id");
+                                            String product_id = jsonChildNode.optString("id");
                                             String product_name = jsonChildNode.optString("product_name");
                                             String price = jsonChildNode.optString("price");
                                             String regular_price = jsonChildNode.optString("regular_price");
@@ -387,7 +388,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                                             JSONObject jsonChildNode = fruitsVeg_productsJson.getJSONObject(i);
 
                                             /******* Fetch node values **********/
-                                            String product_id = jsonChildNode.optString("product_id");
+                                            String product_id = jsonChildNode.optString("id");
                                             String product_name = jsonChildNode.optString("product_name");
                                             String price = jsonChildNode.optString("price");
                                             String regular_price = jsonChildNode.optString("regular_price");
@@ -415,9 +416,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                                         for (int i = 0; i < beverages_productsJson.length(); i++) {
                                             /****** Get Object for each JSON node.***********/
                                             JSONObject jsonChildNode = beverages_productsJson.getJSONObject(i);
-
+                                            Log.d(TAG, "onResponse: "+jsonChildNode.optString("id")+"\n");
                                             /******* Fetch node values **********/
-                                            String product_id = jsonChildNode.optString("product_id");
+                                            String product_id = jsonChildNode.optString("id");
                                             String product_name = jsonChildNode.optString("product_name");
                                             String price = jsonChildNode.optString("price");
                                             String regular_price = jsonChildNode.optString("regular_price");
@@ -447,7 +448,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                                             JSONObject jsonChildNode = kitchenDine_productsJson.getJSONObject(i);
 
                                             /******* Fetch node values **********/
-                                            String product_id = jsonChildNode.optString("product_id");
+                                            String product_id = jsonChildNode.optString("id");
                                             String product_name = jsonChildNode.optString("product_name");
                                             String price = jsonChildNode.optString("price");
                                             String regular_price = jsonChildNode.optString("regular_price");
@@ -480,7 +481,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                                             JSONObject jsonChildNode = kitchenStorage_productsJson.getJSONObject(i);
 
                                             /******* Fetch node values **********/
-                                            String product_id = jsonChildNode.optString("product_id");
+                                            String product_id = jsonChildNode.optString("id");
                                             String product_name = jsonChildNode.optString("product_name");
                                             String price = jsonChildNode.optString("price");
                                             String regular_price = jsonChildNode.optString("regular_price");
@@ -512,7 +513,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                                             JSONObject jsonChildNode = diningServing_productsJson.getJSONObject(i);
 
                                             /******* Fetch node values **********/
-                                            String product_id = jsonChildNode.optString("product_id");
+                                            String product_id = jsonChildNode.optString("id");
                                             String product_name = jsonChildNode.optString("product_name");
                                             String price = jsonChildNode.optString("price");
                                             String regular_price = jsonChildNode.optString("regular_price");
@@ -577,6 +578,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
                                                 @Override
                                                 public void onItemClick(View view, int position) {
+                                                    Log.d(TAG, "onItemClick: "+homeProductsBeveragesList.get(position).getProductId());
                                                     Intent sportIntent = new Intent(HomeActivity.this, ProductDetailsActivity.class);
                                                     sportIntent.putExtra("PRODUCT_ID", homeProductsBeveragesList.get(position).getProductId());
                                                     sportIntent.putExtra("PRODUCT_FROM_SCREEN", "HOME_MAIN");
@@ -686,6 +688,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                                             });
                                         }
                                         homeProgressLinearLayout.setVisibility(View.GONE);
+
                                     }
                                 }, 200);
                             } catch (JSONException e) {
@@ -694,10 +697,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
+
+
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                homeProgressLinearLayout.setVisibility(View.GONE);
                 Toast.makeText(HomeActivity.this,"Home Product P"+error.toString(), Toast.LENGTH_SHORT).show();
             }
         });

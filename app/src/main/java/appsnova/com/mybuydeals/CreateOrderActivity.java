@@ -115,6 +115,16 @@ public class CreateOrderActivity extends AppCompatActivity {
             loginDetailsModel= databaseHelper.getLoginDetails();
 
             UrlUtility.setDimensions(this);
+
+            //initialize header views
+            headerRelativeLayout = findViewById(R.id.headerRelativeLayout);
+            backallRelativeLayout = findViewById(R.id.backallRelativeLayout);
+            headerTitleTextView = findViewById(R.id.headerTitleTextView);
+            titleSubTVID =  findViewById(R.id.titleSubTVID);
+            backButton =  findViewById(R.id.backButton);
+            cartButton =  findViewById(R.id.cartButton);
+
+
             setupNavigation();
 
             //Initialise Views
@@ -368,7 +378,11 @@ public class CreateOrderActivity extends AppCompatActivity {
                                 }
                                 params.put("product_id", "" + cartDataModelArrayList.get(pos).getProduct_id());
 
-                                removeCartListItem(UrlUtility.REMOVE_CART_LIST_ITEM_URL, params);
+                                Log.d("CartURL", "onClick: "+UrlUtility.REMOVE_CART_LIST_ITEM_URL+","+params.toString());
+                                String removeCartURL = UrlUtility.REMOVE_CART_LIST_ITEM_URL+"product_id="
+                                        +cartDataModelArrayList.get(pos).getProduct_id()+"&deviceid="+udid+
+                                        "&userid="+loginDetails.getUserID();
+                                removeCartListItem(removeCartURL, params);
                             }
                         }
                     });
@@ -388,12 +402,13 @@ public class CreateOrderActivity extends AppCompatActivity {
             return convertView;
         }
 
-        private void removeCartListItem(String cartClearUrl, final HashMap<String, String> params){
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, cartClearUrl, new Response.Listener<String>() {
+        private void removeCartListItem(final String cartClearUrl, final HashMap<String, String> params){
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, cartClearUrl, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     if (response != null) {
                         try {
+                            Log.d("RemoveCart", "onResponse: "+response+","+cartClearUrl);
                             JSONObject jsonObject = new JSONObject(response);
                             String resp = jsonObject.getString("response");
                             String cartTotalAmount = jsonObject.getString("total");
@@ -415,13 +430,7 @@ public class CreateOrderActivity extends AppCompatActivity {
                 public void onErrorResponse(VolleyError error) {
                     UrlUtility.showCustomToast("OOPS!! Something went wrong", CreateOrderActivity.this);
                 }
-            })
-            {
-                @Override
-                protected Map<String, String> getParams() throws AuthFailureError {
-                    return params;
-                }
-            };
+            });
             VolleySingleton.getmApplication().getmRequestQueue().getCache().clear();
             VolleySingleton.getmApplication().getmRequestQueue().add(stringRequest);
         }
@@ -444,6 +453,7 @@ public class CreateOrderActivity extends AppCompatActivity {
             LoginDetailsModel loginDetails = databaseHelper.getLoginDetails();
             String udid = Settings.Secure.getString(CreateOrderActivity.this.getContentResolver(), Settings.Secure.ANDROID_ID);
 
+            Log.d("CreateOrder", "loadCartList: "+udid+","+loginDetails.getUserID());
             params.put("deviceid", "" + udid);
             if (loginDetails != null) {
                 params.put("userid", "" + loginDetails.getUserID());
@@ -456,10 +466,11 @@ public class CreateOrderActivity extends AppCompatActivity {
         }
     } //end of loadCartList
 
-    private void getCartList(String cartListUrl, final HashMap<String, String> params){
+    private void getCartList(final String cartListUrl, final HashMap<String, String> params){
         StringRequest stringRequest = new StringRequest(Request.Method.POST, cartListUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                Log.d("CartList", "onResponse: "+response+","+cartListUrl);
                 if (response != null) {
                     System.out.println(response);
                     if (response.contains("no data found")) {
@@ -534,6 +545,8 @@ public class CreateOrderActivity extends AppCompatActivity {
         {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
+                JSONObject jsonObject = new JSONObject(params);
+                Log.d("CreateOrder", "getParams: "+jsonObject.toString());
                 return params;
             }
         };
