@@ -34,6 +34,8 @@ public class UrlUtility {
     //Home Products Live
     public static String HOME_PRODUCTS_URL = BASE_URL+ "home_products.php";
 
+    public static String HOME_PRODUCTS1_URL = BASE_URL+ "home_products3.php";
+
     // Get all Categories
     public static String ALL_CATEGORIES_URL = BASE_URL+ "categories.php?";
 
@@ -41,7 +43,7 @@ public class UrlUtility {
     public static String ALL_SUB_CATEGORIES_URL = BASE_URL+ "subcategories.php?cat_id=";
 
     //Get category wise products
-    public static String CATEGORIES_WISE_PRODUCTS_LIST_URL = BASE_URL+ "category_products1.php?";
+    public static String CATEGORIES_WISE_PRODUCTS_LIST_URL = BASE_URL+ "category_products.php?";
 
     //Search Suggest
     public static String SEARCH_SUGGETIONS_URL = BASE_URL+ "allkeywords.php?";

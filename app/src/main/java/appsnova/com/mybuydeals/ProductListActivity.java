@@ -3,7 +3,9 @@ package appsnova.com.mybuydeals;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import appsnova.com.mybuydeals.adapters.GridViewHomeAdapter;
+import appsnova.com.mybuydeals.models.HomeChildModel;
 import appsnova.com.mybuydeals.models.HomeProductsModel;
+import appsnova.com.mybuydeals.models.ProductListModel;
 import appsnova.com.mybuydeals.ownlibraries.MaterialProgressWheel;
 import appsnova.com.mybuydeals.utilities.NetworkUtils;
 import appsnova.com.mybuydeals.utilities.SharedPref;
@@ -32,6 +34,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -60,8 +63,8 @@ public class ProductListActivity extends AppCompatActivity implements AbsListVie
     Button backButton, cartButton;
 
     //create List Objects
-    List<HomeProductsModel> categoriesWiseProductsListHome = new ArrayList<HomeProductsModel>();
-    List<HomeProductsModel> categoriesWiseProductsListHomeTemp = new ArrayList<HomeProductsModel>();
+    List<ProductListModel> categoriesWiseProductsListHome = new ArrayList<ProductListModel>();
+    List<ProductListModel> categoriesWiseProductsListHomeTemp = new ArrayList<ProductListModel>();
 
     //Adapters Object Creation
 
@@ -84,8 +87,7 @@ public class ProductListActivity extends AppCompatActivity implements AbsListVie
     private int previousTotal = 0;
     private boolean loading = true;
     private int mfirstVisibleItem;
-    int productsCount = 0;
-
+    int productsCount = 0, startCount = 0;
     int limit = 20;
 
     @Override
@@ -110,8 +112,8 @@ public class ProductListActivity extends AppCompatActivity implements AbsListVie
             categoryName = "";
             subCategoryName = "";
             fromScreen = "";
-            categoriesWiseProductsListHome = new ArrayList<HomeProductsModel>();
-            categoriesWiseProductsListHomeTemp = new ArrayList<HomeProductsModel>();
+            categoriesWiseProductsListHome = new ArrayList<ProductListModel>();
+            categoriesWiseProductsListHomeTemp = new ArrayList<ProductListModel>();
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -147,14 +149,14 @@ public class ProductListActivity extends AppCompatActivity implements AbsListVie
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Intent sportIntent = new Intent(ProductListActivity.this, ProductDetailsActivity.class);
                     sportIntent.putExtra("PRODUCT_FROM_SCREEN", "GRID_PRODUCTS");
-                    sportIntent.putExtra("PRODUCT_ID", categoriesWiseProductsListHome.get(position).getProductId());
-                    sportIntent.putExtra("PRODUCT_NAME", categoriesWiseProductsListHome.get(position).getProductName());
+                    sportIntent.putExtra("PRODUCT_ID", categoriesWiseProductsListHome.get(position).getProduct_id());
+                    sportIntent.putExtra("PRODUCT_NAME", categoriesWiseProductsListHome.get(position).getProduct_name());
                     sportIntent.putExtra("PRODUCT_PRICE", categoriesWiseProductsListHome.get(position).getPrice());
-                    sportIntent.putExtra("PRODUCT_REGULAR_PRICE", categoriesWiseProductsListHome.get(position).getRegularPrice());
-                    sportIntent.putExtra("PRODUCT_IMAGE_URL", categoriesWiseProductsListHome.get(position).getImageUrl());
-                    sportIntent.putExtra("PRODUCT_VENDOR_NAME", categoriesWiseProductsListHome.get(position).getVendorName());
-                    sportIntent.putExtra("PRODUCT_DESCRIPTION", categoriesWiseProductsListHome.get(position).getProductDesc());
-                    sportIntent.putExtra("VENDOR_DESCRIPTION", categoriesWiseProductsListHome.get(position).getVendorDescription());
+                    sportIntent.putExtra("PRODUCT_REGULAR_PRICE", categoriesWiseProductsListHome.get(position).getRegular_price());
+                    sportIntent.putExtra("PRODUCT_IMAGE_URL", categoriesWiseProductsListHome.get(position).getImage());
+                    sportIntent.putExtra("PRODUCT_VENDOR_NAME", categoriesWiseProductsListHome.get(position).getVendor_name());
+                    sportIntent.putExtra("PRODUCT_DESCRIPTION", "");
+                    sportIntent.putExtra("VENDOR_DESCRIPTION", "");
                     startActivity(sportIntent);
                 }
             });
@@ -170,8 +172,10 @@ public class ProductListActivity extends AppCompatActivity implements AbsListVie
                         if (fromScreen != null && fromScreen.equalsIgnoreCase("HOME")) {
                             HOME_KEY = b.getString("HOME_KEY");
                             categoryName = b.getString("CAT_NAME");
+                            catId = b.getString("CAT_ID");
                             setupNavigation("" + categoryName);
-                            productsURL = UrlUtility.HOME_PRODUCTS_VIEW_ALL_URL + "" + HOME_KEY;
+                           // productsURL = UrlUtility.HOME_PRODUCTS_VIEW_ALL_URL + "" + HOME_KEY;
+                            productsURL = UrlUtility.CATEGORIES_WISE_PRODUCTS_LIST_URL + "cat_id=" +catId;
                             loadProductsListData(productsURL, productsCount, limit);
                         } else if (fromScreen != null && fromScreen.equalsIgnoreCase("SEARCH")) {
                             SEARCH_KEYWORD= b.getString("SEARCH_KEYWORD");
@@ -186,9 +190,9 @@ public class ProductListActivity extends AppCompatActivity implements AbsListVie
                             setupNavigation("" + categoryName);
                             if (catId != null && !catId.isEmpty()) {
                                 if (subCategoryId != null && !subCategoryId.isEmpty() && subCategoryId.trim().length() > 0) {
-                                    productsURL = UrlUtility.CATEGORIES_WISE_PRODUCTS_LIST_URL + "sub_category_id=" + subCategoryId;
+                                    productsURL = UrlUtility.CATEGORIES_WISE_PRODUCTS_LIST_URL + "sub_category_id=" + subCategoryId+ "&start="+startCount+"&limit=10";
                                 } else {
-                                    productsURL = UrlUtility.CATEGORIES_WISE_PRODUCTS_LIST_URL + "cat_id=" + catId;
+                                    productsURL = UrlUtility.CATEGORIES_WISE_PRODUCTS_LIST_URL + "cat_id=" + catId + "&start="+startCount+"&limit=10";
                                 }
                             }
                             loadProductsListData(productsURL, productsCount, limit);
@@ -209,26 +213,53 @@ public class ProductListActivity extends AppCompatActivity implements AbsListVie
     } //end of loadProductsListData
 
     private void getAllCategoriesList(final String allCategoriesUrl) {
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, allCategoriesUrl, null, new Response.Listener<JSONObject>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, allCategoriesUrl, new Response.Listener<String>() {
             @Override
-            public void onResponse(JSONObject response) {
-                Log.d(TAG, "onResponse: URL "+allCategoriesUrl);
-                Log.d(TAG, "onResponse: response "+response.toString());
-                if (response !=null && response.length() > 0){
+            public void onResponse(String response) {
+                try {
+                    Log.d(TAG, "onResponse: "+allCategoriesUrl);
+                    if (!response.equalsIgnoreCase("fail")){
+                        JSONArray jsonArray = new JSONArray(response);
+                        for (int i=0; i<jsonArray.length();i++){
+                            ProductListModel productListModel = new ProductListModel();
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            productListModel.setProduct_id(jsonObject.getString("product_id"));
+                            productListModel.setProduct_name(jsonObject.getString("product_name"));
+                            productListModel.setVendor_id(jsonObject.getString("vendor_id"));
+                            productListModel.setPrice(jsonObject.getString("price"));
+                            productListModel.setRegular_price(jsonObject.getString("regular_price"));
+                            productListModel.setStock(jsonObject.getString("stock"));
+                            productListModel.setImage(jsonObject.getString("image"));
+                            productListModel.setVendor_name(jsonObject.getString("vendor_name"));
+                            productListModel.setRating(jsonObject.getString("rating"));
 
+                            categoriesWiseProductsListHome.add(productListModel);
+                        }
+                    }
+
+                    gridViewHomeAdapter = new GridViewHomeAdapter(categoriesWiseProductsListHome, ProductListActivity.this);
+                    productListGridView.setAdapter(gridViewHomeAdapter);
+                    startCount = gridViewHomeAdapter.getCount();
+                    progressWheel1.setVisibility(View.GONE);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
+
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(ProductListActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
+                progressWheel1.setVisibility(View.GONE);
+                Log.d(TAG, "onErrorResponse: "+error.toString());
+                Toast.makeText(ProductListActivity.this, "OOPS!! Something went wrong", Toast.LENGTH_SHORT).show();
             }
         });
-        jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(10000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(10000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         VolleySingleton.getmApplication().getmRequestQueue().getCache().clear();
-        VolleySingleton.getmApplication().getmRequestQueue().add(jsonObjectRequest);
+        VolleySingleton.getmApplication().getmRequestQueue().add(stringRequest);
     }
 
     public void setupNavigation(String _title) {

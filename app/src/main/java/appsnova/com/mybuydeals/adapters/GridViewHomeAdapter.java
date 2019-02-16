@@ -14,17 +14,20 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import androidx.cardview.widget.CardView;
 import appsnova.com.mybuydeals.R;
 import appsnova.com.mybuydeals.models.HomeProductsModel;
+import appsnova.com.mybuydeals.models.ProductListModel;
 
 public class GridViewHomeAdapter extends BaseAdapter {
 
-    private ArrayList<HomeProductsModel> homeProductsModelArrayList;
+    private List<ProductListModel> homeProductsModelArrayList;
     private LayoutInflater layoutInflater = null;
     Context context;
 
-    public GridViewHomeAdapter(ArrayList<HomeProductsModel> homeProductsModelArrayList, Context mContext) {
+    public GridViewHomeAdapter(List<ProductListModel> homeProductsModelArrayList, Context mContext) {
         this.homeProductsModelArrayList = homeProductsModelArrayList;
         this.context = mContext;
         layoutInflater = LayoutInflater.from(context);
@@ -53,7 +56,7 @@ public class GridViewHomeAdapter extends BaseAdapter {
             holder = new ViewHolder();
             itemView = layoutInflater.inflate(R.layout.list_item_row_products_view_all, null, false);
 
-            holder.listItemClickRelativeLayout = itemView.findViewById(R.id.listItemClickRelativeLayout);
+            holder.listItemClickCardView = itemView.findViewById(R.id.listItemClickCardView);
             holder.viewAllSoldbyTextView =  itemView.findViewById(R.id.viewAllSoldbyTextView);
             holder.viewAllVendorDescTextView = itemView.findViewById(R.id.viewAllVendorDescTextView);
             holder.viewAllKeyid = itemView.findViewById(R.id.viewAllKeyid);
@@ -69,19 +72,19 @@ public class GridViewHomeAdapter extends BaseAdapter {
             holder = (ViewHolder) itemView.getTag();
         }
 
-        HomeProductsModel homeProductsModel = homeProductsModelArrayList.get(position);
-        holder.viewAllKeyid.setText(homeProductsModel.getProductId());
-        holder.viewAllTitleTextView.setText(homeProductsModel.getProductName());
-        holder.viewAllSoldbyTextView.setText("" + homeProductsModel.getVendorName() + "");
-        holder.viewAllVendorDescTextView.setText(homeProductsModel.getVendorDescription());
+        ProductListModel homeProductsModel = homeProductsModelArrayList.get(position);
+        holder.viewAllKeyid.setText(homeProductsModel.getProduct_id());
+        holder.viewAllTitleTextView.setText(homeProductsModel.getProduct_name());
+        holder.viewAllSoldbyTextView.setText("" + homeProductsModel.getVendor_name() + "");
+     //   holder.viewAllVendorDescTextView.setText(homeProductsModel.getVendorDescription());
         if (homeProductsModel.getPrice().equalsIgnoreCase("0") || homeProductsModel.getPrice().isEmpty()) {
             holder.viewAllAvailableTextView.setText("");
         } else {
             holder.viewAllAvailableTextView.setText(""+context.getResources().getString(R.string.rupees)+ " " + homeProductsModel.getPrice());
         }
 
-        if (homeProductsModel.getImageUrl() != null && !homeProductsModel.getImageUrl().isEmpty()) {
-            Picasso.get().load(homeProductsModel.getImageUrl()).placeholder(R.drawable.ic_menu_share).into(holder.viewAllThumbnail);
+        if (homeProductsModel.getImage() != null && !homeProductsModel.getImage().isEmpty()) {
+            Picasso.get().load(homeProductsModel.getImage()).placeholder(R.drawable.ic_menu_share).into(holder.viewAllThumbnail);
         } else {
             holder.viewAllThumbnail.setBackgroundResource(R.drawable.ic_menu_share);
         }
@@ -98,6 +101,6 @@ public class GridViewHomeAdapter extends BaseAdapter {
         protected ImageView viewAllThumbnail;
         protected RelativeLayout viewAllRelativeLayout;
         protected RatingBar viewAllRatingBar;
-        RelativeLayout listItemClickRelativeLayout;
+        CardView listItemClickCardView;
     }
 }

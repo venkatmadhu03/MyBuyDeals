@@ -1,97 +1,48 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/homeProductListItemRelativeLayout"
-    android:layout_width="140dp"
-    android:background="?android:selectableItemBackground"
-    android:layout_height="wrap_content">
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp">
 
-    <RelativeLayout
-        android:id="@+id/homeListRelativeLayout"
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/rectangle_background">
-
-        <ImageView
-            android:id="@+id/homeListImageView"
-            android:layout_width="match_parent"
-            android:layout_height="120dp"
-            android:layout_centerHorizontal="true"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_menu_gallery" />
+        android:id="@+id/product_head"
+        android:orientation="horizontal"
+        android:weightSum="2">
 
         <TextView
+            android:id="@+id/product_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PRODUCT TITLE:"
+            android:textSize="18sp"
+            android:layout_weight="1.8"/>
+
+        <TextView
+            android:id="@+id/view_all_btn"
             style="@style/headerTitleSubStyle"
-            android:id="@+id/productTileTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/homeListImageView"
-            android:layout_marginTop="5dp"
-            android:text=""
-            android:singleLine="true"
-            android:gravity="center_horizontal"
-            android:layout_centerHorizontal="true"
-            android:textColor="#333"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/productSoldByTextView"
-            style="@style/headerTitleSubStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:layout_centerHorizontal="true"
-            android:singleLine="true"
-            android:layout_below="@+id/productTileTextView"
-            android:layout_marginTop="1dp"
-            android:text=""
-            android:textColor="#009900" />
-
-        <TextView
-            android:id="@+id/vendorDescTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/productTileTextView"
-            android:layout_marginLeft="6dp"
-            android:text=""
-            android:textColor="@color/colorBlack"
-            android:textSize="12sp"
-            android:visibility="gone" />
+            android:layout_gravity="center"
+            android:background="@drawable/button_background"
+            android:paddingLeft="8dp"
+            android:paddingTop="5dp"
+            android:paddingRight="8dp"
+            android:paddingBottom="5dp"
+            android:text="View All"
+            android:textColor="@color/colorWhite" />
 
-        <RatingBar
-            android:id="@+id/homeProductsRatingBar"
-            style="?android:attr/ratingBarStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/productSoldByTextView"
-            android:layout_marginTop="1dp"
-            android:layout_centerHorizontal="true"
-            android:isIndicator="true"
-            android:visibility="gone"
-            android:numStars="5"
-            android:stepSize="0.1" />
+    </LinearLayout>
 
-        <TextView
-            style="@style/alertTitleStyle"
-            android:id="@+id/productAvailableTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/homeProductsRatingBar"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="2dp"
-            android:layout_marginTop="1dp"
-            android:singleLine="true"
-            android:text=""
-            android:visibility="gone"
-            android:textColor="@color/normalGray" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/main_recycler_view"
+        android:layout_below="@id/product_head">
+    </androidx.recyclerview.widget.RecyclerView>
 
-        <TextView
-            android:id="@+id/homeProductsKeyIdTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/homeProductsRatingBar"
-            android:layout_marginLeft="6dp"
-            android:text="Rs 999"
-            android:textColor="@color/normalGray"
-            android:textSize="14dp"
-            android:visibility="gone" />
-    </RelativeLayout>
+
 </RelativeLayout>

@@ -2,28 +2,36 @@ package appsnova.com.mybuydeals.adapters;
 
 import android.content.Context;
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import appsnova.com.mybuydeals.ProductListActivity;
 import appsnova.com.mybuydeals.R;
 import appsnova.com.mybuydeals.models.HomeProductsModel;
 
 public class HomeProductsAdapter extends RecyclerView.Adapter<HomeProductsAdapter.HomeProductsViewHolder> {
     Context mContext;
     OnItemClickListener mItemClickListener;
-    private ArrayList<HomeProductsModel> homeProductsModelArrayList ;
+    private List<HomeProductsModel> homeProductsModelArrayList ;
+    HomeProductsModel productsModel;
 
-    public HomeProductsAdapter(Context mContext, ArrayList<HomeProductsModel> homeProductsModelArrayList) {
+    public HomeProductsAdapter(Context mContext, List<HomeProductsModel> homeProductsModelArrayList) {
         this.mContext = mContext;
         this.homeProductsModelArrayList = homeProductsModelArrayList;
     }
@@ -41,26 +49,28 @@ public class HomeProductsAdapter extends RecyclerView.Adapter<HomeProductsAdapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull HomeProductsAdapter.HomeProductsViewHolder homeProductsViewHolder, int position) {
+    public void onBindViewHolder(@NonNull HomeProductsAdapter.HomeProductsViewHolder homeProductsViewHolder, final int position) {
         HomeProductsModel homeProductsModel = homeProductsModelArrayList.get(position);
-        homeProductsViewHolder.homeProductsKeyIdTextView.setText(homeProductsModel.getProductId());
-        homeProductsViewHolder.productTileTextView.setText(homeProductsModel.getProductName());
-        homeProductsViewHolder.productSoldByTextView.setText("" + homeProductsModel.getVendorName()+ "");
-        homeProductsViewHolder.vendorDescTextView.setText(homeProductsModel.getVendorDescription());
-        if (homeProductsModel.getRegularPrice()!= null && !homeProductsModel.getRegularPrice().isEmpty()
-                && homeProductsModel.getRegularPrice().equalsIgnoreCase("null") && homeProductsModel.getRegularPrice().equalsIgnoreCase("0")) {
-            homeProductsViewHolder.productAvailableTextView.setVisibility(View.GONE);
-        } else {
-            homeProductsViewHolder.productAvailableTextView.setVisibility(View.VISIBLE);
-            homeProductsViewHolder.productAvailableTextView.setText(""+mContext.getResources().getString(R.string.rupees)+ " " + homeProductsModel.getRegularPrice());
-        }
+        HomeProductsChildAdpter homeProductsChildAdpter = new HomeProductsChildAdpter(homeProductsModel.getChildModelArrayList(),mContext);
 
-        if (homeProductsModel.getImageUrl() != null && !homeProductsModel.getImageUrl().isEmpty()) {
-          //  Picasso.with(mContext).load(homeProductsModel.getImageUrl()).placeholder(R.drawable.ic_menu_share).into(homeProductsViewHolder.pic);
-            Picasso.get().load(homeProductsModel.getImageUrl()).placeholder(R.drawable.ic_menu_share).into(homeProductsViewHolder.homeListImageView);
-        } else {
-            homeProductsViewHolder.homeListImageView.setBackgroundResource(R.drawable.ic_menu_share);
-        }
+        homeProductsViewHolder.product_title.setText(homeProductsModel.getCategory_name());
+        homeProductsViewHolder.recyclerView.setHasFixedSize(true);
+        homeProductsViewHolder.recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
+        homeProductsViewHolder.recyclerView.setAdapter(homeProductsChildAdpter);
+
+        homeProductsViewHolder.view_all.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent sportIntent = new Intent(mContext, ProductListActivity.class);
+                sportIntent.putExtra("HOME_KEY", homeProductsModelArrayList.get(position).getCategory_slug());
+                sportIntent.putExtra("CAT_NAME", homeProductsModelArrayList.get(position).getCategory_name());
+                sportIntent.putExtra("FROM_HOME", "HOME");
+                sportIntent.putExtra("CAT_ID", homeProductsModelArrayList.get(position).getCat_id());
+                mContext.startActivity(sportIntent);
+              //  Toast.makeText(v.getContext(), "click event on more, "+homeProductsModelArrayList.get(position).getCategory_name() , Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -77,26 +87,14 @@ public class HomeProductsAdapter extends RecyclerView.Adapter<HomeProductsAdapte
     }
 
     public class HomeProductsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        protected TextView productTileTextView, productSoldByTextView, vendorDescTextView,
-                productAvailableTextView, homeProductsKeyIdTextView;
-        protected ImageView homeListImageView;
-        protected RatingBar homeProductsRatingBar;
-        protected RelativeLayout homeProductListItemRelativeLayout, homeListRelativeLayout;
-
+        RecyclerView recyclerView;
+        TextView product_title, view_all;
         public HomeProductsViewHolder(@NonNull View itemView) {
             super(itemView);
+            recyclerView = itemView.findViewById(R.id.main_recycler_view);
+            product_title = itemView.findViewById(R.id.product_title);
+            view_all = itemView.findViewById(R.id.view_all_btn);
 
-            homeProductListItemRelativeLayout = (RelativeLayout)itemView.findViewById(R.id.homeProductListItemRelativeLayout);
-            productSoldByTextView = (TextView) itemView.findViewById(R.id.productSoldByTextView);
-            vendorDescTextView = (TextView) itemView.findViewById(R.id.vendorDescTextView);
-            homeProductsKeyIdTextView = (TextView) itemView.findViewById(R.id.homeProductsKeyIdTextView);
-            productTileTextView = (TextView) itemView.findViewById(R.id.productTileTextView);
-            homeListImageView = (ImageView) itemView.findViewById(R.id.homeListImageView);
-            homeListRelativeLayout = (RelativeLayout) itemView.findViewById(R.id.homeListRelativeLayout);
-            productAvailableTextView = (TextView) itemView.findViewById(R.id.productAvailableTextView);
-            homeProductsRatingBar = (RatingBar) itemView.findViewById(R.id.homeProductsRatingBar);
-
-            homeProductListItemRelativeLayout.setOnClickListener(this);
         }
 
         @Override
