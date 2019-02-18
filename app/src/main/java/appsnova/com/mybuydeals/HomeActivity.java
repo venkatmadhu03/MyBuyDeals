@@ -7,6 +7,7 @@ import android.os.Handler;
 
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -53,10 +54,14 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import appsnova.com.mybuydeals.adapters.HomeProductsAdapter;
+import appsnova.com.mybuydeals.adapters.NavMenuAdapter;
 import appsnova.com.mybuydeals.models.HomeChildModel;
 import appsnova.com.mybuydeals.models.HomeProductsModel;
+import appsnova.com.mybuydeals.models.LoginDetailsModel;
+import appsnova.com.mybuydeals.models.NavMenuModel;
 import appsnova.com.mybuydeals.models.SliderImageModel;
 import appsnova.com.mybuydeals.ownlibraries.MaterialProgressWheel;
+import appsnova.com.mybuydeals.utilities.DatabaseHelper;
 import appsnova.com.mybuydeals.utilities.NetworkUtils;
 import appsnova.com.mybuydeals.utilities.SharedPref;
 import appsnova.com.mybuydeals.utilities.UrlUtility;
@@ -69,6 +74,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     //create utility objects
     NetworkUtils networkUtils;
     SharedPref sharedPref;
+    DatabaseHelper databaseHelper;
 
     //Slider Object creation
     private static ViewPager homeViewPager;
@@ -83,11 +89,15 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     RecyclerView homeProductsRecyclerView;
     RelativeLayout homeProductsRelativeLayout;
     LinearLayout homeProgressLinearLayout;
-
     ScrollView homeMainScrollView;
     TextView homeSearch;
-
     MaterialProgressWheel progressVIew;
+
+    //create NavMenu View Object
+    RecyclerView navHomeRecyclerView;
+    NavMenuAdapter navMenuAdapter;
+    List<NavMenuModel> navMenuModelList;
+    NavMenuModel navMenuModel;
 
     int scrollY;
     static Button notifCount;
@@ -110,6 +120,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         //lists object instantiate
         sliderImageModelArrayList = new ArrayList<>();
         homeProductsModelList = new ArrayList<>();
+
+        navMenuModelList = new ArrayList<>();
 
         setContentView(R.layout.activity_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -142,10 +154,17 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         homeMainScrollView = (ScrollView) findViewById(R.id.homeMainScrollView);
         homeProductsRelativeLayout = findViewById(R.id.homeProductsRelativeLayout);
         homeProgressLinearLayout = findViewById(R.id.homeProgressLinearLayout);
+        navHomeRecyclerView = findViewById(R.id.navHomeRecyclerView);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         homeProductsRecyclerView.setLayoutManager(linearLayoutManager);
         homeProductsRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        LinearLayoutManager navMenuLLM = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
+        navHomeRecyclerView.setLayoutManager(navMenuLLM);
+        navHomeRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        navHomeRecyclerView.setHasFixedSize(true);
+        navHomeRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
 
         homeMainScrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
@@ -159,6 +178,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         });
 
         if (networkUtils.checkConnection()) {
+            getNavMenus();
             getProductsFromServer();
         } else {
             UrlUtility.showCustomToast(getResources().getString(R.string.no_connection), HomeActivity.this);
@@ -172,6 +192,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(i);
             }
         });
+
     } //end of Initialization
 
     private ArrayList<SliderImageModel> populateImagesSliding(){
@@ -186,6 +207,42 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         return list;
     } //end of populateImageSliding
+
+    private void getNavMenus(){
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, UrlUtility.ALL_CATEGORIES_URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if (response !=null){
+                    Log.d(TAG, "onResponse: "+response);
+                    try {
+                        JSONArray jsonArray = new JSONArray(response);
+                        for (int i=0; i<jsonArray.length(); i++){
+                            navMenuModel = new NavMenuModel();
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            navMenuModel.setCategoryName(jsonObject.getString("name"));
+                            navMenuModel.setCatId(jsonObject.getString("cat_id"));
+                            navMenuModel.setImageUrl(jsonObject.getString("image_url"));
+
+                            navMenuModelList.add(navMenuModel);
+
+                        }
+                        navMenuAdapter = new NavMenuAdapter(navMenuModelList, HomeActivity.this);
+                        navHomeRecyclerView.setAdapter(navMenuAdapter);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        VolleySingleton.getmApplication().getmRequestQueue().getCache().clear();
+        VolleySingleton.getmApplication().addToRequestQueue(stringRequest);
+    }
 
     private void getProductsFromServer(){
         StringRequest stringRequest =new StringRequest(Request.Method.GET, UrlUtility.HOME_PRODUCTS1_URL, new Response.Listener<String>() {
@@ -369,43 +426,74 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.home, menu);
+        menu.findItem(R.id.action_search).setVisible(false);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK && requestCode == 1112) {
+            if (data != null) {
+                String userEmailStr = data.getStringExtra("USER_EMAIL");
+                if (userEmailStr != null && !userEmailStr.equalsIgnoreCase("Not_Login")) {
+                    sharedPref.setStringValue("FROM_SCREEN_USER", "MY_ACCOUNT");
+                    startActivity(new Intent(HomeActivity.this, ShippingAddressActivity.class));
+                }
+            }
         }
+    }
 
-        return super.onOptionsItemSelected(item);
+    /**
+     * react to the user tapping/selecting an options menu item
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_my_account:
+                 databaseHelper = new DatabaseHelper(HomeActivity.this);
+                LoginDetailsModel loginDetails = databaseHelper.getLoginDetails();
+                if (loginDetails != null && loginDetails.getUserEmail() != null) {
+                    sharedPref.setStringValue( "FROM_SCREEN_USER", "MY_ACCOUNT");
+                    startActivity(new Intent(HomeActivity.this, ShippingAddressActivity.class));
+                } else {
+                    Intent resultss = new Intent(HomeActivity.this, LoginActivity.class);
+                    startActivityForResult(resultss, 1112);
+                }
+                return true;
+            case R.id.action_cart:
+                startActivity(new Intent(HomeActivity.this, CartActivity.class));
+                return true;
+            case R.id.action_my_wishlist:
+                startActivity(new Intent(HomeActivity.this, WishListActivity.class));
+                return true;
+            case R.id.action_search:
+                Intent i = new Intent(HomeActivity.this, SearchActivity.class);
+                startActivity(i);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }
+//        int id = item.getItemId();
+//
+//        if (id == R.id.nav_camera) {
+//            // Handle the camera action
+//        } else if (id == R.id.nav_gallery) {
+//
+//        } else if (id == R.id.nav_slideshow) {
+//
+//        } else if (id == R.id.nav_manage) {
+//
+//        } else if (id == R.id.nav_share) {
+//
+//        } else if (id == R.id.nav_send) {
+//
+//        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

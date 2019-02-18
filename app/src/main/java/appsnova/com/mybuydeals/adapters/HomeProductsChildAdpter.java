@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import appsnova.com.mybuydeals.ProductDetailsActivity;
 import appsnova.com.mybuydeals.ProductListActivity;
 import appsnova.com.mybuydeals.R;
 import appsnova.com.mybuydeals.models.HomeChildModel;
@@ -51,11 +52,11 @@ public class HomeProductsChildAdpter extends RecyclerView.Adapter<HomeProductsCh
         holder.product_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent sportIntent = new Intent(context, ProductListActivity.class);
-                sportIntent.putExtra("HOME_KEY", homeChildModelArrayList.get(position).getCategory_slug());
+                Intent sportIntent = new Intent(context, ProductDetailsActivity.class);
+                sportIntent.putExtra("PRODUCT_FROM_SCREEN", "HOME");
                 sportIntent.putExtra("CAT_NAME", homeChildModelArrayList.get(position).getCategory_name());
                 sportIntent.putExtra("FROM_HOME", "HOME");
-                sportIntent.putExtra("CAT_ID", homeChildModelArrayList.get(position).getCategory_id());
+                sportIntent.putExtra("PRODUCT_ID", homeChildModelArrayList.get(position).getId());
                 context.startActivity(sportIntent);
              //   Toast.makeText(v.getContext(), "click event on more, "+homeChildModelArrayList.get(position).getCategory_name() , Toast.LENGTH_SHORT).show();
             }

@@ -296,14 +296,14 @@ public class ProductDetailsActivity extends AppCompatActivity {
                                 if (sizesLists.size()>0){
                                     String pickedSize = sizesListSpinner.getSelectedItem().toString();
                                     if (pickedSize!=null && !pickedSize.equalsIgnoreCase("Select")) {
-                                   //     loginDetails= dbHelper.getLoginDetails();
-                                   //     addToCartData(loginDetails, pickedSize);
+                                        loginDetails= dbHelper.getLoginDetails();
+                                        addToCartData(loginDetails, pickedSize);
                                     } else {
                                         UrlUtility.showCustomToast("Please select size!", ProductDetailsActivity.this);
                                     }
                                 } else {
-//                                    loginDetails= dbHelper.getLoginDetails();
-//                                    addToCartData(loginDetails, "");
+                                    loginDetails= dbHelper.getLoginDetails();
+                                    addToCartData(loginDetails, "");
                                 }
                             } else {
                                 UrlUtility.showCustomToast("Please enter quantity!", ProductDetailsActivity.this);
@@ -317,8 +317,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
                 addWishListLinearLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-//                        loginDetails= dbHelper.getLoginDetails();
-//                        addToWishListData(loginDetails);
+                        loginDetails= dbHelper.getLoginDetails();
+                        addToWishListData(loginDetails);
                     }
                 });
 
@@ -775,7 +775,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-    }
+    } //end of addToCartData
 
     private void addToCartServiceURL(final String addToCartUrl, final JSONObject params, final String cartStr) {
         StringRequest stringRequest = new StringRequest(Request.Method.GET, addToCartUrl, new Response.Listener<String>() {
@@ -820,8 +820,44 @@ public class ProductDetailsActivity extends AppCompatActivity {
         });
         VolleySingleton.getmApplication().getmRequestQueue().getCache().clear();
         VolleySingleton.getmApplication().getmRequestQueue().add(stringRequest);
-    }
+    } //end of addToCart
 
+
+    private void addToWishListData(LoginDetailsModel _loginDetails) {
+        if (networkUtils.checkConnection()){
+            String quantitiesETStr = quantitiesEdittext.getText().toString();
+            String udid = Settings.Secure.getString(ProductDetailsActivity.this.getContentResolver(),Settings.Secure.ANDROID_ID);
+            if (_loginDetails != null){
+                try {
+
+                    progressDialog = ProgressDialog.show(ProductDetailsActivity.this, "Please wait ...", "Adding item to wish list...", true);
+                    progressDialog.setCancelable(false);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                JSONObject params = new JSONObject();
+                try {
+                    params.put("vendor_id", ""+vendorId);
+                    params.put("product_id", ""+productId);
+                    params.put("name", ""+productName);
+                    params.put("price", ""+productPrice);
+                    params.put("userid", ""+_loginDetails.getUserID());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+                String addToCartUrl = UrlUtility.ADD_TO_CART_URL+"deviceid="+udid+"&vendor_id="+vendorId+
+                        "&product_id="+productId+"&product_name="+productName+"&quantity="+quantitiesETStr+"&price="+productPrice;
+                addToCartServiceURL(UrlUtility.ADD_TO_WISH_LIST_URL, params, "WishList");
+            } else {
+                sharedPref.setStringValue( "FROM_SCREEN_USER", "MY_WISHLIST");
+                //startActivity(new Intent(ProductDetailsScreenActivity.this, ActivityLoginPage.class));
+                Intent resultss = new Intent(ProductDetailsActivity.this, LoginActivity.class);
+                startActivityForResult(resultss, 1113);
+            }
+        }
+    }
 
 
     @Override

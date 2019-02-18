@@ -127,6 +127,13 @@ import java.util.regex.Pattern;
             }
         });
 
+        signUpTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               startActivityForResult(new Intent(LoginActivity.this, RegistrationActivity.class), 1);
+            }
+        });
+
     } // end of onCreate
     private void sendRequestForLogin(final HashMap<String, String> params){
         StringRequest stringRequest = new StringRequest(Request.Method.POST, UrlUtility.LOGIN_URL, new Response.Listener<String>() {
