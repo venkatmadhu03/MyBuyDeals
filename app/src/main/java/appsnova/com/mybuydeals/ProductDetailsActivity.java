@@ -703,7 +703,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
                 startActivity(new Intent(ProductDetailsActivity.this, CartActivity.class));
             }
         });
-        cartButton.setBackgroundResource(R.drawable.search_black_icon);//shopping cart image 24X24
+        cartButton.setBackgroundResource(R.drawable.ic_shopping_cart_white_24dp);//shopping cart image 24X24
     }//end of setUpNavigation
 
     private void checkingPinCode(String pinCodeCheckUrl, final String pinCodeStr) {

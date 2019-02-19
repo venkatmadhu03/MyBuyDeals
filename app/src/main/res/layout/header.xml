@@ -70,7 +70,7 @@
             android:layout_height="50dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:background="@drawable/search_black_icon"
+            android:background="@drawable/ic_shopping_cart_white_24dp"
             android:padding="5dp" />
 
     </RelativeLayout>

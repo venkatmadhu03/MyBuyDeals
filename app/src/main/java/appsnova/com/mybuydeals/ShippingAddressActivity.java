@@ -349,7 +349,7 @@ public class ShippingAddressActivity extends AppCompatActivity {
                 startActivity(new Intent(ShippingAddressActivity.this, CartActivity.class));
             }
         });
-        cartButton.setBackgroundResource(R.drawable.search_black_icon);//shopping cart image 24X24
+        cartButton.setBackgroundResource(R.drawable.ic_shopping_cart_white_24dp);//shopping cart image 24X24
     }//end of setUpNavigation
 
     @Override

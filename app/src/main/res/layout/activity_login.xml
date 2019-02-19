@@ -50,6 +50,7 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/mobileNumberLoginET"
                         android:hint="@string/enter_login_id_hint"
+                        android:background="@drawable/edit_text_bottom_border"
                         android:backgroundTint="@color/colorPrimary"
                         android:textColorHint="@color/colorPrimary"/>
 
@@ -70,6 +71,7 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/passwordLoginET"
                         android:hint="@string/enter_password_hint"
+                        android:background="@drawable/edit_text_bottom_border"
                         android:backgroundTint="@color/colorPrimary"
                         android:textColorHint="@color/colorPrimary"/>
 

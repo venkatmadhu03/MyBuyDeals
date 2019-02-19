@@ -300,7 +300,7 @@ public class ProductListActivity extends AppCompatActivity implements AbsListVie
                 startActivity(new Intent(ProductListActivity.this, CartActivity.class));
             }
         });
-        cartButton.setBackgroundResource(R.drawable.ic_menu_send);//shopping cart
+        cartButton.setBackgroundResource(R.drawable.ic_shopping_cart_white_24dp);//shopping cart
     }
 
     @Override
