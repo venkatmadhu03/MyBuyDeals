@@ -5,7 +5,7 @@
     xmlns:wheel="http://schemas.android.com/tools"
     android:background="@color/homepage_background">
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/homeMainScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -56,24 +56,15 @@
                         android:layout_marginStart="0dp"
                         android:layout_marginEnd="0dp"
                         android:layout_marginBottom="0dp"/>
-
-                    <com.viewpagerindicator.CirclePageIndicator
-                        android:id="@+id/slider"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/homeSearch"
-                        android:layout_alignParentBottom="true"
-                        android:background="@color/colorWhite"
-                        android:layout_centerHorizontal="true"
-                        android:gravity="bottom"
-                        android:padding="10dip"
-                        app:centered="true"
-                        app:fillColor="#df0623"
-                        app:pageColor="#fff"
-                        app:snap="false"
-                        android:visibility="gone"/>
-
                 </RelativeLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/SliderDots"
+                    android:layout_marginTop="8dp"
+                    android:layout_below="@+id/innerSliderRelativeLayout"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical|center_horizontal" />
 
                 <RelativeLayout
                     android:id="@+id/searchByCategoryRelativeLayout"
@@ -182,5 +173,5 @@
                 </RelativeLayout>
             </RelativeLayout>
         </RelativeLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 </RelativeLayout>

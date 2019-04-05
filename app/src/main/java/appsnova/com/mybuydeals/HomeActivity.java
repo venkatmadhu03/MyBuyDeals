@@ -6,14 +6,18 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Parcelable;
-import androidx.viewpager.widget.PagerAdapter;
+
 import androidx.viewpager.widget.ViewPager;
+
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,6 +59,7 @@ import java.util.TimerTask;
 
 import appsnova.com.mybuydeals.adapters.HomeProductsAdapter;
 import appsnova.com.mybuydeals.adapters.NavMenuAdapter;
+import appsnova.com.mybuydeals.adapters.ViewPagerAdapter;
 import appsnova.com.mybuydeals.models.HomeChildModel;
 import appsnova.com.mybuydeals.models.HomeProductsModel;
 import appsnova.com.mybuydeals.models.LoginDetailsModel;
@@ -76,6 +81,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     SharedPref sharedPref;
     DatabaseHelper databaseHelper;
 
+
     //Slider Object creation
     private static ViewPager homeViewPager;
     private CirclePageIndicator slider;
@@ -89,7 +95,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     RecyclerView homeProductsRecyclerView;
     RelativeLayout homeProductsRelativeLayout;
     LinearLayout homeProgressLinearLayout;
-    ScrollView homeMainScrollView;
+    NestedScrollView homeMainScrollView;
     TextView homeSearch;
     MaterialProgressWheel progressVIew;
 
@@ -103,7 +109,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     static Button notifCount;
     static int mNotifCount = 5;
 
-    private static final int TIME_DELAY = 2000;
+    private static final int TIME_DELAY = 5000;
     private static long back_pressed;
 
     HomeChildModel homeChildModel;
@@ -111,6 +117,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     HomeProductsAdapter homeProductsAdapter;
     List<HomeProductsModel> homeProductsModelList;
     ArrayList<HomeChildModel> homeChildModelArrayList;
+    LinearLayout sliderDotspanel;
+    private int dotscount;
+    private ImageView[] dots;
 
 
     @Override
@@ -141,10 +150,55 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
 
         initialization();
-
-        //get Slider Images list
         sliderImageModelArrayList = populateImagesSliding();
         initSlider();
+        sliderDotspanel = (LinearLayout) findViewById(R.id.SliderDots);
+        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(sliderImageModelArrayList,this);
+        homeViewPager.setAdapter(viewPagerAdapter);
+
+        dotscount = viewPagerAdapter.getCount();
+        dots = new ImageView[dotscount];
+
+        for(int i = 0; i < dotscount; i++){
+
+            dots[i] = new ImageView(this);
+            dots[i].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.non_active_dot));
+
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+            params.setMargins(8, 0, 8, 0);
+
+            sliderDotspanel.addView(dots[i], params);
+
+        }
+
+        dots[0].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.active_dot));
+        homeViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+                for(int i = 0; i< dotscount; i++){
+                    dots[i].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.non_active_dot));
+                }
+
+                dots[position].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.active_dot));
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+
+        //get Slider Images list
+
     } //end of onCreate
 
     private void initialization(){
@@ -154,7 +208,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         homeProductsRecyclerView = findViewById(R.id.homeProductsRecyclerView);
         progressVIew = findViewById(R.id.progressVIew);
 
-        homeMainScrollView = (ScrollView) findViewById(R.id.homeMainScrollView);
+        homeMainScrollView = (NestedScrollView) findViewById(R.id.homeMainScrollView);
         homeProductsRelativeLayout = findViewById(R.id.homeProductsRelativeLayout);
         homeProgressLinearLayout = findViewById(R.id.homeProgressLinearLayout);
         navHomeRecyclerView = findViewById(R.id.navHomeRecyclerView);
@@ -326,7 +380,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private void initSlider() {
 
         homeViewPager = findViewById(R.id.homeViewPager);
-        homeViewPager.setAdapter(new PagerAdapter() {
+       /* homeViewPager.setAdapter(new PagerAdapter() {
             @Override
             public int getCount() {
                 return sliderImageModelArrayList.size();
@@ -361,17 +415,17 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             public Parcelable saveState() {
                 return null;
             }
-        });
+        });*/
 
-        CirclePageIndicator indicator = (CirclePageIndicator)
+      /*  CirclePageIndicator indicator = (CirclePageIndicator)
                 findViewById(R.id.slider);
 
-        indicator.setViewPager(homeViewPager);
+        indicator.setViewPager(homeViewPager);*/
 
         final float density = getResources().getDisplayMetrics().density;
 
 //Set circle indicator radius
-        indicator.setRadius(5 * density);
+      //  indicator.setRadius(5 * density);
 
         NUM_PAGES =sliderImageModelArrayList.size();
 
@@ -393,25 +447,23 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             }
         }, 3000, 3000);
 
-        // Pager listener over indicator
-        indicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+       /* // Pager listener over indicator
+        indicator.setOnPageChangeListener(new android.support.v4.view.ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
 
             @Override
             public void onPageSelected(int position) {
                 currentPage = position;
-
             }
 
             @Override
-            public void onPageScrolled(int pos, float arg1, int arg2) {
+            public void onPageScrollStateChanged(int state) {
 
             }
-
-            @Override
-            public void onPageScrollStateChanged(int pos) {
-
-            }
-        });
+        });*/
 
     } //end of initSlider
 

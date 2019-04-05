@@ -58,6 +58,8 @@ public class CreateOrderActivity extends AppCompatActivity {
     SharedPref sharedPref;
     ArrayList<CartDataModel> cartListDataList = new ArrayList<CartDataModel>();
     DatabaseHelper databaseHelper = new DatabaseHelper(CreateOrderActivity.this);
+    int statusCode;
+    String statusMessage;
 
 
     public CartListAdapter cartListAdapter;
@@ -156,46 +158,7 @@ public class CreateOrderActivity extends AppCompatActivity {
             confirmationOrderButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (networkUtils.checkConnection()){
-                        try {
-                            ringProgressDialog = ProgressDialog.show(CreateOrderActivity.this, "Please wait ...", "Creating order...", true);
-                            ringProgressDialog.setCancelable(false);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-
-                        HashMap<String, String> params = new HashMap<>();
-                        params.put("order_total",""+sharedPref.getStringValue("CART_TOTAL_AMOUNT"));
-                        params.put("payment_method","COD");
-                        if (loginDetailsModel!=null){
-                            params.put("username", ""+loginDetailsModel.getUserEmail());
-                            params.put("userid", ""+loginDetailsModel.getUserID());
-                        }
-
-                        try {
-                            String cartList = createOrdersGroupInServer(cartListDataList).toString();
-                            params.put("cart",""+cartList);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        } catch (Exception eee){
-                            eee.printStackTrace();
-                        }
-
-                        params.put("billing_phone", ""+sharedPref.getStringValue( "MOBILE"));
-                        params.put("billing_email", ""+sharedPref.getStringValue( "EMAIL_ID"));
-                        params.put("billing_postcode", ""+sharedPref.getStringValue( "ZIP_CODE"));
-                        params.put("billing_state", ""+sharedPref.getStringValue( "STATE"));
-                        params.put("billing_city", ""+sharedPref.getStringValue( "CITY_NAME"));
-                        params.put("billing_address_1", ""+sharedPref.getStringValue( "DELIVERY_ADDRESS_LINE1"));
-                        params.put("billing_address_2", ""+""+sharedPref.getStringValue( "DELIVERY_ADDRESS_LINE2"));
-                        params.put("billing_company", "");
-                        params.put("billing_last_name", ""+sharedPref.getStringValue( "LAST_NAME"));
-                        params.put("billing_first_name", ""+sharedPref.getStringValue( "FIRST_NAME"));
-                        params.put("billing_country", "IND");
-
-
-                        createOrderUrl(UrlUtility.ORDER_CREATE_URL, params);
-                    }
+                    sendingConfirmOrderRequestToServer();
                 }
             });
 
@@ -210,6 +173,98 @@ public class CreateOrderActivity extends AppCompatActivity {
             loadCartList();
         }
     } //end of onCreate
+
+    private void sendingConfirmOrderRequestToServer() {
+        String url = "https://www.instamojo.com/integrations";
+        StringRequest stringRequest=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject=new JSONObject(response);
+                    statusCode = jsonObject.getInt("statusCode");
+                    statusMessage = jsonObject.getString("statusMessage");
+                    if (statusCode==200){
+                            createOrderRequestToServer();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("X-Api-Key","a7236dadd11f90b9edad18a224befd0b");
+                headers.put("X-Auth-Token","36c7802bfaf82204ea9af13c95ac80b6");
+                return headers;
+            }
+        };
+        VolleySingleton.getmApplication().getmRequestQueue().getCache().clear();
+        VolleySingleton.getmApplication().getmRequestQueue().add(stringRequest);
+    }
+
+    private void createOrderRequestToServer() {
+    StringRequest stringRequest=new StringRequest(Request.Method.POST, UrlUtility.ORDER_CREATE_URL, new Response.Listener<String>() {
+        @Override
+        public void onResponse(String response) {
+            try {
+                JSONObject jsonObject=new JSONObject(response);
+                statusCode = jsonObject.getInt("statusCode");
+                statusMessage = jsonObject.getString("statusMessage");
+                if (statusCode==200){
+                  Intent intent=new Intent(CreateOrderActivity.this,OrderConfirmationActivity.class);
+                  startActivity(intent);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }, new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+
+        }
+    }){
+        @Override
+        protected Map<String, String> getParams() throws AuthFailureError {
+            HashMap<String, String> params = new HashMap<>();
+            params.put("order_total",""+sharedPref.getStringValue("CART_TOTAL_AMOUNT"));
+            params.put("payment_method","COD");
+            if (loginDetailsModel!=null){
+                params.put("username", ""+loginDetailsModel.getUserEmail());
+                params.put("userid", ""+loginDetailsModel.getUserID());
+            }
+            String cartList = null;
+            try {
+                cartList = createOrdersGroupInServer(cartListDataList).toString();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            params.put("cart",""+cartList);
+            params.put("billing_phone", ""+sharedPref.getStringValue( "MOBILE"));
+            params.put("billing_email", ""+sharedPref.getStringValue( "EMAIL_ID"));
+            params.put("billing_postcode", ""+sharedPref.getStringValue( "ZIP_CODE"));
+            params.put("billing_state", ""+sharedPref.getStringValue( "STATE"));
+            params.put("billing_city", ""+sharedPref.getStringValue( "CITY_NAME"));
+            params.put("billing_address_1", ""+sharedPref.getStringValue( "DELIVERY_ADDRESS_LINE1"));
+            params.put("billing_address_2", ""+""+sharedPref.getStringValue( "DELIVERY_ADDRESS_LINE2"));
+            params.put("billing_company", "");
+            params.put("billing_last_name", ""+sharedPref.getStringValue( "LAST_NAME"));
+            params.put("billing_first_name", ""+sharedPref.getStringValue( "FIRST_NAME"));
+            params.put("billing_country", "IND");
+            return  params;
+        }
+    };
+        VolleySingleton.getmApplication().getmRequestQueue().getCache().clear();
+        VolleySingleton.getmApplication().getmRequestQueue().add(stringRequest);
+    }
+
 
     private JSONObject createOrdersGroupInServer(ArrayList<CartDataModel> cartList) throws JSONException {
         JSONObject jsonObjectResult = new JSONObject();
