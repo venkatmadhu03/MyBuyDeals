@@ -1,6 +1,10 @@
 package appsnova.com.mybuydeals;
 
 import androidx.appcompat.app.AppCompatActivity;
+import instamojo.library.InstapayListener;
+import instamojo.library.InstamojoPay;
+import instamojo.library.Config;
+import android.app.Activity;
 import appsnova.com.mybuydeals.models.CartDataModel;
 import appsnova.com.mybuydeals.models.LoginDetailsModel;
 import appsnova.com.mybuydeals.ownlibraries.MaterialProgressWheel;
@@ -15,6 +19,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -60,6 +65,7 @@ public class CreateOrderActivity extends AppCompatActivity {
     DatabaseHelper databaseHelper = new DatabaseHelper(CreateOrderActivity.this);
     int statusCode;
     String statusMessage;
+    String cartTotalAmount;
 
 
     public CartListAdapter cartListAdapter;
@@ -79,9 +85,53 @@ public class CreateOrderActivity extends AppCompatActivity {
     LoginDetailsModel loginDetailsModel;
     ProgressDialog ringProgressDialog;
 
+
+    
+    private void callInstamojoPay(String email, String phone, String amount, String purpose, String buyername) {
+        final Activity activity = this;
+        InstamojoPay instamojoPay = new InstamojoPay();
+        IntentFilter filter = new IntentFilter("ai.devsupport.instamojo");
+        registerReceiver(instamojoPay, filter);
+        JSONObject pay = new JSONObject();
+        try {
+            pay.put("email", email);
+            pay.put("phone", phone);
+            pay.put("purpose", purpose);
+            pay.put("amount", amount);
+            pay.put("name", buyername);
+       pay.put("send_sms", true);
+      pay.put("send_email", true);
+ } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        initListener();
+        instamojoPay.start(activity, pay, listener);
+    }
+    
+    InstapayListener listener;
+
+    
+    private void initListener() {
+        listener = new InstapayListener() {
+            @Override
+            public void onSuccess(String response) {
+                Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG)
+                        .show();
+                startActivity(new Intent(CreateOrderActivity.this, HomeActivity.class));
+            }
+
+            @Override
+            public void onFailure(int code, String reason) {
+                Toast.makeText(getApplicationContext(), "Failed: " + reason, Toast.LENGTH_LONG)
+                        .show();
+            }
+        };
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+      //  Instamojo.getInstance().initialize(this, Instamojo.Environment.TEST);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -93,6 +143,7 @@ public class CreateOrderActivity extends AppCompatActivity {
 
         //inflate view
         setContentView(R.layout.activity_create_order);
+        // Call the function callInstamojo to start payment here
 
         if (getIntent()!= null && getIntent().getBooleanExtra("EXIT", false)) {
             Intent bookingDoneIntent = new Intent(CreateOrderActivity.this,
@@ -158,7 +209,23 @@ public class CreateOrderActivity extends AppCompatActivity {
             confirmationOrderButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    sendingConfirmOrderRequestToServer();
+                    if (networkUtils.checkConnection()){
+                        callInstamojoPay(sharedPref.getStringValue("EMAIL_ID"),
+                                sharedPref.getStringValue("MOBILE"),
+                                cartTotalAmount,
+                                "MyBuyDeals",
+                                sharedPref.getStringValue("FIRST_NAME"));
+                        Log.d("Order", "onClick: "
+                            +sharedPref.getStringValue("EMAIL_ID")+","
+                                +sharedPref.getStringValue("MOBILE")+","
+                                +cartTotalAmount+","
+                                +sharedPref.getStringValue("FIRST_NAME")
+                        );
+
+                    }else{
+                        UrlUtility.showCustomToast(getString(R.string.no_connection), CreateOrderActivity.this);
+                    }
+
                 }
             });
 
@@ -175,8 +242,7 @@ public class CreateOrderActivity extends AppCompatActivity {
     } //end of onCreate
 
     private void sendingConfirmOrderRequestToServer() {
-        String url = "https://www.instamojo.com/integrations";
-        StringRequest stringRequest=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+        StringRequest stringRequest=new StringRequest(Request.Method.POST, UrlUtility.PAYMENT_GATEWAY_URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
@@ -331,7 +397,6 @@ public class CreateOrderActivity extends AppCompatActivity {
         VolleySingleton.getmApplication().getmRequestQueue().getCache().clear();
         VolleySingleton.getmApplication().getmRequestQueue().add(stringRequest);
     } //end of createOrderUrl
-
 
     public class CartListAdapter extends BaseAdapter {
 
@@ -536,7 +601,7 @@ public class CreateOrderActivity extends AppCompatActivity {
                             /***** Returns the value mapped by name if it exists and is a JSONArray. ***/
                             /*******  Returns null otherwise.  *******/
                             JSONObject jsonMainNode1 = new JSONObject(response);
-                            String cartTotalAmount = jsonMainNode1.getString("cart_total");
+                            cartTotalAmount = jsonMainNode1.getString("cart_total");
                             String cartCount = jsonMainNode1.getString("count");
                             sharedPref.setStringValue("CART_TOTAL_AMOUNT", "" + cartTotalAmount);
                             sharedPref.setStringValue("CART_ITEMS_COUNT", "" + cartCount);

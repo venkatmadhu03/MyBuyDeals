@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MyBuyDeals</string>
+    <string name="app_name">MyBuyDeal</string>
 
     <string name="enter_login_id_hint">Email or Mobile Number</string>
     <string name="enter_password_hint">Password</string>

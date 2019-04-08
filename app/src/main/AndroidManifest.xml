@@ -6,21 +6,24 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
+    <uses-permission android:name="android.permission.READ_SMS"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:name=".utilities.VolleySingleton"
         android:allowBackup="true"
         android:appComponentFactory="Whatever"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/app_icon_white"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/app_icon_white"
         android:supportsRtl="true"
         android:theme="@style/MyMaterialTheme"
         tools:replace="android:appComponentFactory">
         <activity android:name=".ShippingAddressActivity"></activity>
         <activity
             android:name=".HomeActivity"
-            android:label="@string/title_activity_home"
+            android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -41,7 +44,9 @@
             android:name=".ProductDetailsActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"></activity>
+            android:windowSoftInputMode="stateHidden">
+
+        </activity>
         <activity android:name=".PaymentModesActivity" />
         <activity android:name=".OrderConfirmationActivity" />
         <activity android:name=".FullScreenViewActivity" />
@@ -62,6 +67,10 @@
             <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
             <!-- </intent-filter> -->
         </activity>
+
+    <meta-data android:name="instamojo.orderauth.url"
+                   android:value="https://mybuydeal.com/access_token.php"
+            />
     </application>
 
 </manifest>

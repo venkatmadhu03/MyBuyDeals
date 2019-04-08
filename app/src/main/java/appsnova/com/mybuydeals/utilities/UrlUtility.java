@@ -96,6 +96,10 @@ public class UrlUtility {
     //GET USER Profile
     public static String RETRIEVE_PROFILE_URL = BASE_URL+ "retrieve_profile.php?";
 
+    //Instamojo Payment gateway
+    public static final String PAYMENT_GATEWAY_URL = "https://test.instamojo.com/";
+    //public static final String PAYMENT_GATEWAY_URL = "https://api.instamojo.com/";
+
 
     public static ProgressDialog showProgressDialog(Context mContext) {
 

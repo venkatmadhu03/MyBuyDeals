@@ -205,6 +205,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         //initialize ViewObjects
         homeSearch = (TextView) findViewById(R.id.homeSearch);
+        homeSearch.setVisibility(View.GONE);
         homeProductsRecyclerView = findViewById(R.id.homeProductsRecyclerView);
         progressVIew = findViewById(R.id.progressVIew);
 
